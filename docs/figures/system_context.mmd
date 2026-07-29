@@ -1,0 +1,49 @@
+flowchart LR
+    %% Working title: Literature-Based Engineering Analysis and Software Simulation of a 16-Floor Dual-Frequency RFID Elevator Access-Control Controller
+    %% Project-owner approved working title; supervisor approval pending.
+
+    subgraph PB["PROJECT BOUNDARY — deterministic software model only"]
+        direction LR
+
+        LF["Simulated LF reader source<br/>(logical category only)"]
+        HF["Simulated HF reader source<br/>(logical category only)"]
+        MSG["Credential-message input<br/>PROJECT_WIEGAND_26"]
+        FLOOR["Simulated floor-request source<br/>floor 1–16"]
+        HARNESS["Test and experiment harness<br/>simulated time + fault injection"]
+
+        CTRL["Controller simulator<br/>validation · lookup · authorization<br/>timed output · reset · watchdog"]
+        DB[("Logical credential database<br/>composite key + 16-bit floor mask")]
+        OUT["Abstract 16-floor permission outputs<br/>no physical control"]
+        LOG[("Structured event log")]
+
+        LF --> MSG
+        HF --> MSG
+        MSG --> CTRL
+        FLOOR --> CTRL
+        HARNESS --> CTRL
+        HARNESS --> DB
+        CTRL <--> DB
+        CTRL --> OUT
+        CTRL --> LOG
+        OUT --> HARNESS
+        LOG --> HARNESS
+    end
+
+    subgraph EX["OUTSIDE PROJECT BOUNDARY"]
+        direction TB
+        COMM["Commercial controller<br/>behavior and equivalence unknown"]
+        RFID["Physical RFID readers, tags,<br/>RF propagation and electronics"]
+        ELEV["Physical elevator controller<br/>and elevator wiring"]
+        SAFETY["Motors · brakes · doors<br/>movement · passenger-safety systems"]
+    end
+
+    COMM -. "not modeled; no equivalence claimed" .- CTRL
+    RFID -. "logical source labels only" .- LF
+    RFID -. "logical source labels only" .- HF
+    ELEV -. "no electrical or physical interface" .- OUT
+    SAFETY -. "no control, installation, or certification claim" .- OUT
+
+    classDef outside fill:#f5f5f5,stroke:#777,stroke-dasharray:5 5,color:#333;
+    classDef boundary fill:#eef6ff,stroke:#1f5f99,color:#111;
+    class COMM,RFID,ELEV,SAFETY outside;
+    class LF,HF,MSG,FLOOR,HARNESS,CTRL,DB,OUT,LOG boundary;
