@@ -1,0 +1,11 @@
+# Decision Log
+
+| Decision ID | Date | Decision | Basis | Alternatives considered | Consequences | Status | Human approval required |
+|---|---|---|---|---|---|---|---|
+| DEC-001 | 2026-07-29 | Use STM32F10xxx documentation only as a representative reference architecture. | SRC-STM32-001 scope and UNK-004. | Identify the commercial processor; omit all representative embedded references. | Embedded concepts may be explained without asserting commercial hardware. | active scope rule | No for literature mapping; yes before selecting an implementation model. |
+| DEC-002 | 2026-07-29 | Prohibit identification of the commercial processor without direct product evidence. | UNK-004 and SP-01 evidence limits. | Infer a processor from generic product category or reference source. | ARM, STM32, and STM32F103 claims remain prohibited. | active scope rule | No. |
+| DEC-003 | 2026-07-29 | Treat ARMv7-A/R documentation as A/R-scope terminology only, not STM32 Cortex-M documentation. | SRC-ARM-002 preface. | Use it as generic proof for STM32 behavior. | Prevents profile conflation. | active scope rule | No. |
+| DEC-004 | 2026-07-29 | Treat Wiegand-26 only as a possible future initial simulator format. | PRD-002; SRC-MISSING-004. | Assert product support; select another format without evidence. | No protocol implementation or requirement may be justified until a source is obtained. | deferred | Yes, with authoritative source. |
+| DEC-005 | 2026-07-29 | Organize literature notes by engineering topic rather than filename. | SP-02 task requirement and SRC-WORKFLOW-001 bounded evidence practice. | Source-by-source summary. | Claim tracing is easier and large-manual scope stays narrow. | active | No. |
+| DEC-006 | 2026-07-29 | Keep product evidence separate from external technical literature and reference design. | SP-01 classification, SRC-PLAN-001, SRC-WORKFLOW-001. | Merge sources into generic “facts.” | Prevents unsupported commercial-product claims. | active scope rule | No. |
+| DEC-007 | 2026-07-29 | Register missing RFID, Wiegand, authorization, elevator, safety-terminology, and verification sources explicitly. | `evidence/unresolved_sources.md`. | Fill gaps with unsourced general knowledge. | Detailed technical requirements are gated pending authoritative sources. | active gate | Yes, to obtain/approve sources. |

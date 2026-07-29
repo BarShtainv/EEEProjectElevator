@@ -1,0 +1,1119 @@
+# Subproject 2 — Literature Review and Claim-Evidence Architecture
+
+You are Codex operating inside the current VS Code workspace.
+
+This is the second bounded stage of a B.Sc. final engineering project titled:
+
+“Literature-Based Engineering Analysis and Software Simulation of a 16-Floor Dual-Frequency RFID Elevator Access-Control Controller”
+
+Use GPT-5.6 Sol with High reasoning for this task.
+
+Work evidence-first. Inspect the current repository, verify that Subproject 1 is complete enough to continue, extract only relevant information from the available sources, preserve source scope, update the evidence architecture, validate the result, and report all uncertainty.
+
+Do not begin requirements definition, architecture design, simulator implementation, experiments, or final report drafting.
+
+---
+
+## 1. Task identity
+
+Stage ID: SP-02
+
+Stage name: Literature review and claim-evidence architecture
+
+Current version:
+Determine from the current repository. Do not assume the branch, commit, repository root, or working-tree state.
+
+Task baseline:
+The current version containing the accepted Subproject 1 deliverables.
+
+Reference baseline:
+The commit or repository state immediately before Subproject 1, when identifiable. Use it only for comparison. Do not reset to it.
+
+Intervening changes:
+Inspect and classify any changes after the Subproject 1 commit as:
+
+- relevant to Subproject 2;
+- unrelated but non-conflicting;
+- conflicting.
+
+Protect unrelated later work. Do not rewrite history or reset the repository.
+
+Commit authorization:
+No commit is authorized unless the user explicitly authorizes it in the current Codex session.
+
+Push authorization:
+No push is authorized.
+
+---
+
+## 2. Objective
+
+Build a structured, defensible literature base supporting the final report’s explanations of:
+
+- the advertised product’s likely system role;
+- RFID access-control concepts;
+- reader-to-controller communication;
+- embedded-controller principles;
+- representative ARM and STM32 architecture concepts;
+- authorization models;
+- memory, timing, reset, watchdog, logging, and output-control concepts;
+- conceptual elevator floor-access integration;
+- reliability and safe inactive behavior;
+- software simulation and verification methodology.
+
+Create a clear claim-evidence architecture that distinguishes:
+
+1. verified product evidence;
+2. external technical evidence;
+3. engineering inference;
+4. proposed reference-design choices;
+5. unknown or unresolved information.
+
+At the end of this stage, another reviewer must be able to identify:
+
+- which sources support each planned technical topic;
+- where each source is authoritative;
+- where each source is not applicable;
+- which important sources are still missing;
+- which claims may appear in later report stages;
+- which claims remain prohibited or unresolved.
+
+---
+
+## 3. Mandatory prerequisite review
+
+Before editing, inspect:
+
+- `final_engineering_project_plan.md` or `PROJECT_PLAN.md`;
+- `general_purpose_evidence_gated_workflow_handbook_updated.md`;
+- applicable `AGENTS.md`, `README.md`, `WORKFLOW.md`, or similar instruction files;
+- `audit/baseline.md`;
+- `audit/stage_reports/subproject_01.md`;
+- `audit/validation/subproject_01_validation.md`;
+- `audit/file_change_ledger.md`;
+- `evidence/product_evidence.md`;
+- `evidence/assumptions_and_unknowns.md`;
+- `evidence/claim_evidence_matrix.csv`;
+- `evidence/source_index.md`;
+- preserved product images and snapshots.
+
+Verify that Subproject 1 established:
+
+- a clear project root;
+- a recorded baseline;
+- stable evidence classifications;
+- preserved product URLs;
+- explicit product unknowns;
+- no unsupported processor or protocol claims;
+- a valid claim-evidence matrix;
+- a source inventory;
+- a readiness state allowing continuation.
+
+If Subproject 1 is materially incomplete, inconsistent, or marked blocked, stop and report:
+
+BLOCKED BEFORE NEXT STAGE — Subproject 1 is not ready for literature synthesis: <specific reason>
+
+Do not silently repair Subproject 1 beyond minor corrections necessary to preserve consistency. Material defects require a separate narrow repair stage.
+
+---
+
+## 4. Source files to inspect
+
+Locate the available sources rather than assuming their paths.
+
+Expected local sources include files equivalent to:
+
+- `general_purpose_evidence_gated_workflow_handbook_updated.md`
+- `ARM® Developer Suite.pdf`
+- `arm instruction set very good book.pdf`
+- `arm-instructionset.pdf`
+- `STM32F101xx_2xx_3xx_5xx_7xx_UM.pdf`
+- `A38x-Functional-Spec-PU0A.pdf`
+- `DDI0406C_C_ARMv7_arm_architecture_reference_manual.pdf`
+- `ספר פרויקט - עמית סייג.pdf`
+- project plans and Subproject 1 evidence files.
+
+Record exact repository-relative or external paths.
+
+Do not modify original source files.
+
+Do not make duplicate copies unless a canonical preservation requirement already exists.
+
+---
+
+## 5. Literature domains
+
+Organize the literature review by engineering topic, not by source filename.
+
+Cover these domains:
+
+### Domain LIT-01 — RFID fundamentals
+
+Include:
+
+- RFID system components;
+- tag, reader, and controller roles;
+- passive identification concepts;
+- distinction between carrier frequency and credential-message format;
+- security limitations of treating a card identifier as sufficient authentication.
+
+Do not state that a specific protocol is implemented by the commercial card without product evidence.
+
+### Domain LIT-02 — 125 kHz identification systems
+
+Include:
+
+- low-frequency RFID as a technology class;
+- typical read-range and data-rate considerations only when supported;
+- identifier-oriented credentials;
+- limitations and security considerations;
+- distinction between an RF technology and controller-side signaling.
+
+Do not assign a specific tag standard to the commercial product unless supported.
+
+### Domain LIT-03 — 13.56 MHz RFID and smart-card systems
+
+Include:
+
+- high-frequency RFID as a technology class;
+- distinction between simple identifiers and smart-card protocols;
+- possible cryptographic capabilities at the technology level;
+- interoperability and implementation differences.
+
+Do not claim that the commercial product supports MIFARE, ISO/IEC 14443, NFC, or another specific standard without evidence.
+
+### Domain LIT-04 — Wiegand signaling and frame formats
+
+Include:
+
+- Wiegand as a reader-to-controller signaling convention;
+- D0 and D1 pulse concepts;
+- framing and parity principles;
+- Wiegand-26 as a possible reference format for the later simulator;
+- the difference between a proposed reference implementation and verified product support;
+- protocol limitations and error handling.
+
+If no appropriate authoritative Wiegand source is locally available, create an unresolved-source item rather than presenting unsupported details as established fact.
+
+### Domain LIT-05 — Embedded-controller architecture
+
+Include:
+
+- processor, memory, peripherals, and firmware roles;
+- memory-mapped I/O;
+- initialization;
+- timers;
+- interrupts;
+- serial interfaces;
+- GPIO;
+- watchdogs;
+- reset and startup behavior;
+- nonvolatile storage concepts;
+- event logging;
+- deterministic state-machine behavior.
+
+Use ARM and STM32 documents as representative technical references, not as product-specific evidence.
+
+### Domain LIT-06 — ARM concepts
+
+Include only concepts relevant to the project:
+
+- RISC load/store principles;
+- general-purpose registers;
+- processor status flags;
+- branches;
+- exceptions;
+- memory access;
+- privileged operation where relevant;
+- startup and embedded execution concepts.
+
+Avoid unnecessary instruction-by-instruction summaries.
+
+Do not imply that the commercial card uses ARM.
+
+### Domain LIT-07 — STM32 reference architecture
+
+Use the STM32F10xxx reference manual as a representative microcontroller implementation example for:
+
+- memory organization;
+- memory-mapped peripherals;
+- GPIO;
+- timers;
+- interrupts;
+- UART;
+- watchdogs;
+- clocks;
+- reset;
+- Flash and SRAM concepts.
+
+Clearly state that STM32 is a reference architecture for the project and not verified commercial-card hardware.
+
+Do not state that the ARMv7-A/R architecture manual describes the STM32 Cortex-M architecture.
+
+### Domain LIT-08 — Credential storage and authorization
+
+Include:
+
+- credential records;
+- enabled and disabled users;
+- floor-permission masks;
+- role-based or attribute-based access concepts where relevant;
+- lookup and decision flow;
+- denial behavior;
+- data validation;
+- audit logging;
+- nonvolatile storage and integrity concerns.
+
+The later 16-bit floor mask is a proposed reference-design choice, not a verified product fact.
+
+### Domain LIT-09 — Elevator access-control integration
+
+Keep this conceptual and safety bounded.
+
+Include:
+
+- separation between access authorization and elevator safety or motion control;
+- permission or floor-enable signals;
+- inactive outputs at startup;
+- isolation boundaries;
+- denial behavior;
+- limitations of the project model.
+
+Do not describe direct control of motors, brakes, doors, or passenger-safety systems.
+
+If authoritative elevator integration or safety literature is missing, record it explicitly.
+
+### Domain LIT-10 — Reliability and fault handling
+
+Include:
+
+- safe inactive startup;
+- watchdog recovery;
+- reset behavior;
+- input validation;
+- fail-safe versus fail-secure distinctions where supported;
+- fault logging;
+- deterministic output timeout;
+- separation of faults from authorization decisions.
+
+Do not claim safety certification.
+
+### Domain LIT-11 — Software simulation and verification
+
+Include:
+
+- functional modeling;
+- deterministic simulation;
+- unit testing;
+- integration testing;
+- fault injection;
+- timing tests using simulated time;
+- reproducibility;
+- requirements-to-test traceability;
+- quantitative evaluation;
+- distinction between software-model results and physical-hardware performance.
+
+---
+
+## 6. Required use of the supplied sources
+
+### General-Purpose Evidence-Gated Project Workflow Handbook
+
+Use it to support:
+
+- evidence hierarchy;
+- bounded stages;
+- protected material;
+- missing-input registers;
+- validation;
+- independent review;
+- readiness gates;
+- narrow repair stages;
+- release discipline.
+
+Do not treat workflow rules as technical RFID or embedded-system evidence.
+
+### STM32F10xxx Reference Manual
+
+Use it as a representative example of:
+
+- microcontroller memory and bus architecture;
+- memory mapping;
+- GPIO;
+- timers;
+- interrupts;
+- UART;
+- watchdogs;
+- reset;
+- clocks;
+- memory-mapped peripheral control.
+
+Do not use it to prove that the product uses STM32 hardware.
+
+### ARM Developer Suite Developer Guide
+
+Use relevant sections for:
+
+- embedded initialization;
+- ROM-based firmware concepts;
+- memory-map considerations;
+- exception handling;
+- memory-mapped I/O;
+- debugging;
+- mixing higher-level code and assembly where relevant.
+
+Do not summarize the full tool suite.
+
+### ARM instruction-set materials
+
+Use them for accessible explanations of:
+
+- registers;
+- processor flags;
+- branches;
+- conditional execution;
+- load/store behavior;
+- processor modes and exceptions.
+
+Prefer concise, project-relevant notes.
+
+### ARMv7-A/R Architecture Reference Manual
+
+Use it for formal terminology and distinctions involving:
+
+- application-level architecture;
+- system-level architecture;
+- instruction sets;
+- memory model;
+- exceptions;
+- debug concepts.
+
+Explicitly record that:
+
+- it describes ARMv7-A and ARMv7-R;
+- it does not describe the ARMv7-M Cortex-M profile;
+- it must not be used as proof of STM32 behavior;
+- it must not be used as product-specific evidence.
+
+### ARMADA 38x Functional Specification
+
+Use it as an example of professional engineering-document organization:
+
+- feature lists;
+- address maps;
+- boot flow;
+- subsystem organization;
+- interface chapters;
+- register descriptions;
+- functional-specification structure.
+
+Do not use the ARMADA 38x SoC architecture as the proposed controller implementation unless later approved.
+
+### Uploaded Ariel B.Sc. project book
+
+Use it as an example of academic report organization:
+
+- abstract;
+- introduction;
+- requirements;
+- system description;
+- hardware and software planning;
+- implementation;
+- experiments;
+- result presentation;
+- conclusions;
+- appendices;
+- references.
+
+Do not copy its project-specific technical claims, prose, or formatting errors.
+
+---
+
+## 7. Evidence and wording rules
+
+Every planned technical claim must be classified as one of:
+
+- `verified_product_evidence`
+- `external_technical_evidence`
+- `engineering_inference`
+- `proposed_reference_design`
+- `unknown_or_unresolved`
+
+Do not allow a lower-authority source to replace a higher-authority source.
+
+Examples:
+
+- An ARM manual may explain memory-mapped I/O but cannot prove that the commercial card uses ARM.
+- An STM32 manual may support a proposed reference architecture but cannot identify the product processor.
+- A product photograph may show sixteen visible channels but may not prove their electrical ratings or circuit topology.
+- A seller statement remains a seller statement unless independently verified.
+- A simulation design decision remains a proposed reference design.
+
+Use cautious wording such as:
+
+- “The source defines...”
+- “This project uses the concept as a representative reference...”
+- “The commercial implementation remains unknown.”
+- “The proposed simulator will model...”
+- “This is an engineering inference rather than verified product evidence.”
+
+Do not use wording such as:
+
+- “The board uses STM32...”
+- “The controller communicates through Wiegand-26...”
+- “The outputs are relays rated for...”
+- “The firmware stores...”
+- “The product complies with...”
+
+unless direct authoritative evidence exists.
+
+---
+
+## 8. Required work
+
+### 8.1 Record the stage baseline
+
+Before editing, record:
+
+- current branch;
+- current commit;
+- recent history;
+- current Git status;
+- Subproject 1 commit or task baseline;
+- later changes and their classification;
+- applicable instructions;
+- source files found;
+- missing expected sources;
+- protected paths.
+
+Create or update:
+
+`audit/baselines/subproject_02_baseline.md`
+
+If the existing audit structure uses another canonical baseline path, follow that structure and do not create a duplicate.
+
+### 8.2 Expand the source index
+
+Update:
+
+`evidence/source_index.md`
+
+For each source record:
+
+- stable source ID;
+- exact title;
+- document number or revision when visible;
+- corporate or individual author when verified;
+- date when verified;
+- source type;
+- authority level;
+- architecture or subject scope;
+- relevant chapters or sections;
+- intended report use;
+- limitations;
+- current availability;
+- whether further verification is required.
+
+Preserve existing source IDs where possible.
+
+Do not rename existing IDs without documenting the mapping.
+
+### 8.3 Create topic-organized literature notes
+
+Create:
+
+`evidence/literature_notes.md`
+
+Use this structure:
+
+# Literature Notes
+
+## Purpose and scope
+## Evidence-use rules
+## LIT-01 RFID fundamentals
+## LIT-02 125 kHz systems
+## LIT-03 13.56 MHz systems
+## LIT-04 Wiegand signaling
+## LIT-05 Embedded-controller architecture
+## LIT-06 ARM concepts
+## LIT-07 STM32 reference architecture
+## LIT-08 Credential storage and authorization
+## LIT-09 Elevator access-control integration
+## LIT-10 Reliability and fault handling
+## LIT-11 Software simulation and verification
+## Cross-source terminology
+## Source conflicts and variants
+## Missing literature
+## Prohibited product-specific conclusions
+
+For each technical note record:
+
+- note ID, such as `LN-001`;
+- topic;
+- concise paraphrased statement;
+- source ID;
+- exact section, chapter, page, or document location;
+- authority and scope;
+- planned report use;
+- limitation or qualification;
+- evidence class.
+
+Do not paste long extracts.
+
+Use short quotations only when exact wording is necessary. Keep quotations minimal and clearly marked.
+
+### 8.4 Expand the claim-evidence matrix
+
+Update:
+
+`evidence/claim_evidence_matrix.csv`
+
+Preserve the existing schema unless a change is genuinely necessary.
+
+Add planned technical claims covering the literature domains.
+
+Each row must include:
+
+- stable claim ID;
+- precise claim wording;
+- evidence class;
+- supporting source ID;
+- source path;
+- source location;
+- status;
+- conservative confidence;
+- qualification or limitation.
+
+When one claim requires multiple sources, use multiple rows or the existing canonical multi-source method. Do not place ambiguous unstructured source lists into one field.
+
+Add explicit rows stating that:
+
+- STM32 is only a proposed reference architecture;
+- ARMv7-A/R is not the STM32 Cortex-M architecture;
+- Wiegand-26 is a proposed initial simulator format unless product evidence proves support;
+- the commercial processor remains unknown;
+- the commercial output electrical characteristics remain unknown;
+- elevator safety and motion control are outside project scope.
+
+### 8.5 Create the unresolved-source register
+
+Create:
+
+`evidence/unresolved_sources.md`
+
+Use fields such as:
+
+- item ID;
+- missing topic;
+- why the source is required;
+- planned report section;
+- acceptable source type;
+- current local coverage;
+- responsible provider;
+- status;
+- blocking effect;
+- recommended future research action.
+
+Use IDs such as:
+
+`SRC-MISSING-001`
+
+At minimum assess whether authoritative sources are still needed for:
+
+- RFID fundamentals;
+- 125 kHz systems;
+- 13.56 MHz systems;
+- Wiegand signaling;
+- access-control authorization;
+- elevator access integration;
+- fail-safe and fail-secure terminology;
+- software verification methodology;
+- relevant university report requirements.
+
+Do not browse the web unless current repository instructions or the user explicitly authorize it.
+
+When local evidence is insufficient, record the gap rather than inventing a source.
+
+### 8.6 Create or update methodology documentation
+
+Create or update:
+
+`docs/methodology.md`
+
+Only create it if no canonical methodology file already exists.
+
+Include:
+
+- project research method;
+- literature-selection method;
+- evidence hierarchy;
+- claim classification;
+- product-evidence limitations;
+- use of representative architecture sources;
+- separation of verified facts, inference, and proposed design;
+- handling of contradictory sources;
+- handling of missing authoritative inputs;
+- citation and paraphrasing discipline;
+- limitations of software-only validation;
+- human-review responsibilities.
+
+Do not write final architecture or requirements content.
+
+### 8.7 Create the literature-review outline
+
+Create:
+
+`docs/literature_review_outline.md`
+
+Include:
+
+- planned chapter and subsection headings;
+- purpose of each subsection;
+- major claims to be supported;
+- supporting source IDs;
+- unresolved source needs;
+- product-specific limitations;
+- approximate relationship to later requirements and architecture sections.
+
+This is an outline, not polished final report prose.
+
+### 8.8 Create preliminary bibliography
+
+Create or update:
+
+`report/references.bib`
+
+Use verified metadata from title pages or document headers.
+
+Use stable, readable BibTeX keys, for example:
+
+- `arm_ads_developer_guide_2001`
+- `armv7_ar_reference_manual_2014`
+- `stm32_rm0008_2014`
+- `marvell_armada38x_2015`
+- `saig_bsc_project_2025`
+- `evidence_gated_workflow_handbook`
+
+Do not invent:
+
+- authors;
+- publication dates;
+- editions;
+- ISBNs;
+- publishers;
+- URLs;
+- document numbers.
+
+When metadata is uncertain, omit the uncertain field or record the issue in `evidence/unresolved_sources.md`.
+
+Do not add product-page bibliography entries unless the project’s citation convention supports web evidence and the URL/access date are preserved.
+
+### 8.9 Update the decision log
+
+Create or update:
+
+`docs/decision_log.md`
+
+Record decisions including:
+
+- use of STM32F10xxx as a representative reference model;
+- prohibition on identifying the commercial processor without evidence;
+- treatment of ARMv7-A/R documentation;
+- Wiegand-26 as a possible initial simulator format rather than a verified product protocol;
+- organization of literature notes by topic;
+- separation of product evidence from technical literature;
+- unresolved need for additional authoritative RFID or elevator sources.
+
+Each decision must include:
+
+- decision ID;
+- date;
+- decision;
+- basis;
+- alternatives considered;
+- consequences;
+- status;
+- human approval required, when applicable.
+
+---
+
+## 9. Allowed file changes
+
+Create or update only these paths unless an applicable repository instruction defines an equivalent canonical location:
+
+audit/baselines/subproject_02_baseline.md
+audit/file_change_ledger.md
+audit/stage_reports/subproject_02.md
+audit/validation/subproject_02_validation.md
+evidence/source_index.md
+evidence/claim_evidence_matrix.csv
+evidence/literature_notes.md
+evidence/unresolved_sources.md
+evidence/assumptions_and_unknowns.md
+docs/methodology.md
+docs/literature_review_outline.md
+docs/decision_log.md
+report/references.bib
+
+Minor corrections to Subproject 1 evidence files are permitted only when necessary to fix a clear classification or cross-reference error. Document each correction explicitly.
+
+Do not modify:
+
+- original PDF or Markdown source documents;
+- preserved product images;
+- preserved product snapshots;
+- `src/`;
+- `tests/`;
+- `analysis/`;
+- `data/`;
+- `docs/requirements.md`;
+- `docs/architecture.md`;
+- `docs/register_model.md`;
+- `docs/test_plan.md`;
+- implementation configuration;
+- project plan;
+- workflow handbook;
+- unrelated later work.
+
+Do not create duplicate literature, methodology, bibliography, or decision-log files.
+
+---
+
+## 10. Protected material
+
+Protect:
+
+- all Subproject 1 verified product evidence;
+- preserved URLs;
+- product images and hashes;
+- original source documents;
+- evidence IDs already in use;
+- existing claim IDs;
+- existing source IDs;
+- project title and safety boundary;
+- unrelated repository changes;
+- Git history.
+
+Do not reclassify verified product evidence without direct justification.
+
+Do not convert unknown product details into engineering inference merely because a similar reference architecture uses them.
+
+---
+
+## 11. Source-inspection method
+
+Use a shallow-to-targeted process:
+
+1. inspect title pages and tables of contents;
+2. identify relevant chapters and sections;
+3. extract only the needed sections;
+4. confirm section scope;
+5. paraphrase the relevant concept;
+6. record precise source locations;
+7. record limitations;
+8. avoid recursively summarizing entire manuals.
+
+Use available text extraction tools when they preserve source structure.
+
+Do not use OCR unless the source lacks usable text and the exact information is necessary.
+
+Do not repeatedly OCR large documents.
+
+When diagrams or tables are essential and their content is not captured by text extraction, inspect the relevant page visually and record the page number and what the visual contributes.
+
+---
+
+## 12. Bibliographic and citation discipline
+
+Use source identifiers consistently across:
+
+- `source_index.md`;
+- `literature_notes.md`;
+- `claim_evidence_matrix.csv`;
+- `literature_review_outline.md`;
+- `methodology.md`;
+- `references.bib`.
+
+Do not cite a whole 1000-page manual without identifying a relevant chapter or section in the evidence notes.
+
+Do not copy source wording merely to avoid interpreting it.
+
+Paraphrase accurately and preserve defined terminology.
+
+Record conflicting terminology or protocol variants rather than silently selecting one.
+
+Do not treat a secondary tutorial as more authoritative than an official architecture or manufacturer manual for the same technical claim.
+
+---
+
+## 13. Required validation
+
+After editing, validate all deliverables.
+
+### 13.1 Required-file validation
+
+Confirm that all required files exist and are readable.
+
+### 13.2 Source-ID validation
+
+Check that:
+
+- every source ID referenced by literature notes exists in `source_index.md`;
+- every source ID referenced by the claim-evidence matrix exists;
+- bibliography keys are unique;
+- stable IDs are not duplicated;
+- source paths are valid where local files are expected.
+
+### 13.3 Claim-evidence validation
+
+Check that:
+
+- every planned technical claim has a source or is marked as inference, proposed design, or unresolved;
+- no external manual is used as product-specific proof;
+- no unsupported processor identification appears;
+- no unsupported protocol identification appears;
+- no unsupported electrical rating appears;
+- safety and motion-control boundaries remain explicit.
+
+### 13.4 Architecture-scope validation
+
+Search for and inspect all occurrences of:
+
+STM32
+STM32F103
+ARM
+ARMv7
+Cortex-M
+Wiegand
+Wiegand-26
+125 kHz
+13.56 MHz
+MIFARE
+ISO 14443
+NFC
+relay
+elevator
+motor
+brake
+door
+safety
+certified
+compliant
+
+These terms are not automatically forbidden, but their use must match the evidence rules.
+
+### 13.5 CSV validation
+
+Parse `evidence/claim_evidence_matrix.csv` with Python’s standard `csv` module.
+
+Confirm:
+
+- the header matches the existing schema;
+- all rows have the correct number of fields;
+- evidence-class values are valid;
+- status and confidence values are valid;
+- claim IDs are unique or intentionally repeated according to the documented multi-source convention.
+
+### 13.6 BibTeX validation
+
+Perform a structural check of `report/references.bib`.
+
+Confirm:
+
+- balanced braces;
+- unique entry keys;
+- no empty required identifiers;
+- no obviously invented metadata;
+- every local source intended for citation has an entry or a documented reason for omission.
+
+A full LaTeX build is not required unless the repository already has a safe, documented bibliography-validation command.
+
+### 13.7 Git validation
+
+When inside a Git repository, run:
+
+git diff --check
+git diff --name-only
+git status --short
+
+Confirm:
+
+- no forbidden path was modified;
+- no source PDF was changed;
+- no product image was changed;
+- no unrelated work was deleted or overwritten.
+
+### 13.8 Manual quality review
+
+Manually inspect:
+
+- at least one literature-note section from every domain;
+- all product-related claim rows;
+- all ARM/STM32 scope qualifications;
+- all unresolved-source items classified as blocking;
+- the literature-review outline;
+- methodology wording;
+- decision-log consistency.
+
+---
+
+## 14. Stage records
+
+### `audit/file_change_ledger.md`
+
+Update the canonical ledger with:
+
+- path;
+- pre-existing or new;
+- change made;
+- reason;
+- protected-content check;
+- validation performed.
+
+### `audit/stage_reports/subproject_02.md`
+
+Record:
+
+- objective;
+- starting version;
+- Subproject 1 baseline;
+- intervening-change classification;
+- sources inspected;
+- chapters or sections inspected;
+- files created;
+- files modified;
+- literature domains covered;
+- claims added;
+- missing sources;
+- scope qualifications;
+- validation performed;
+- deviations;
+- human-review items;
+- exact readiness state.
+
+Do not call this independent review.
+
+### `audit/validation/subproject_02_validation.md`
+
+Record:
+
+- validation commands;
+- relevant outputs;
+- CSV validation results;
+- source-ID validation results;
+- BibTeX validation results;
+- forbidden-path check;
+- unsupported-claim search results;
+- final Git status;
+- unresolved validation issues.
+
+---
+
+## 15. Readiness criteria
+
+Declare:
+
+READY FOR NEXT STAGE
+
+only when:
+
+- Subproject 1 remains intact;
+- every literature domain has adequate local coverage or an explicit unresolved-source record;
+- major planned claims are traceable;
+- ARM and STM32 sources are scoped correctly;
+- Wiegand-26 is labeled as proposed unless product evidence proves it;
+- no source is presented as product-specific without justification;
+- methodology and evidence rules are documented;
+- the literature-review outline is coherent;
+- the bibliography is structurally valid;
+- validation passes;
+- no blocking source gap remains for defining project requirements.
+
+Declare:
+
+READY FOR NEXT STAGE WITH NON-BLOCKING GATES
+
+when the local literature is sufficient for Subproject 3 but additional sources are still desirable for later report strengthening.
+
+List every non-blocking gate explicitly.
+
+Declare:
+
+BLOCKED BEFORE NEXT STAGE — <specific reason>
+
+when a missing or contradictory source prevents defensible requirements or methodology.
+
+---
+
+## 16. Stop conditions
+
+Stop and report a blocker when:
+
+- Subproject 1 is materially incomplete;
+- the current project root is ambiguous;
+- applicable instructions conflict;
+- source files are missing and the missing material is required for core methodology;
+- existing evidence IDs cannot be preserved safely;
+- a canonical file cannot be identified;
+- protected material would need to be overwritten;
+- literature claims can only be produced by guessing;
+- unrelated repository changes conflict materially with this stage.
+
+Do not solve a blocker by resetting, deleting, moving, or overwriting unrelated work.
+
+---
+
+## 17. Explicit exclusions
+
+Do not:
+
+- define final functional requirements;
+- freeze project scope;
+- design the conceptual hardware architecture;
+- design the state machine;
+- create a proposed register map;
+- create interface electrical specifications;
+- implement Python modules;
+- create tests;
+- run experiments;
+- generate performance claims;
+- draft polished final report chapters;
+- create the presentation;
+- claim exact reverse engineering;
+- claim product compliance or certification;
+- browse the web without authorization;
+- initialize Git;
+- reset;
+- clean;
+- switch branches;
+- stash;
+- commit;
+- push.
+
+---
+
+## 18. Final response format
+
+At completion, respond with:
+
+1. repository root, branch, and reviewed baseline;
+2. Subproject 1 prerequisite result;
+3. sources inspected;
+4. literature domains completed;
+5. files created or modified;
+6. key evidence-scope decisions;
+7. missing or unresolved sources;
+8. validation commands and results;
+9. confirmation that protected source files and product evidence were not changed;
+10. confirmation that no commit or push occurred;
+11. one exact readiness line.
+
+Use exactly one of:
+
+READY FOR NEXT STAGE
+
+READY FOR NEXT STAGE WITH NON-BLOCKING GATES
+
+BLOCKED BEFORE NEXT STAGE — <specific reason>
+
+Do not use vague completion wording such as “mostly complete,” “looks good,” or “should be enough.”
