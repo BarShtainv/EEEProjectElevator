@@ -8,6 +8,8 @@ This project uses evidence-gated engineering analysis. It preserves commercial-p
 
 Sources are first classified by authority and scope. For large manuals, the project records only relevant chapters and pages. Manufacturer manuals and architecture references are used for the systems they document; standards, textbooks, or peer-reviewed work are required where their topics are not locally covered. Topic notes are maintained in `evidence/literature_notes.md`, with unresolved gaps in `evidence/unresolved_sources.md`.
 
+For the SP-02R narrow completion, sufficiency means that one reasonable authoritative source supports each core model area: general RFID, Wiegand input signaling, access authorization, and basic software verification. Exhaustive protocol or standards coverage is deferred unless a later claim requires it. This deadline-oriented threshold permits honest, traceable requirements work without treating incomplete literature as complete.
+
 ## Evidence hierarchy and claim classification
 
 | Class | Use in this project |

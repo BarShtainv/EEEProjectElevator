@@ -15,26 +15,26 @@ These notes are a topic-organized evidence map for later stages, not final repor
 
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
-| LN-001 | No local authoritative source presently supports a technical explanation of RFID system components, passive identification, credential identifiers, or identifier-only security limits. | `SRC-MISSING-001`; `evidence/unresolved_sources.md` | Unresolved source gap. | Background literature. | Do not substitute product URL or a general embedded manual. | unknown_or_unresolved |
+| LN-001 | An RFID system includes an RF subsystem with tags and readers and commonly an enterprise subsystem that stores, processes, or analyzes reader-acquired data. Passive tags use energy received from a reader transmission to reply. | `SRC-RFID-001`, §§2.2–2.3.1, pp.2-2–2-5. | NIST government technical guidance for general RFID systems. | Define credential/tag, reader, and backend-processing roles and passive operation. | The source describes general RFID systems; it does not identify the commercial card's frequency, tag type, reader interface, or backend. | external_technical_evidence |
 
 ## LIT-02 125 kHz systems
 
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
-| LN-002 | Local material does not establish low-frequency RFID read range, data rate, tag standard, credential behavior, or security properties. | `SRC-MISSING-002`; `evidence/unresolved_sources.md` | Unresolved source gap. | Technology-class background. | No 125 kHz capability is attributed to the commercial card. | unknown_or_unresolved |
+| LN-002 | NIST treats operating frequency and identifier format as distinct tag characteristics and lists 125/134 kHz as common US LF RFID frequencies. | `SRC-RFID-001`, §2.3.1.1 pp.2-3–2-4; §2.3.1.3 and Table 2-1, pp.2-5–2-7. | NIST government technical guidance for general RFID systems. | Explain LF as a technology class and separate RF frequency from encoded identifiers or controller messages. | No 125 kHz capability or tag standard is attributed to the commercial product. | external_technical_evidence |
 
 ## LIT-03 13.56 MHz systems
 
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
-| LN-003 | Local material does not support a technical comparison of HF RFID, smart-card protocols, cryptographic capabilities, or interoperability. | `SRC-MISSING-003`; `evidence/unresolved_sources.md` | Unresolved source gap. | Technology-class background. | No MIFARE, ISO/IEC 14443, NFC, or other standard is attributed to the commercial card. | unknown_or_unresolved |
+| LN-003 | NIST lists 13.56 MHz within the HF technology class and discusses operating frequency separately from identifier formats, functionality, and security mechanisms. | `SRC-RFID-001`, §2.3.1 and Table 2-1, pp.2-3–2-7. | NIST government technical guidance for general RFID systems. | Provide minimum HF background without an exhaustive smart-card protocol comparison. | No 13.56 MHz, MIFARE, ISO/IEC 14443, NFC, or cryptographic capability is attributed to the commercial product. | external_technical_evidence |
 
 ## LIT-04 Wiegand signaling
 
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
-| LN-004 | No local authoritative source is available for D0/D1 pulse conventions, framing, parity, variants, or error handling. | `SRC-MISSING-004`; `evidence/unresolved_sources.md` | Unresolved source gap. | Reader-to-controller background and later simulator rationale. | Wiegand support and Wiegand-26 support remain unknown for the commercial card. | unknown_or_unresolved |
-| LN-005 | Wiegand-26 may be selected later as an initial simulator input format, but it is a project choice requiring authoritative protocol literature before implementation. | `PRD-002`; `evidence/assumptions_and_unknowns.md` | Proposed reference-design boundary. | Future simulator scope only. | Not verified product evidence. | proposed_reference_design |
+| LN-004 | BALTECH documents Wiegand as a read-only connection from a card reader to an access-control system; card data is transmitted as asynchronous low pulses on D0 for zero bits and D1 for one bits. | `SRC-WIEGAND-001`, “Wiegand specification” and “Data wires.” | Official manufacturer documentation for BALTECH reader firmware. | Support the initial reader-input pulse model. | Implementation-specific timing or electrical values are not generalized, and commercial-product Wiegand support remains unknown. | external_technical_evidence |
+| LN-005 | BALTECH documents configurable message length, standard frames with leading even and trailing odd parity, and raw frames without parity, demonstrating that Wiegand framing can vary. Wiegand-26 remains the project's proposed initial format. | `SRC-WIEGAND-001`, “Message size” and “Frame format”; `PRD-002`. | Manufacturer implementation evidence plus a proposed project choice. | Support length/parity validation and record the Wiegand-26 selection boundary. | The BALTECH page does not define the project's exact 26-bit field allocation; Wiegand-26 is not verified product behavior. | proposed_reference_design |
 
 ## LIT-05 Embedded-controller architecture
 
@@ -62,7 +62,7 @@ These notes are a topic-organized evidence map for later stages, not final repor
 
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
-| LN-013 | A credential record, enable/disable state, permission mask, denial path, audit record, and integrity mechanism are not yet supported by a local access-control authority. | `SRC-MISSING-005`; `evidence/unresolved_sources.md`. | Unresolved source gap. | Future authorization and storage rationale. | No such behavior is attributed to the commercial product. | unknown_or_unresolved |
+| LN-013 | NIST PE-2 calls for authorization credentials and an approved access list; PE-3 calls for verifying individual authorization before granting access and maintaining physical-access audit logs. | `SRC-AUTH-001`, PE-2 pp.167–168 and PE-3 pp.168–172. | NIST government control guidance for organizational physical access. | Support a credential lookup, grant/deny decision boundary, and event logging in the proposed model. | A local lookup table, denial rule, and log schema are project design choices; none is attributed to the commercial product. | external_technical_evidence |
 | LN-014 | A 16-bit floor-permission mask is a potential later project model, not a verified product feature. | `PRD-001`; `evidence/assumptions_and_unknowns.md`. | Proposed reference-design boundary. | Future simulator data-model choice. | Requires requirements approval and suitable external evidence. | proposed_reference_design |
 
 ## LIT-09 Elevator access-control integration
@@ -70,7 +70,7 @@ These notes are a topic-organized evidence map for later stages, not final repor
 | Note ID | Paraphrased statement | Source / location | Authority and scope | Planned report use | Limitation | Evidence class |
 |---|---|---|---|---|---|---|
 | LN-015 | The project scope treats the studied card as an access-authorization layer and excludes elevator motion, braking, door, and passenger-safety control. | `SRC-PLAN-001`, §§3.2–3.3. | Project-authoritative safety boundary. | Scope and model limitations. | This is not a statement about the commercial card's actual interface. | engineering_inference |
-| LN-016 | No local authoritative elevator-integration or safety source is available to support interface, isolation, fail-safe, or floor-enable practice. | `SRC-MISSING-006`; `evidence/unresolved_sources.md`. | Unresolved source gap. | Future integration literature. | No direct motor, brake, door, or safety-control design may be proposed here. | unknown_or_unresolved |
+| LN-016 | Physical elevator integration remains outside the software-project scope. The simulator will expose only an abstract 16-floor permission output and will not specify wiring or control motors, brakes, doors, or passenger-safety functions. | `DEC-008`; `docs/decision_log.md`. | Controlled project scope decision requiring owner/supervisor approval. | Bound the later requirements and software model. | An authoritative elevator-integration source remains desirable for final-report context and mandatory for any physical integration claim. | proposed_reference_design |
 
 ## LIT-10 Reliability and fault handling
 
@@ -86,7 +86,7 @@ These notes are a topic-organized evidence map for later stages, not final repor
 |---|---|---|---|---|---|---|
 | LN-020 | The workflow handbook requires evidence hierarchy, bounded work, missing-input records, validation, and readiness decisions. | `SRC-WORKFLOW-001`, §§3, 5, 6, 11. | Project governance handbook. | Project process and validation discipline. | It is not an authoritative software-testing methodology. | external_technical_evidence |
 | LN-021 | The example academic project’s table of contents illustrates separating requirements, theory, planning, implementation, tests, results, conclusions, appendices, and references. | `SRC-ACADEMIC-001`, table of contents pp.4–6. | Illustrative academic example. | Report organization only. | Unrelated project; do not copy technical claims or prose. | external_technical_evidence |
-| LN-022 | No local authoritative software-verification source supports a later detailed testing methodology. | `SRC-MISSING-008`; `evidence/unresolved_sources.md`. | Unresolved source gap. | Future verification-method section. | Simulation results must not be presented as physical-hardware performance. | unknown_or_unresolved |
+| LN-022 | NASA guidance links software requirements to verification, identifies unit and integration test levels, and expects controlled inputs, expected outputs, repeatable procedures, recorded results, and evaluation against criteria. | `SRC-TEST-001`, SWE-052 §§1–2; SWE-062; SWE-065 §§1–3; SWE-068 §§1–3. | Official NASA software-engineering guidance. | Support traceable, repeatable unit and integration testing of the simulator. | Project-specific acceptance criteria must still be defined; software results do not establish physical-hardware performance. | external_technical_evidence |
 
 ## Cross-source terminology
 
@@ -97,7 +97,7 @@ These notes are a topic-organized evidence map for later stages, not final repor
 ## Source conflicts and variants
 
 - The ARMv7-A/R manual explicitly has A/R scope, while RM0008 references a separate Cortex-M3 programming manual. They are complementary only at a high conceptual level, not interchangeable architecture references.
-- Wiegand framing, RFID frequency, and credential-protocol variants cannot be resolved from local sources; no preferred variant is selected.
+- RFID frequency, identifier format, and reader-to-controller Wiegand framing are separate layers. Detailed RFID and Wiegand variants remain deferred, while Wiegand-26 is selected only as the proposed first simulator format.
 
 ## Missing literature
 

@@ -8,7 +8,7 @@ Commercial elevator RFID access-control card represented by the supplied AliExpr
 
 | Evidence ID | Exact observation | Source path or snapshot | Location | Readable text exactly as visible | Readability | SHA-256 | Notes |
 |---|---|---|---|---|---|---|---|
-| PE-001 | Original product URL supplied by the project owners. | `evidence/product_evidence.md` | “Preserved URLs” | `https://he.aliexpress.com/item/1005008317933284.html?spm=a2g0o.productlist.main.5.3316241cnftdI1&algo_pvid=d98d4c50-c5d1-4cea-8dc4-a9019a138e1e&algo_exp_id=d98d4c50-c5d1-4cea-8dc4-a9019a138e1e-4&pdp_ext_f=%7B%22order%22%3A%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21ILS%21418.67%21372.62%21%21%211` | fully readable | not applicable | URL known; no listing content was preserved locally. |
+| PE-001 | Original product URL supplied by the project owners. | `evidence/product_evidence.md` | “Preserved URLs” | `https://he.aliexpress.com/item/1005008317933284.html?spm=a2g0o.productlist.main.5.3316241cnftdI1&algo_pvid=d98d4c50-c5d1-4cea-8dc4-a9019a138e1e&algo_exp_id=d98d4c50-c5d1-4cea-8dc4-a9019a138e1e-4&pdp_ext_f=%7B%22order%22%3A%221%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21ILS%21418.67%21372.62%21%21%211` | fully readable | not applicable | URL known; no listing content was preserved locally. |
 | PE-002 | Canonical product item URL supplied by the project owners. | `evidence/product_evidence.md` | “Preserved URLs” | `https://he.aliexpress.com/item/1005008317933284.html` | fully readable | not applicable | URL known; no listing content was preserved locally. |
 
 ## Evidence limitations
