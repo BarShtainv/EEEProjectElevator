@@ -1,23 +1,29 @@
 flowchart TD
     NOTE["PROPOSED PROJECT WATCHDOG<br/>simulated monotonic time; no MCU equivalence"]
-    INIT["Enable with default 2000 ms<br/>set last service + deadline"]
-    PROG["Coordinator reaches service checkpoint"]
-    SUP{"Fault injection suppresses service?"}
-    SERVICE["Update last service and deadline"]
-    ADV["Harness advances logical clock"]
-    EXP{"Deadline reached?"}
+    INIT["Enable with default 2000 ms<br/>heartbeat = max(1, timeout // 2)<br/>set next heartbeat + expiry deadline"]
+    ADV["advance_to jumps to next due timestamp<br/>no millisecond loop or real waiting"]
+    HB{"Heartbeat due?<br/>priority 1"}
+    SUP{"Service suppression active?"}
+    SERVICE["Service watchdog;<br/>move expiry deadline"]
+    SKIP["Mark heartbeat processed;<br/>do not service or stop time"]
+    EXP{"Watchdog expiry due?<br/>priority 2"}
     REQ["Emit exactly one watchdog reset request"]
-    OFF["Clear outputs and expiry"]
+    OUT{"Output expiry due?<br/>priority 3"}
+    TIMEOUT["Clear output and append one timeout"]
+    OFF["Clear outputs and cancel output expiry<br/>watchdog reset wins a collision"]
     CLEAR["Clear transient state;<br/>preserve config, credentials, event history"]
     LOG["Append watchdog_reset/reset/watchdog_timeout"]
-    REINIT["Reinitialize watchdog and return IDLE"]
+    REINIT["Reinitialize watchdog; clear suppression;<br/>return IDLE"]
     LOGFAIL["On append failure expose logging_error;<br/>reset still completes"]
 
-    NOTE --> INIT --> PROG --> SUP
-    SUP -- no --> SERVICE --> ADV
-    SUP -- yes --> ADV
-    ADV --> EXP
-    EXP -- no --> PROG
+    NOTE --> INIT --> ADV --> HB
+    HB -- yes --> SUP
+    SUP -- no --> SERVICE --> EXP
+    SUP -- yes --> SKIP --> EXP
+    HB -- no --> EXP
     EXP -- yes --> REQ --> OFF --> CLEAR --> LOG --> REINIT
+    EXP -- no --> OUT
+    OUT -- yes --> TIMEOUT --> ADV
+    OUT -- no --> ADV
     LOG -. failure .-> LOGFAIL --> REINIT
-
+    REINIT --> ADV

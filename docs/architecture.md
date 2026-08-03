@@ -160,6 +160,8 @@ Required configuration is profile name `PROJECT_WIEGAND_26`, output duration 100
 
 ARC-TIM-001 is monotonic and injectable. A grant event is appended before ARC-OUT-001 atomically sets the selected bit and one expiry equal to current logical time plus duration. At expiry, outputs clear even if timeout logging fails. Busy requests do not extend expiry. Register timestamps expose a 32-bit logical view; internal time representation is deferred.
 
+SP-05 clarifies the scheduler needed to reconcile the 3000 ms default output duration with the 2000 ms watchdog. The watchdog has an internal logical heartbeat interval `max(1, watchdog_timeout_ms // 2)`. The controller scheduler jumps chronologically between heartbeat, watchdog-expiry, and output-expiry timestamps; it does not iterate once per millisecond. At a shared timestamp it processes normal unsuppressed heartbeat service first, watchdog expiry evaluation second, and output expiry third. Thus a normal long activation remains serviced, while fault injection skips heartbeat service without stopping simulated time.
+
 ## Reset architecture
 
 Startup sequence: (1) clear outputs, (2) clear transient request/decode/decision/timer state, (3) initialize event sequence and logical time references, (4) validate configuration, (5) load/initialize repository, (6) initialize watchdog, (7) enter idle only if valid.
@@ -171,6 +173,8 @@ Manual/watchdog sequence: (1) clear outputs, (2) cancel expiry, (3) clear transi
 ARC-WDG-001 holds timeout, enabled state, last-service time/deadline, and service-suppression control. Normal checkpoints are successful initialization, entry to `VALIDATING`, `LOOKUP`, `AUTHORIZING`, committed `OUTPUT_ACTIVE`, timeout completion, and return to `IDLE`. Fault injection suppresses service but never clock advancement.
 
 At the deadline exactly one reset request is emitted. Reset clears outputs/expiry/transients, preserves valid configuration/repository/event history, appends one `watchdog_reset` with reason `watchdog_timeout` if possible, reinitializes watchdog, and returns to idle. Later processing remains possible. This is not an MCU watchdog reproduction. Diagram: `docs/figures/watchdog_sequence.mmd`.
+
+The SP-05 heartbeat is an additional internal committed checkpoint that clarifies DEC-033. Its interval is `max(1, watchdog_timeout_ms // 2)`. At each scheduled heartbeat the scheduler services an enabled watchdog unless suppression is active; a suppressed heartbeat is marked processed but does not move the service deadline. When a suppressed heartbeat, watchdog deadline, and output deadline coincide, watchdog expiry has priority over output expiry: one reset request clears and cancels the output timeout, so no separate timeout outcome is emitted. Each armed deadline can emit at most one watchdog request, and reset reinitialization clears the transient suppression control. This design uses only simulated monotonic time—no thread, asynchronous task, sleep, or physical watchdog.
 
 ## Event architecture
 
@@ -223,6 +227,10 @@ An optional human-readable message may be derived but is not canonical state.
 ## SP-05 implementation handoff
 
 SP-05 should define immutable data types, module contracts, error/result types, configuration/event serialization, precise APIs, test fixtures, and detailed test cases from this architecture. It must preserve ownership, processing precedence, state transitions, enumerations, register semantics, reset order, logging gate, and failure policies. It must not infer physical behavior.
+
+## SP-05 software-design handoff
+
+`docs/software_design.md` freezes the proposed Python package, typed module and public API contracts, JSON configuration and credential formats, JSON Lines event serialization, exception boundary, chronological scheduler, heartbeat behavior, fault interfaces, and atomicity rules for SP-06. `docs/test_plan.md`, `docs/test_case_inventory.csv`, and `docs/implementation_sequence.md` define verification and bounded implementation work. These documents clarify the internal watchdog schedule but do not change the frozen requirements, register model, conceptual architecture, or physical boundary.
 
 ## Limitations
 
