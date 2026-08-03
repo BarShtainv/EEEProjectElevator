@@ -241,14 +241,29 @@ def test_invalid_credential_path_arguments(tmp_path: Path, value: object) -> Non
         load_startup_files(config_path, value)  # type: ignore[arg-type]
 
 
-def test_pathlike_resolving_to_bytes_is_rejected_by_file_identity(tmp_path: Path) -> None:
+def test_pathlike_resolving_to_bytes_is_rejected_by_file_identity(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     class BytesPath(os.PathLike[bytes]):
         def __fspath__(self) -> bytes:
-            return b"config.json"
+            return os.fsencode(tmp_path / "bytes-config.json")
 
     _, credentials_path = write_documents(tmp_path)
-    with pytest.raises(ConfigurationError, match="resolve to text"):
+    opened: list[object] = []
+
+    def unexpected_open(path: object, *args: object, **kwargs: object) -> object:
+        opened.append(path)
+        raise AssertionError("bytes PathLike must be rejected before file I/O")
+
+    monkeypatch.setattr("builtins.open", unexpected_open)
+
+    with pytest.raises(ConfigurationError) as error:
         load_startup_files(BytesPath(), credentials_path)  # type: ignore[arg-type]
+
+    assert type(error.value) is ConfigurationError
+    assert str(error.value) == "configuration file path must resolve to text"
+    assert opened == []
 
 
 def test_ordinary_read_failures_have_stable_wrapped_messages(

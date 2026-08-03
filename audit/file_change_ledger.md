@@ -287,3 +287,13 @@ Final end-to-end 4/4, integration 192/192, inspection 8/8, focused canonical mat
 | `audit/file_change_ledger.md` | Added this complete SP-06.10/R/R2 section. | Every earlier ledger section retained. |
 
 R2 baseline 965/965, experiment 94/94, bounded smoke, official 12-row run, standalone schema/count/metric/checksum/environment checks, targeted resolver 2/2, corrected regression 965/965, compilation, imports, and final Git/scope/cleanup checks passed. The first promoted-inventory regression intentionally recorded the stale-test defect at 964/965 before its narrow correction. No SP-06.11 work, optional behavior, production source change, commit, or push occurred.
+
+## Pre-SP-06.11 nondeterministic baseline investigation and PathLike test hardening
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `tests/unit/test_config_files.py` | Hardened only the bytes-resolving configuration `PathLike` test with an absolute `tmp_path`-derived bytes path, a guarded `builtins.open`, exact exception identity/message assertions, and zero-open verification. The original failure did not reproduce after cache removal; pre- and post-repair 100-node, 30-file, and five-full-suite matrices passed. | Production startup-file behavior, the other 57 module tests, dependencies, and unrelated tests remained unchanged. |
+| `audit/validation/subproject_06_11_baseline_flake_repair.md` | Recorded the reported failure, local module origin, mutation/cache inspection, evidence-versus-inference boundary, reproduction matrices, narrow hardening, canonical 965/965 baseline, structural validation, cleanup, and scope. | Does not claim an unproved stale-bytecode or pollution cause and does not begin SP-06.11 documentation. |
+| `audit/file_change_ledger.md` | Added only this narrow repair section. | Every earlier ledger section retained. |
+
+Final repaired-node 100/100, configuration-file 30/30 at 58 tests per run, varied-seed full-suite 5/5 at 965 tests per run, and canonical baseline 965/965 validation passed with zero failures, skips, or xfails. Compilation and imports passed. No production source, SP-06.11 documentation, inventory, traceability, scalability artifact, dependency, optional feature, commit, or push occurred.
