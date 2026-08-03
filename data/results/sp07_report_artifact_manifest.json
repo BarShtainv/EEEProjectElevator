@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "artifact_set_id": "SP07_REPORT_ARTIFACTS_V1",
+  "source_artifacts": [
+    {
+      "path": "data/results/sp07_experiment_catalog.csv",
+      "sha256": "c9a8568d1c64988aa694f6d9ad64578fac922ed1df8325c5b109d4ff1986f1cb"
+    },
+    {
+      "path": "data/results/sp07_quantitative_summary.json",
+      "sha256": "dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0"
+    },
+    {
+      "path": "experiments/scalability_config.json",
+      "sha256": "93ec68084c3b07c9badbb4e2f5d150d962fb8dceae7b4f092eb7909331491921"
+    },
+    {
+      "path": "results/scalability_results.json",
+      "sha256": "009381bf10bc74042b02abc4a12fe0a04b29437de3288b868f04d4cce1addc4f"
+    },
+    {
+      "path": "results/scalability_environment.json",
+      "sha256": "ed91091102ab910ceb28cc99f5bc9d7124d0b673261b65d476f5a91cbb8de4ba"
+    },
+    {
+      "path": "experiments/isolated_operations_config.json",
+      "sha256": "6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8589c1e299838"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_results.json",
+      "sha256": "9d8edd077439a12000cc560c615208dff0f381a5b77f3c8474b3b92b4e540bdf"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_environment.json",
+      "sha256": "106eba0f338b2cbb215dbbd7536d2814985843856b650b749a983710ad55f7ec"
+    },
+    {
+      "path": "audit/validation/subproject_07_02_timing_boundary_repair.md",
+      "sha256": "1524a88db09641bd5f31a0411341d0e0e9b454ff2502ea99948fefc50879ef90"
+    }
+  ],
+  "generated_artifacts": [
+    {
+      "path": "data/results/sp07_experiment_catalog_integrated.csv",
+      "media_type": "text/csv",
+      "sha256": "b86c084193ecf38cc70eb35bbac32a063266843bae724b3f4a58817d4a81db9a",
+      "row_count": 7
+    },
+    {
+      "path": "data/results/sp07_quantitative_summary_integrated.json",
+      "media_type": "application/json",
+      "sha256": "95f532d8c6a03603df93c1324c5f0bcb5ed0b21fea6a8defba472ec7114d670c"
+    },
+    {
+      "path": "data/results/sp07_table_experiment_coverage.csv",
+      "media_type": "text/csv",
+      "sha256": "f7aef89308e316dbfabb94f166b488294271fcf2a9c66c3e2631a5b4546ec78f",
+      "row_count": 7
+    },
+    {
+      "path": "data/results/sp07_table_correctness.csv",
+      "media_type": "text/csv",
+      "sha256": "2ee80a42df288fef0bdd2357fb09a562ddd364c18a7b25259e7c29d8b7b84224",
+      "row_count": 22
+    },
+    {
+      "path": "data/results/sp07_table_timing_summary.csv",
+      "media_type": "text/csv",
+      "sha256": "5c777e8f77b0c5e06f44e5c0a0b810e464dff663dfa2bfd47f9d18e09eaf0811",
+      "row_count": 12
+    },
+    {
+      "path": "docs/figures/sp07_mixed_controller_average_ns.svg",
+      "media_type": "image/svg+xml",
+      "sha256": "7ad5f26515f55051794d39a61071c3fc1011e1a28a7ed56f73a71649d2d46930",
+      "svg_data_series_count": 1
+    },
+    {
+      "path": "docs/figures/sp07_lookup_average_ns.svg",
+      "media_type": "image/svg+xml",
+      "sha256": "26269c6243bae35ada6c7119878ff29799718c79f75052456d8fea84ae2ca096",
+      "svg_data_series_count": 1
+    },
+    {
+      "path": "docs/figures/sp07_authorization_average_ns.svg",
+      "media_type": "image/svg+xml",
+      "sha256": "433943136faf100dba84a68769d087ffb91b4c4d6914571d4948f0b9257592f9",
+      "svg_data_series_count": 1
+    }
+  ],
+  "generation_contract": [
+    "Standard-library-only deterministic generation.",
+    "Unchanged canonical sources produce byte-identical artifacts.",
+    "No benchmark execution and no manual result editing.",
+    "Exactly three repetition-level aggregates per operation and size.",
+    "No pooled percentile reconstruction."
+  ],
+  "limitations": [
+    "The manifest excludes its own SHA-256 to avoid a recursive identity.",
+    "Artifacts describe bounded host-software evidence and do not establish hardware, real-time, safety, or commercial performance."
+  ]
+}

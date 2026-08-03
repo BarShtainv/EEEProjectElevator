@@ -1,0 +1,23 @@
+measurement_group,metric,value,unit,evidence,scope_note
+accepted_automated_verification,collected_tests,976,tests,data/results/sp07_quantitative_summary.json,Accepted SP-06 verification snapshot; not the changing repository-wide analysis-test count.
+accepted_automated_verification,passed_tests,976,tests,data/results/sp07_quantitative_summary.json,Accepted SP-06 verification snapshot; not the changing repository-wide analysis-test count.
+accepted_automated_verification,pass_rate,1.0,ratio,data/results/sp07_quantitative_summary.json,Accepted SP-06 verification snapshot; not the changing repository-wide analysis-test count.
+mixed_controller,processed,39000,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,granted,15600,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,denied,19500,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,unauthorized_floor_denials,7800,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,disabled_credential_denials,5850,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,unknown_credential_denials,5850,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,invalid_frame_validation_failures,3900,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+mixed_controller,other_outcomes,0,requests,results/scalability_results.json,Frozen mixed Controller.submit workload; other outcomes are not an independent false-positive/false-negative measure.
+isolated_lookup,processed,12000,calls,data/results/sp07_isolated_operation_results.json,Direct public repository lookup software outcomes.
+isolated_lookup,correct_hits,6000,calls,data/results/sp07_isolated_operation_results.json,Direct public repository lookup software outcomes.
+isolated_lookup,correct_misses,6000,calls,data/results/sp07_isolated_operation_results.json,Direct public repository lookup software outcomes.
+isolated_lookup,mismatches,0,calls,data/results/sp07_isolated_operation_results.json,Direct public repository lookup software outcomes.
+isolated_authorization,processed,12000,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,correct_grants,4800,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,correct_denials,6000,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,correct_invalid_floor_errors,1200,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,incorrect_grants,0,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,incorrect_denials,0,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.
+isolated_authorization,other_mismatches,0,calls,data/results/sp07_isolated_operation_results.json,Direct public authorization-function software outcomes.

@@ -1,0 +1,942 @@
+{
+  "schema_version": 1,
+  "analysis_id": "SP07_ANALYSIS_INTEGRATED_V1",
+  "source_artifacts": [
+    {
+      "path": "data/results/sp07_experiment_catalog.csv",
+      "sha256": "c9a8568d1c64988aa694f6d9ad64578fac922ed1df8325c5b109d4ff1986f1cb"
+    },
+    {
+      "path": "data/results/sp07_quantitative_summary.json",
+      "sha256": "dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0"
+    },
+    {
+      "path": "experiments/scalability_config.json",
+      "sha256": "93ec68084c3b07c9badbb4e2f5d150d962fb8dceae7b4f092eb7909331491921"
+    },
+    {
+      "path": "results/scalability_results.json",
+      "sha256": "009381bf10bc74042b02abc4a12fe0a04b29437de3288b868f04d4cce1addc4f"
+    },
+    {
+      "path": "results/scalability_environment.json",
+      "sha256": "ed91091102ab910ceb28cc99f5bc9d7124d0b673261b65d476f5a91cbb8de4ba"
+    },
+    {
+      "path": "experiments/isolated_operations_config.json",
+      "sha256": "6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8589c1e299838"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_results.json",
+      "sha256": "9d8edd077439a12000cc560c615208dff0f381a5b77f3c8474b3b92b4e540bdf"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_environment.json",
+      "sha256": "106eba0f338b2cbb215dbbd7536d2814985843856b650b749a983710ad55f7ec"
+    },
+    {
+      "path": "audit/validation/subproject_07_02_timing_boundary_repair.md",
+      "sha256": "1524a88db09641bd5f31a0411341d0e0e9b454ff2502ea99948fefc50879ef90"
+    }
+  ],
+  "verification_summary": {
+    "collected_tests": 976,
+    "passed": 976,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "pass_rate": 1.0,
+    "snapshot_scope": "Accepted SP-06 verification snapshot; not the changing repository-wide analysis-test count."
+  },
+  "requirements_summary": {
+    "total": 66,
+    "required": 60,
+    "required_verified": 60,
+    "optional": 6,
+    "optional_deferred": 6,
+    "unresolved": 0
+  },
+  "inventory_summary": {
+    "total": 100,
+    "implemented": 94,
+    "designed": 6,
+    "optional_designed": 6,
+    "verification_records_passed": 94,
+    "verification_records_optional_deferred": 6
+  },
+  "experiment_coverage": [
+    {
+      "experiment_id": "EXP-01",
+      "experiment_name": "Protocol validation",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 13
+    },
+    {
+      "experiment_id": "EXP-02",
+      "experiment_name": "Authorization correctness",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 11
+    },
+    {
+      "experiment_id": "EXP-03",
+      "experiment_name": "Output timing",
+      "evidence_status": "complete_existing_with_limit",
+      "mapped_test_count": 11
+    },
+    {
+      "experiment_id": "EXP-04",
+      "experiment_name": "Watchdog and fault recovery",
+      "evidence_status": "complete_existing_with_limit",
+      "mapped_test_count": 15
+    },
+    {
+      "experiment_id": "EXP-05",
+      "experiment_name": "Database scalability",
+      "evidence_status": "complete_existing_with_limit",
+      "mapped_test_count": 5
+    },
+    {
+      "experiment_id": "EXP-06",
+      "experiment_name": "End-to-end scenarios",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 8
+    },
+    {
+      "experiment_id": "EXP-07",
+      "experiment_name": "Robustness and malformed configuration",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 16
+    }
+  ],
+  "mixed_controller_summary": {
+    "configuration_id": "SP06_SCALABILITY_V1",
+    "workload_id": "MIXED_REQUESTS_V1",
+    "seed": 260516,
+    "timer": "time.perf_counter_ns",
+    "environment_id": "env-ffbfdbefc2f5ed62",
+    "credential_sizes": [
+      10,
+      100,
+      1000,
+      10000
+    ],
+    "request_counts": [
+      1000,
+      1000,
+      1000,
+      10000
+    ],
+    "measured_repetitions": 3,
+    "total_measured_rows": 12,
+    "total_processed_requests": 39000,
+    "total_granted": 15600,
+    "total_denied": 19500,
+    "total_denied_by_reason": {
+      "unauthorized_floor": 7800,
+      "disabled_credential": 5850,
+      "unknown_credential": 5850
+    },
+    "total_validation_failures": 3900,
+    "total_validation_by_reason": {
+      "invalid_frame": 3900
+    },
+    "total_other_outcomes": 0,
+    "per_size_descriptive_summaries": [
+      {
+        "credential_count": 10,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7411.127,
+          "median": 7820.085,
+          "maximum": 8158.465
+        },
+        "repetition_median_ns": {
+          "minimum": 7200.0,
+          "median": 7266.0,
+          "maximum": 7357.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 10347,
+          "median": 10783,
+          "maximum": 11220
+        },
+        "throughput_cases_per_second": {
+          "minimum": 122572.07697771578,
+          "median": 127875.84789679396,
+          "maximum": 134932.2444481116
+        }
+      },
+      {
+        "credential_count": 100,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7026.045,
+          "median": 7032.656,
+          "maximum": 7366.341
+        },
+        "repetition_median_ns": {
+          "minimum": 6866.0,
+          "median": 6968.5,
+          "maximum": 6990.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 9590,
+          "median": 9601,
+          "maximum": 9821
+        },
+        "throughput_cases_per_second": {
+          "minimum": 135752.60770577958,
+          "median": 142193.7885202973,
+          "maximum": 142327.5825873589
+        }
+      },
+      {
+        "credential_count": 1000,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7499.49,
+          "median": 7882.918,
+          "maximum": 8938.383
+        },
+        "repetition_median_ns": {
+          "minimum": 7283.5,
+          "median": 7317.0,
+          "maximum": 7522.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 10312,
+          "median": 10520,
+          "maximum": 10942
+        },
+        "throughput_cases_per_second": {
+          "minimum": 111877.05874765044,
+          "median": 126856.57772921144,
+          "maximum": 133342.40061657527
+        }
+      },
+      {
+        "credential_count": 10000,
+        "request_count_per_repetition": 10000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7982.8124,
+          "median": 8189.5002,
+          "maximum": 8211.0671
+        },
+        "repetition_median_ns": {
+          "minimum": 7571.5,
+          "median": 7670.5,
+          "maximum": 7698.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 11102,
+          "median": 11257,
+          "maximum": 11438
+        },
+        "throughput_cases_per_second": {
+          "minimum": 121786.85033520186,
+          "median": 122107.5737930869,
+          "maximum": 125269.13447195628
+        }
+      }
+    ],
+    "accepted_scope": "Mixed Controller.submit host-software request processing; not isolated lookup or authorization timing."
+  },
+  "isolated_operation_summary": {
+    "configuration_id": "SP07_ISOLATED_OPERATIONS_V1",
+    "workload_id": "LOOKUP_AUTHORIZATION_MATRIX_V1",
+    "seed": 270516,
+    "timer": "time.perf_counter_ns",
+    "environment_id": "env-5b6705a77f411683",
+    "credential_sizes": [
+      10,
+      100,
+      1000,
+      10000
+    ],
+    "measured_repetitions": 3,
+    "total_measured_rows": 24,
+    "total_measured_calls": 24000,
+    "lookup_aggregate": {
+      "processed": 12000,
+      "correct_hits": 6000,
+      "correct_misses": 6000,
+      "mismatches": 0
+    },
+    "authorization_aggregate": {
+      "processed": 12000,
+      "correct_grants": 4800,
+      "correct_denials": 6000,
+      "correct_errors": 1200,
+      "incorrect_grants": 0,
+      "incorrect_denials": 0,
+      "other_mismatches": 0
+    },
+    "checksums": [
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 10,
+        "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+        "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64"
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 100,
+        "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
+        "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd"
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 1000,
+        "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
+        "case_checksum_sha256": "aef62d7e8c6853e24e28529658c7d8398b819852eef21b1a1d2f693424a97dfe"
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 10000,
+        "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
+        "case_checksum_sha256": "aa6b1afaa8d8e65f3b121c60ea8b40c6b7188bba76f6abcbb0efdacfe232862b"
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 10,
+        "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+        "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c"
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 100,
+        "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
+        "case_checksum_sha256": "d9fafe565308dac634818ba753f321a6a237c043e39635843f8d65a578b25528"
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 1000,
+        "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
+        "case_checksum_sha256": "4fc387ecb695267694582643f3f627afeaaf632d4be8642f165580bceed72521"
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 10000,
+        "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
+        "case_checksum_sha256": "c7c426886244ab156cf90ad449831d63895200f70d4366903f58b700e72c0b31"
+      }
+    ],
+    "per_operation_per_size_descriptive_summaries": [
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 10,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 286.191,
+          "median": 297.496,
+          "maximum": 320.778
+        },
+        "repetition_median_ns": {
+          "minimum": 269.0,
+          "median": 272.0,
+          "maximum": 286.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 328,
+          "median": 351,
+          "maximum": 366
+        },
+        "throughput_cases_per_second": {
+          "minimum": 3117420.770751111,
+          "median": 3361389.7329712,
+          "maximum": 3494169.97739272
+        }
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 100,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 271.767,
+          "median": 278.224,
+          "maximum": 306.548
+        },
+        "repetition_median_ns": {
+          "minimum": 266.5,
+          "median": 267.0,
+          "maximum": 290.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 324,
+          "median": 335,
+          "maximum": 379
+        },
+        "throughput_cases_per_second": {
+          "minimum": 3262131.868418649,
+          "median": 3594226.2349761343,
+          "maximum": 3679622.617904308
+        }
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 1000,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 291.953,
+          "median": 292.728,
+          "maximum": 295.824
+        },
+        "repetition_median_ns": {
+          "minimum": 283.0,
+          "median": 289.0,
+          "maximum": 290.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 349,
+          "median": 361,
+          "maximum": 402
+        },
+        "throughput_cases_per_second": {
+          "minimum": 3380388.339012386,
+          "median": 3416140.58101719,
+          "maximum": 3425208.8521097573
+        }
+      },
+      {
+        "operation": "credential_repository_lookup",
+        "credential_count": 10000,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 294.767,
+          "median": 351.938,
+          "maximum": 416.956
+        },
+        "repetition_median_ns": {
+          "minimum": 290.0,
+          "median": 334.0,
+          "maximum": 334.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 372,
+          "median": 532,
+          "maximum": 674
+        },
+        "throughput_cases_per_second": {
+          "minimum": 2398334.596456221,
+          "median": 2841409.5664577284,
+          "maximum": 3392510.0163858235
+        }
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 10,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 557.965,
+          "median": 590.139,
+          "maximum": 601.094
+        },
+        "repetition_median_ns": {
+          "minimum": 564.0,
+          "median": 595.0,
+          "maximum": 597.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 655,
+          "median": 680,
+          "maximum": 717
+        },
+        "throughput_cases_per_second": {
+          "minimum": 1663633.3086006516,
+          "median": 1694516.0377470392,
+          "maximum": 1792227.1110195084
+        }
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 100,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 560.972,
+          "median": 565.264,
+          "maximum": 623.174
+        },
+        "repetition_median_ns": {
+          "minimum": 577.0,
+          "median": 578.0,
+          "maximum": 586.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 640,
+          "median": 654,
+          "maximum": 696
+        },
+        "throughput_cases_per_second": {
+          "minimum": 1604688.2572122714,
+          "median": 1769084.8877692546,
+          "maximum": 1782620.1664254188
+        }
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 1000,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 599.708,
+          "median": 616.682,
+          "maximum": 620.939
+        },
+        "repetition_median_ns": {
+          "minimum": 586.0,
+          "median": 608.0,
+          "maximum": 610.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 714,
+          "median": 718,
+          "maximum": 723
+        },
+        "throughput_cases_per_second": {
+          "minimum": 1610464.1518732114,
+          "median": 1621581.3012216995,
+          "maximum": 1667478.1727107193
+        }
+      },
+      {
+        "operation": "authorization_decision",
+        "credential_count": 10000,
+        "calls_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 607.636,
+          "median": 614.437,
+          "maximum": 627.181
+        },
+        "repetition_median_ns": {
+          "minimum": 587.0,
+          "median": 595.5,
+          "maximum": 615.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 682,
+          "median": 694,
+          "maximum": 719
+        },
+        "throughput_cases_per_second": {
+          "minimum": 1594436.0559391945,
+          "median": 1627506.1560420352,
+          "maximum": 1645722.1099474027
+        }
+      }
+    ],
+    "operation_definitions": {
+      "credential_repository_lookup": "Times only CredentialRepository.lookup, including trusted-key validation, Python dictionary lookup, and RepositoryLookup construction.",
+      "authorization_decision": "Times only authorize, including trusted decoded/record validation, precedence and floor-mask logic, and AuthorizationDecision construction; repository lookup is excluded."
+    }
+  },
+  "correctness_summary": {
+    "mixed_controller": {
+      "processed": 39000,
+      "granted": 15600,
+      "denied": 19500,
+      "unauthorized_floor_denials": 7800,
+      "disabled_credential_denials": 5850,
+      "unknown_credential_denials": 5850,
+      "invalid_frame_validation_failures": 3900,
+      "other_outcomes": 0
+    },
+    "lookup": {
+      "processed": 12000,
+      "correct_hits": 6000,
+      "correct_misses": 6000,
+      "mismatches": 0
+    },
+    "authorization": {
+      "processed": 12000,
+      "correct_grants": 4800,
+      "correct_denials": 6000,
+      "correct_invalid_floor_errors": 1200,
+      "incorrect_grants": 0,
+      "incorrect_denials": 0,
+      "other_mismatches": 0
+    },
+    "mixed_other_outcomes_scope": "Zero other outcomes is frozen-workload reconciliation, not an independently measured false-positive or false-negative count."
+  },
+  "timing_summary": {
+    "statistical_semantics": "Minimum, median, and maximum across exactly three repetition-level aggregates per operation and credential size; the median of repetition averages is not a pooled request statistic.",
+    "rows": [
+      {
+        "measurement_id": "mixed_controller_submit_10",
+        "operation": "mixed_controller_submit",
+        "credential_count": 10,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 7411.127,
+        "average_ns_median": 7820.085,
+        "average_ns_max": 8158.465,
+        "median_ns_min": 7200.0,
+        "median_ns_median": 7266.0,
+        "median_ns_max": 7357.5,
+        "p95_ns_min": 10347,
+        "p95_ns_median": 10783,
+        "p95_ns_max": 11220,
+        "throughput_min": 122572.07697771578,
+        "throughput_median": 127875.84789679396,
+        "throughput_max": 134932.2444481116,
+        "interpretation": "Mixed request processing through Controller.submit; not isolated lookup timing; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "mixed_controller_submit_100",
+        "operation": "mixed_controller_submit",
+        "credential_count": 100,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 7026.045,
+        "average_ns_median": 7032.656,
+        "average_ns_max": 7366.341,
+        "median_ns_min": 6866.0,
+        "median_ns_median": 6968.5,
+        "median_ns_max": 6990.5,
+        "p95_ns_min": 9590,
+        "p95_ns_median": 9601,
+        "p95_ns_max": 9821,
+        "throughput_min": 135752.60770577958,
+        "throughput_median": 142193.7885202973,
+        "throughput_max": 142327.5825873589,
+        "interpretation": "Mixed request processing through Controller.submit; not isolated lookup timing; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "mixed_controller_submit_1000",
+        "operation": "mixed_controller_submit",
+        "credential_count": 1000,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 7499.49,
+        "average_ns_median": 7882.918,
+        "average_ns_max": 8938.383,
+        "median_ns_min": 7283.5,
+        "median_ns_median": 7317.0,
+        "median_ns_max": 7522.0,
+        "p95_ns_min": 10312,
+        "p95_ns_median": 10520,
+        "p95_ns_max": 10942,
+        "throughput_min": 111877.05874765044,
+        "throughput_median": 126856.57772921144,
+        "throughput_max": 133342.40061657527,
+        "interpretation": "Mixed request processing through Controller.submit; not isolated lookup timing; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "mixed_controller_submit_10000",
+        "operation": "mixed_controller_submit",
+        "credential_count": 10000,
+        "repetition_count": 3,
+        "calls_per_repetition": 10000,
+        "total_measured_calls": 30000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 7982.8124,
+        "average_ns_median": 8189.5002,
+        "average_ns_max": 8211.0671,
+        "median_ns_min": 7571.5,
+        "median_ns_median": 7670.5,
+        "median_ns_max": 7698.0,
+        "p95_ns_min": 11102,
+        "p95_ns_median": 11257,
+        "p95_ns_max": 11438,
+        "throughput_min": 121786.85033520186,
+        "throughput_median": 122107.5737930869,
+        "throughput_max": 125269.13447195628,
+        "interpretation": "Mixed request processing through Controller.submit; not isolated lookup timing; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "credential_repository_lookup_10",
+        "operation": "credential_repository_lookup",
+        "credential_count": 10,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 286.191,
+        "average_ns_median": 297.496,
+        "average_ns_max": 320.778,
+        "median_ns_min": 269.0,
+        "median_ns_median": 272.0,
+        "median_ns_max": 286.0,
+        "p95_ns_min": 328,
+        "p95_ns_median": 351,
+        "p95_ns_max": 366,
+        "throughput_min": 3117420.770751111,
+        "throughput_median": 3361389.7329712,
+        "throughput_max": 3494169.97739272,
+        "interpretation": "Direct CredentialRepository.lookup host timing; repository construction excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "credential_repository_lookup_100",
+        "operation": "credential_repository_lookup",
+        "credential_count": 100,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 271.767,
+        "average_ns_median": 278.224,
+        "average_ns_max": 306.548,
+        "median_ns_min": 266.5,
+        "median_ns_median": 267.0,
+        "median_ns_max": 290.5,
+        "p95_ns_min": 324,
+        "p95_ns_median": 335,
+        "p95_ns_max": 379,
+        "throughput_min": 3262131.868418649,
+        "throughput_median": 3594226.2349761343,
+        "throughput_max": 3679622.617904308,
+        "interpretation": "Direct CredentialRepository.lookup host timing; repository construction excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "credential_repository_lookup_1000",
+        "operation": "credential_repository_lookup",
+        "credential_count": 1000,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 291.953,
+        "average_ns_median": 292.728,
+        "average_ns_max": 295.824,
+        "median_ns_min": 283.0,
+        "median_ns_median": 289.0,
+        "median_ns_max": 290.5,
+        "p95_ns_min": 349,
+        "p95_ns_median": 361,
+        "p95_ns_max": 402,
+        "throughput_min": 3380388.339012386,
+        "throughput_median": 3416140.58101719,
+        "throughput_max": 3425208.8521097573,
+        "interpretation": "Direct CredentialRepository.lookup host timing; repository construction excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "credential_repository_lookup_10000",
+        "operation": "credential_repository_lookup",
+        "credential_count": 10000,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 294.767,
+        "average_ns_median": 351.938,
+        "average_ns_max": 416.956,
+        "median_ns_min": 290.0,
+        "median_ns_median": 334.0,
+        "median_ns_max": 334.0,
+        "p95_ns_min": 372,
+        "p95_ns_median": 532,
+        "p95_ns_max": 674,
+        "throughput_min": 2398334.596456221,
+        "throughput_median": 2841409.5664577284,
+        "throughput_max": 3392510.0163858235,
+        "interpretation": "Direct CredentialRepository.lookup host timing; repository construction excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "authorization_decision_10",
+        "operation": "authorization_decision",
+        "credential_count": 10,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 557.965,
+        "average_ns_median": 590.139,
+        "average_ns_max": 601.094,
+        "median_ns_min": 564.0,
+        "median_ns_median": 595.0,
+        "median_ns_max": 597.0,
+        "p95_ns_min": 655,
+        "p95_ns_median": 680,
+        "p95_ns_max": 717,
+        "throughput_min": 1663633.3086006516,
+        "throughput_median": 1694516.0377470392,
+        "throughput_max": 1792227.1110195084,
+        "interpretation": "Direct authorize host timing; credential lookup excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "authorization_decision_100",
+        "operation": "authorization_decision",
+        "credential_count": 100,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 560.972,
+        "average_ns_median": 565.264,
+        "average_ns_max": 623.174,
+        "median_ns_min": 577.0,
+        "median_ns_median": 578.0,
+        "median_ns_max": 586.0,
+        "p95_ns_min": 640,
+        "p95_ns_median": 654,
+        "p95_ns_max": 696,
+        "throughput_min": 1604688.2572122714,
+        "throughput_median": 1769084.8877692546,
+        "throughput_max": 1782620.1664254188,
+        "interpretation": "Direct authorize host timing; credential lookup excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "authorization_decision_1000",
+        "operation": "authorization_decision",
+        "credential_count": 1000,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 599.708,
+        "average_ns_median": 616.682,
+        "average_ns_max": 620.939,
+        "median_ns_min": 586.0,
+        "median_ns_median": 608.0,
+        "median_ns_max": 610.0,
+        "p95_ns_min": 714,
+        "p95_ns_median": 718,
+        "p95_ns_max": 723,
+        "throughput_min": 1610464.1518732114,
+        "throughput_median": 1621581.3012216995,
+        "throughput_max": 1667478.1727107193,
+        "interpretation": "Direct authorize host timing; credential lookup excluded; median values summarize repetition-level aggregates."
+      },
+      {
+        "measurement_id": "authorization_decision_10000",
+        "operation": "authorization_decision",
+        "credential_count": 10000,
+        "repetition_count": 3,
+        "calls_per_repetition": 1000,
+        "total_measured_calls": 3000,
+        "timer": "time.perf_counter_ns",
+        "average_ns_min": 607.636,
+        "average_ns_median": 614.437,
+        "average_ns_max": 627.181,
+        "median_ns_min": 587.0,
+        "median_ns_median": 595.5,
+        "median_ns_max": 615.5,
+        "p95_ns_min": 682,
+        "p95_ns_median": 694,
+        "p95_ns_max": 719,
+        "throughput_min": 1594436.0559391945,
+        "throughput_median": 1627506.1560420352,
+        "throughput_max": 1645722.1099474027,
+        "interpretation": "Direct authorize host timing; credential lookup excluded; median values summarize repetition-level aggregates."
+      }
+    ]
+  },
+  "metric_availability": {
+    "available": [
+      {
+        "metric": "isolated_credential_repository_lookup_host_timing",
+        "value": "isolated_operation_summary.per_operation_per_size_descriptive_summaries"
+      },
+      {
+        "metric": "isolated_authorization_function_host_timing",
+        "value": "isolated_operation_summary.per_operation_per_size_descriptive_summaries"
+      },
+      {
+        "metric": "explicit_lookup_confusion_matrix",
+        "value": "available"
+      },
+      {
+        "metric": "explicit_authorization_confusion_matrix",
+        "value": "available"
+      },
+      {
+        "metric": "correct_grant_count",
+        "value": 4800
+      },
+      {
+        "metric": "correct_denial_count",
+        "value": 6000
+      },
+      {
+        "metric": "correct_error_count",
+        "value": 1200
+      },
+      {
+        "metric": "incorrect_grant_count",
+        "value": 0
+      },
+      {
+        "metric": "incorrect_denial_count",
+        "value": 0
+      }
+    ],
+    "not_independently_available": [
+      {
+        "metric": "raw_per_call_timing_samples",
+        "value": null
+      },
+      {
+        "metric": "pooled_request_median",
+        "value": null
+      },
+      {
+        "metric": "pooled_request_p95",
+        "value": null
+      },
+      {
+        "metric": "branch_coverage",
+        "value": null
+      },
+      {
+        "metric": "persistent_database_server_timing",
+        "value": null
+      },
+      {
+        "metric": "physical_reader_timing",
+        "value": null
+      },
+      {
+        "metric": "electrical_output_timing",
+        "value": null
+      },
+      {
+        "metric": "elevator_movement_timing",
+        "value": null
+      },
+      {
+        "metric": "field_reliability",
+        "value": null
+      },
+      {
+        "metric": "safety_or_certification_evidence",
+        "value": null
+      },
+      {
+        "metric": "commercial_controller_timing",
+        "value": null
+      }
+    ]
+  },
+  "limitations": [
+    "All timing values are observational host-software measurements and may vary across hosts and runs.",
+    "Mixed Controller.submit, direct repository lookup, and direct authorization timings have different operation boundaries and are not ranked as comparable performance.",
+    "Raw per-call samples are unavailable; pooled medians, pooled p95 values, confidence intervals, and statistical significance are not reconstructed.",
+    "No performance threshold, constant-time behavior, asymptotic guarantee, hardware timing, real-time guarantee, reliability, safety, certification, or commercial equivalence is established."
+  ],
+  "deferred_work": [
+    {
+      "stage": "SP-07.4",
+      "work": "Independently review quantitative claims, source fidelity, validity threats, anomalies, and bounded results/discussion source notes."
+    },
+    {
+      "stage": "Subproject 8",
+      "work": "Prepare report, presentation, release, demonstration, defense, rendered-PDF review, and human approvals."
+    }
+  ]
+}

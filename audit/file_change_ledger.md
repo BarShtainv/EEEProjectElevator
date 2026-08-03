@@ -382,3 +382,27 @@ Official hashes are config `6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8
 | `audit/file_change_ledger.md` | Added only this SP-07.2R section. | Every earlier ledger section retained. |
 
 The result hash changed from `5739eaf829fabce8aa83f9c7905d23093f9853753afb8e15c411541c2b2c64a1` to `9d8edd077439a12000cc560c615208dff0f381a5b77f3c8474b3b92b4e540bdf`; environment bytes remain unchanged. The original timing rows are superseded, and no cross-boundary performance comparison was made. No simulator, mixed benchmark, SP-07.1 artifact, SP-07.3/SP-07.4 work, commit, or push occurred.
+
+## SP-07.3 integrated quantitative analysis, tables, and SVG figures
+
+Canonical inputs were the immutable historical catalog/summary, accepted mixed config/results/environment, accepted isolated config/corrected results/environment, and SP-07.2R repair validation. Their exact hashes are recorded in the SP-07.3 baseline, stage report, validation record, and generated manifest.
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/generate_figures.py` | Added strict standard-library source validation, integration, statistics, CSV/JSON/SVG/manifest serialization, canonical CLI, deterministic staging, rollback, and post-write validation. | Imports/calls no runner, simulator, plotting package, network, database, subprocess, thread, async, multiprocessing, or sleep. |
+| `data/results/sp07_experiment_catalog_integrated.csv` | Added seven ordered historical-schema rows; only integrated EXP-05 meaning changes to `complete_existing_with_limit`. | Historical catalog remains byte-identical; mapped IDs and six other row meanings retained. |
+| `data/results/sp07_quantitative_summary_integrated.json` | Added versioned 14-field integration of accepted verification, requirements, inventory, mixed, isolated, correctness, timing, availability, limitations, and deferrals. | No timestamp, identifying path, pooled statistic, threshold, or unsupported guarantee. |
+| `data/results/sp07_table_experiment_coverage.csv` | Added seven report-ready coverage rows with repository-relative evidence and bounded scope. | No final report conclusion or optional execution claim. |
+| `data/results/sp07_table_correctness.csv` | Added 22 calculated rows for the accepted 976 snapshot, mixed outcomes, lookup matrix, and authorization classifications. | `other_outcomes` remains reconciliation, not a false-positive/false-negative measure. |
+| `data/results/sp07_table_timing_summary.csv` | Added 12 ordered rows with min/median/max across exactly three repetition aggregates for four separate sizes in three operation groups. | No pooling, cross-family ranking, significance, constant-time, or asymptotic claim. |
+| `docs/figures/sp07_mixed_controller_average_ns.svg` | Added accessible deterministic mixed `Controller.submit` SVG with source-derived repetition points, median line, min/max whiskers, axes, and limits. | Explicitly not isolated lookup timing or hardware/real-time evidence. |
+| `docs/figures/sp07_lookup_average_ns.svg` | Added accessible deterministic direct lookup SVG with source-derived values and boundary note. | Repository construction excluded; no comparison ranking. |
+| `docs/figures/sp07_authorization_average_ns.svg` | Added accessible deterministic direct authorization SVG with source-derived values and boundary note. | Credential lookup excluded; no comparison ranking. |
+| `data/results/sp07_report_artifact_manifest.json` | Added nine source hashes, eight nonrecursive generated hashes, media/count metadata, generation contract, and limits. | Excludes its own recursive hash; no host/timestamp identity. |
+| `tests/analysis/test_generate_figures.py` | Added 26 focused parser, corruption, identity, reconciliation, table, SVG, determinism, rollback, CLI, and AST cases. | Uses temporary fixtures/outputs only and executes no benchmark or simulator operation. |
+| `audit/baselines/subproject_07_03_baseline.md` | Recorded exact accepted commit, environment, 1077 baseline, source hashes, scope, statistical/figure semantics, and deferrals. | No implementation preceded the baseline. |
+| `audit/stage_reports/subproject_07_03.md` | Added bounded outcome, source, reconciliation, statistics, SVG, deterministic generation, hash, validation, limitation, and handoff record. | Not final report or discussion prose; later stages deferred. |
+| `audit/validation/subproject_07_03_validation.md` | Added exact gates, commands, schemas, hashes, double generation, independent checks, tests, scope, cleanup, and readiness evidence. | Claims only executed validation results. |
+| `audit/file_change_ledger.md` | Added only this SP-07.3 section. | Every earlier ledger section retained. |
+
+Generated hashes are integrated catalog `b86c0841...db9a`, integrated summary `95f532d8...670c`, coverage `f7aef893...c78f`, correctness `2ee80a42...224`, timing `5c777e8f...0811`, mixed SVG `7ad5f265...6930`, lookup SVG `26269c62...a096`, authorization SVG `43394313...2f9`, and manifest `f4fe7d51...16b1`. Two official generations were byte-identical. No benchmark, accepted-source mutation, report, presentation, SP-07.4, Subproject-8, release, commit, or push occurred.
