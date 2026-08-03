@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "analysis_id": "SP07_ANALYSIS_BASELINE_V1",
+  "source_artifacts": [
+    {
+      "path": "audit/validation/subproject_06_11_verification_records.csv",
+      "sha256": "623032dabefa0cd983812527ab09ba719a00998f1d3e6204ecea5fbe17da4e42"
+    },
+    {
+      "path": "docs/test_case_inventory.csv",
+      "sha256": "ce97fca1b72521536ffc85a4fe22c7cb8cf26f3dbb4220e1db394667e9178601"
+    },
+    {
+      "path": "docs/requirements_to_test_traceability.csv",
+      "sha256": "e830fb840375e574d342073b285987b574fdaa76d80613e40d558f7b96bb2289"
+    },
+    {
+      "path": "audit/validation/subproject_06_11_validation.md",
+      "sha256": "587e62db8799556a8c4b75aeb5adcb2c50cbdc1b67d804c0b288697452d8d1ab"
+    },
+    {
+      "path": "experiments/scalability_config.json",
+      "sha256": "93ec68084c3b07c9badbb4e2f5d150d962fb8dceae7b4f092eb7909331491921"
+    },
+    {
+      "path": "results/scalability_results.json",
+      "sha256": "009381bf10bc74042b02abc4a12fe0a04b29437de3288b868f04d4cce1addc4f"
+    },
+    {
+      "path": "results/scalability_environment.json",
+      "sha256": "ed91091102ab910ceb28cc99f5bc9d7124d0b673261b65d476f5a91cbb8de4ba"
+    }
+  ],
+  "verification_summary": {
+    "collected_tests": 976,
+    "passed": 976,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "pass_rate": 1.0
+  },
+  "requirements_summary": {
+    "total": 66,
+    "required": 60,
+    "required_verified": 60,
+    "optional": 6,
+    "optional_deferred": 6,
+    "unresolved": 0
+  },
+  "inventory_summary": {
+    "total": 100,
+    "implemented": 94,
+    "designed": 6,
+    "optional_designed": 6,
+    "verification_records_passed": 94,
+    "verification_records_optional_deferred": 6
+  },
+  "experiment_coverage": [
+    {
+      "experiment_id": "EXP-01",
+      "experiment_name": "Protocol validation",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 13
+    },
+    {
+      "experiment_id": "EXP-02",
+      "experiment_name": "Authorization correctness",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 11
+    },
+    {
+      "experiment_id": "EXP-03",
+      "experiment_name": "Output timing",
+      "evidence_status": "complete_existing_with_limit",
+      "mapped_test_count": 11
+    },
+    {
+      "experiment_id": "EXP-04",
+      "experiment_name": "Watchdog and fault recovery",
+      "evidence_status": "complete_existing_with_limit",
+      "mapped_test_count": 15
+    },
+    {
+      "experiment_id": "EXP-05",
+      "experiment_name": "Database scalability",
+      "evidence_status": "gap_identified",
+      "mapped_test_count": 5
+    },
+    {
+      "experiment_id": "EXP-06",
+      "experiment_name": "End-to-end scenarios",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 8
+    },
+    {
+      "experiment_id": "EXP-07",
+      "experiment_name": "Robustness and malformed configuration",
+      "evidence_status": "complete_existing",
+      "mapped_test_count": 16
+    }
+  ],
+  "scalability_summary": {
+    "configuration_id": "SP06_SCALABILITY_V1",
+    "workload_id": "MIXED_REQUESTS_V1",
+    "seed": 260516,
+    "timer": "time.perf_counter_ns",
+    "environment_id": "env-ffbfdbefc2f5ed62",
+    "credential_sizes": [
+      10,
+      100,
+      1000,
+      10000
+    ],
+    "request_counts": [
+      1000,
+      1000,
+      1000,
+      10000
+    ],
+    "measured_repetitions": 3,
+    "total_measured_rows": 12,
+    "total_processed_requests": 39000,
+    "total_granted": 15600,
+    "total_denied": 19500,
+    "total_denied_by_reason": {
+      "unauthorized_floor": 7800,
+      "disabled_credential": 5850,
+      "unknown_credential": 5850
+    },
+    "total_validation_failures": 3900,
+    "total_validation_by_reason": {
+      "invalid_frame": 3900
+    },
+    "total_other_outcomes": 0,
+    "per_size_descriptive_summaries": [
+      {
+        "credential_count": 10,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7411.127,
+          "median": 7820.085,
+          "maximum": 8158.465
+        },
+        "repetition_median_ns": {
+          "minimum": 7200.0,
+          "median": 7266.0,
+          "maximum": 7357.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 10347,
+          "median": 10783,
+          "maximum": 11220
+        },
+        "throughput_cases_per_second": {
+          "minimum": 122572.07697771578,
+          "median": 127875.84789679396,
+          "maximum": 134932.2444481116
+        }
+      },
+      {
+        "credential_count": 100,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7026.045,
+          "median": 7032.656,
+          "maximum": 7366.341
+        },
+        "repetition_median_ns": {
+          "minimum": 6866.0,
+          "median": 6968.5,
+          "maximum": 6990.5
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 9590,
+          "median": 9601,
+          "maximum": 9821
+        },
+        "throughput_cases_per_second": {
+          "minimum": 135752.60770577958,
+          "median": 142193.7885202973,
+          "maximum": 142327.5825873589
+        }
+      },
+      {
+        "credential_count": 1000,
+        "request_count_per_repetition": 1000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7499.49,
+          "median": 7882.918,
+          "maximum": 8938.383
+        },
+        "repetition_median_ns": {
+          "minimum": 7283.5,
+          "median": 7317.0,
+          "maximum": 7522.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 10312,
+          "median": 10520,
+          "maximum": 10942
+        },
+        "throughput_cases_per_second": {
+          "minimum": 111877.05874765044,
+          "median": 126856.57772921144,
+          "maximum": 133342.40061657527
+        }
+      },
+      {
+        "credential_count": 10000,
+        "request_count_per_repetition": 10000,
+        "repetition_count": 3,
+        "repetition_average_ns": {
+          "minimum": 7982.8124,
+          "median": 8189.5002,
+          "maximum": 8211.0671
+        },
+        "repetition_median_ns": {
+          "minimum": 7571.5,
+          "median": 7670.5,
+          "maximum": 7698.0
+        },
+        "repetition_nearest_rank_p95_ns": {
+          "minimum": 11102,
+          "median": 11257,
+          "maximum": 11438
+        },
+        "throughput_cases_per_second": {
+          "minimum": 121786.85033520186,
+          "median": 122107.5737930869,
+          "maximum": 125269.13447195628
+        }
+      }
+    ]
+  },
+  "metric_availability": {
+    "available": [
+      {
+        "metric": "total_pytest_count",
+        "value": 976
+      },
+      {
+        "metric": "automated_pass_rate",
+        "value": 1.0
+      },
+      {
+        "metric": "required_requirement_verification_count",
+        "value": 60
+      },
+      {
+        "metric": "inventory_evidence_count",
+        "value": 94
+      },
+      {
+        "metric": "grant_count_in_frozen_mixed_workload",
+        "value": 15600
+      },
+      {
+        "metric": "denial_counts_by_reason",
+        "value": {
+          "unauthorized_floor": 7800,
+          "disabled_credential": 5850,
+          "unknown_credential": 5850
+        }
+      },
+      {
+        "metric": "validation_failure_count",
+        "value": 3900
+      },
+      {
+        "metric": "unexpected_outcomes",
+        "value": 0
+      },
+      {
+        "metric": "repetition_level_average_ns",
+        "value": "per_size_descriptive_summaries"
+      },
+      {
+        "metric": "repetition_level_median_ns",
+        "value": "per_size_descriptive_summaries"
+      },
+      {
+        "metric": "repetition_level_nearest_rank_p95_ns",
+        "value": "per_size_descriptive_summaries"
+      },
+      {
+        "metric": "throughput_cases_per_second",
+        "value": "per_size_descriptive_summaries"
+      },
+      {
+        "metric": "watchdog_and_reset_verification_status",
+        "value": "passed"
+      },
+      {
+        "metric": "output_invariant_verification_status",
+        "value": "passed"
+      }
+    ],
+    "not_independently_available": [
+      {
+        "metric": "isolated_credential_lookup_timing",
+        "value": null
+      },
+      {
+        "metric": "isolated_authorization_timing",
+        "value": null
+      },
+      {
+        "metric": "raw_per_request_timing_samples",
+        "value": null
+      },
+      {
+        "metric": "pooled_request_median",
+        "value": null
+      },
+      {
+        "metric": "pooled_request_p95",
+        "value": null
+      },
+      {
+        "metric": "independently_measured_incorrect_grant_count",
+        "value": null
+      },
+      {
+        "metric": "independently_measured_incorrect_denial_count",
+        "value": null
+      },
+      {
+        "metric": "branch_coverage",
+        "value": null
+      },
+      {
+        "metric": "physical_reader_timing",
+        "value": null
+      },
+      {
+        "metric": "electrical_output_timing",
+        "value": null
+      },
+      {
+        "metric": "elevator_movement_timing",
+        "value": null
+      },
+      {
+        "metric": "field_reliability",
+        "value": null
+      },
+      {
+        "metric": "safety_or_certification_evidence",
+        "value": null
+      }
+    ]
+  },
+  "limitations": [
+    "The official observations are mixed Controller.submit request-processing host timing, not isolated credential-repository or authorization timing.",
+    "Each per-size statistic summarizes three repetition-level aggregate rows; raw per-request timing samples are unavailable.",
+    "A median of repetition medians and a median of repetition p95 values are not pooled request percentiles.",
+    "Host timing is observational and variable; no performance threshold or real-time guarantee is established.",
+    "Exact expected outcome reconciliation and zero other outcomes do not independently measure incorrect-grant or incorrect-denial counts.",
+    "The evidence is software-only and does not establish physical RFID, electrical-output, elevator, field-reliability, safety, certification, or commercial performance."
+  ],
+  "deferred_work": [
+    {
+      "stage": "SP-07.2",
+      "work": "Measure isolated credential lookup and isolated authorization with controlled sizes and repetitions, and produce an explicit expected-versus-actual outcome matrix."
+    },
+    {
+      "stage": "SP-07.3",
+      "work": "Generate tables and figures only from accepted machine-readable results."
+    },
+    {
+      "stage": "SP-07.4",
+      "work": "Perform independent review and prepare bounded results/discussion source notes."
+    }
+  ]
+}

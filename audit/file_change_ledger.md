@@ -327,3 +327,18 @@ SP-06.11 final validation passed the documentation and historical resolver modul
 | `audit/file_change_ledger.md` | Added only this narrow provenance-repair section. | Every earlier ledger section retained. |
 
 Final provenance validation passed all 100 rows, documentation 11/11, resolver 2/2, full and copied-tree suites 976/976, compilation/import, Git scope, and cleanup. Inventory remains 94/6 and traceability remains 60/6. No simulator behavior, Subproject-7 work, release, commit, or push occurred.
+
+## SP-07.1 experiment evidence consolidation and quantitative-analysis baseline
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/analyze_results.py` | Added a strict standard-library evidence analyzer with UTF-8/duplicate-JSON/exact-CSV validation, provenance and count reconciliation, frozen-result checks, descriptive summaries, deterministic serialization, CLI contracts, and rollback-safe paired publication. | Does not import or change the simulator, run a benchmark, add a dependency, network, plot, thread, async task, sleep, or threshold. |
+| `data/results/sp07_experiment_catalog.csv` | Generated seven ordered experiment rows mapping implemented test IDs, concrete evidence, completeness, quantitative artifacts, limits, and bounded actions. | Optional work is not executed; EXP-05 identifies rather than conceals the isolated-timing gap. |
+| `data/results/sp07_quantitative_summary.json` | Generated schema-1 `SP07_ANALYSIS_BASELINE_V1` with seven source hashes, 976/976, 60/6, 94/6, seven-experiment coverage, 12-row/39000-request totals, per-size repetition statistics, null unavailable metrics, limits, and deferred work. | Existing mixed-submit host timing is not labeled lookup/query latency; no pooled percentile, host determinism, hardware, real-time, safety, or commercial inference. |
+| `tests/analysis/test_analyze_results.py` | Added 31 focused cases for schemas, corruptions, reconciliations, catalog, totals/statistics, claims, determinism, atomicity, CLI, and structural boundaries. | Uses temporary corruptions/outputs and leaves accepted evidence unchanged. |
+| `audit/baselines/subproject_07_01_baseline.md` | Recorded exact clean commit/environment, 976/976 baseline, hashes, counts, identifiers, scope, limitations, and deferrals. | No implementation edit preceded the prescribed baseline. |
+| `audit/stage_reports/subproject_07_01.md` | Recorded seven-experiment classification, existing evidence/gaps, quantitative values, statistical rules, hashes, validation, deviations, scope, and handoff. | SP-07.2/3/4 and Subproject 8 remain deferred. |
+| `audit/validation/subproject_07_01_validation.md` | Recorded executed commands, failure/correction evidence, source/catalog/summary checks, hashes, totals, determinism, atomicity, tests, compilation/imports, scope, cleanup, and readiness. | No unexecuted success or new measurement claim. |
+| `audit/file_change_ledger.md` | Added only this SP-07.1 section. | Every earlier ledger section retained. |
+
+The catalog and summary hashes are `511d0955fae5d501c0a4cb1caffaf64a8535a32cda366f0eea74b99da8916808` and `dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0`. The accepted inputs remain byte-identical. SP-07.1 creates no benchmark result, raw timing data, figure, report prose, optional behavior, Subproject-8 work, release, commit, or push.
