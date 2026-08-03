@@ -141,3 +141,17 @@ No Wiegand, credential loading/repository, authorization, event logger, output, 
 | `audit/file_change_ledger.md` | pre-existing | Added this SP-06.1R section. | Maintain the canonical change audit. | Every prior ledger section retained. | Final diff, UTF-8, whitespace, changed-path, and status review. |
 
 No production or test file changed because real pytest exposed no defect. No Wiegand or later-stage implementation was added. The isolated environment exists only at `/home/bar/.venvs/eeeproject-elevator`, outside the repository.
+
+## SP-06.2 PROJECT_WIEGAND_26 codec
+
+| Path | Pre-existing or new | Change made | Reason | Protected-content check | Validation performed |
+|---|---|---|---|---|---|
+| `audit/baselines/subproject_06_02_baseline.md` | new | Recorded accepted commit, clean status, external tool versions, 114-test pre-edit result, frozen profile/vectors, authorized/deferred scope, and protected hashes. | Preserve the Task 2 starting point before implementation. | Prior audit and frozen engineering records retained. | Git/history/path/environment, baseline pytest, design consistency, and SHA-256 checks. |
+| `src/elevator_access_sim/wiegand.py` | new | Added stateless exact-frame validation, two-region parity, trusted MSB-first encoding/decoding, and structural helper behavior for the single proposed profile. | Implement only SP-06 Task 2. | Imports only reviewed models; no source inference, alternate profile, timing, credential, controller, or physical behavior. | 104 scoped tests, 218 full tests, compile/import, AST/signature, independent vectors, corruptions, malformed inputs, and boundaries. |
+| `tests/unit/test_wiegand.py` | new | Added six immutable canonical vectors, independent calculation, 24 corruptions, malformed/trusted-misuse/boundary/round-trip/source-independence/API tests. | Verify FUN-001–FUN-006, DAT-001–DAT-003, VER-002, and VER-004 within Wiegand scope. | Inventory statuses and all protected test-design records unchanged. | 104/104 focused cases passed; no skips or xfails. |
+| `src/elevator_access_sim/__init__.py` | pre-existing | Exported `validate_frame`, `decode_frame`, `encode_frame`, and `has_valid_parity` while retaining the complete existing API. | Expose the reviewed Task 2 public contracts. | No private helper or later-stage API exported. | Package and four-symbol imports, `__all__`, signature, cycle, and full-regression checks. |
+| `audit/stage_reports/subproject_06_02.md` | new | Recorded implementation, representation/parity/error behavior, vectors/corruptions, exact test results, protected scope, deferred work, and readiness. | Provide the bounded stage handoff. | Prior reports retained. | Required-content, exact-result, scope, and readiness review. |
+| `audit/validation/subproject_06_02_validation.md` | new | Recorded commands and evidence for baseline/scoped/full pytest, compile/import, independent validation, cleanup, protected hashes, and Git state. | Preserve reproducible execution evidence. | No protected file changed. | Final pytest, compile/import, programmatic, whitespace, path, cache, and Git checks. |
+| `audit/file_change_ledger.md` | pre-existing | Added this SP-06.2 section. | Maintain the canonical change audit. | Every prior ledger section retained. | Final diff, UTF-8, whitespace, authorized-path, and status review. |
+
+No SP-06.3 or later behavior was implemented. The existing external pytest environment was reused without package installation or network access.

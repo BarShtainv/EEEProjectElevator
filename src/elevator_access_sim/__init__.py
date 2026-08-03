@@ -31,6 +31,7 @@ from .models import (
     StartupData,
     StateInvariantError,
 )
+from .wiegand import decode_frame, encode_frame, has_valid_parity, validate_frame
 
 __all__ = [
     "AuthorizationDecision",
@@ -62,7 +63,10 @@ __all__ = [
     "SimulatorConfig",
     "StartupData",
     "StateInvariantError",
+    "decode_frame",
     "default_config",
+    "encode_frame",
+    "has_valid_parity",
     "load_config_json",
+    "validate_frame",
 ]
-
