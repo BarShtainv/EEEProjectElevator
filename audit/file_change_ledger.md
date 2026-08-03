@@ -155,3 +155,21 @@ No production or test file changed because real pytest exposed no defect. No Wie
 | `audit/file_change_ledger.md` | pre-existing | Added this SP-06.2 section. | Maintain the canonical change audit. | Every prior ledger section retained. | Final diff, UTF-8, whitespace, authorized-path, and status review. |
 
 No SP-06.3 or later behavior was implemented. The existing external pytest environment was reused without package installation or network access.
+
+## SP-06.3 credential repository and authorization
+
+| Path | Change | Purpose and validation | Protected result |
+|---|---|---|---|
+| `audit/baselines/subproject_06_03_baseline.md` | new | Captured accepted commit, 218/218 baseline, frozen schema/precedence, scope, and hashes. | Prior records retained. |
+| `src/elevator_access_sim/config.py` | modified | Added strict atomic credential/startup JSON loading; schema, duplicate, label, endpoint, atomicity, and error-identity tests passed. | Existing configuration behavior retained. |
+| `src/elevator_access_sim/credentials.py` | new | Added validated ordered in-memory repository and composite-key lookup; repository tests passed. | No persistence/database/network. |
+| `src/elevator_access_sim/authorization.py` | new | Added pure frozen-precedence floor authorization; 16 grant and 16 denial mappings passed. | No output/log/controller dependency. |
+| `src/elevator_access_sim/__init__.py` | modified | Exported repository, authorization, and two loaders while retaining prior API. | No private/later API exported. |
+| `tests/unit/test_credential_config.py` | new | Added strict JSON/startup tests. | Inventory unchanged. |
+| `tests/unit/test_credentials.py` | new | Added construction/lookup/immutability tests. | No internal index exposed. |
+| `tests/unit/test_authorization.py` | new | Added precedence/floor/mask/invariant/purity tests. | No later effects tested or implemented. |
+| `audit/stage_reports/subproject_06_03.md` | new | Recorded implementation, exact results, scope, and readiness. | Prior reports retained. |
+| `audit/validation/subproject_06_03_validation.md` | new | Recorded pytest, compile/import, programmatic, cleanup, and Git evidence. | Protected hashes retained. |
+| `audit/file_change_ledger.md` | modified | Added this section. | Earlier ledger retained. |
+
+Scoped 149/149 and full 367/367 pytest cases passed. SP-06.4 and later behavior remains deferred.

@@ -1,7 +1,14 @@
 """Stable foundation API for the elevator access-control simulator."""
 
+from .authorization import authorize
 from .clock import Clock, SimulatedClock
-from .config import default_config, load_config_json
+from .config import (
+    default_config,
+    load_config_json,
+    load_credentials_json,
+    load_startup_json,
+)
+from .credentials import CredentialRepository
 from .models import (
     AuthorizationDecision,
     ClockError,
@@ -44,6 +51,7 @@ __all__ = [
     "CredentialDataError",
     "CredentialKey",
     "CredentialRecord",
+    "CredentialRepository",
     "CredentialRequest",
     "DecodedCredential",
     "DuplicateCredentialError",
@@ -63,10 +71,13 @@ __all__ = [
     "SimulatorConfig",
     "StartupData",
     "StateInvariantError",
+    "authorize",
     "decode_frame",
     "default_config",
     "encode_frame",
     "has_valid_parity",
     "load_config_json",
+    "load_credentials_json",
+    "load_startup_json",
     "validate_frame",
 ]
