@@ -6,6 +6,7 @@ from .config import (
     default_config,
     load_config_json,
     load_credentials_json,
+    load_startup_files,
     load_startup_json,
 )
 from .credentials import CredentialRepository
@@ -86,6 +87,7 @@ __all__ = [
     "has_valid_parity",
     "load_config_json",
     "load_credentials_json",
+    "load_startup_files",
     "load_startup_json",
     "validate_frame",
 ]

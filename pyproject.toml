@@ -9,6 +9,9 @@ description = "Software-only simulator for an abstract elevator access-control m
 requires-python = ">=3.11"
 dependencies = []
 
+[project.scripts]
+elevator-access-sim = "elevator_access_sim.cli:run"
+
 [project.optional-dependencies]
 test = ["pytest>=7"]
 
@@ -17,4 +20,3 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-

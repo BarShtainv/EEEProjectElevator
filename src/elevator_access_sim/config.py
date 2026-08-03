@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Iterable
 from typing import Any
 
@@ -218,3 +219,42 @@ def load_startup_json(config_text: str, credentials_text: str) -> StartupData:
     config = load_config_json(config_text)
     credentials = load_credentials_json(credentials_text)
     return StartupData(config, credentials)
+
+
+def _read_startup_text(
+    path_value: object,
+    kind: str,
+    error_type: type[ConfigurationError] | type[CredentialDataError],
+) -> str:
+    if not isinstance(path_value, (str, os.PathLike)):
+        raise error_type(f"{kind} file path must be a string or PathLike")
+    try:
+        path = os.fspath(path_value)
+    except (TypeError, ValueError, OSError) as exc:
+        raise error_type(f"{kind} file path is invalid") from exc
+    if type(path) is not str:
+        raise error_type(f"{kind} file path must resolve to text")
+    try:
+        with open(path, "r", encoding="utf-8", errors="strict") as stream:
+            return stream.read()
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise error_type(f"{kind} file could not be read as strict UTF-8") from exc
+
+
+def load_startup_files(
+    config_path: str | os.PathLike[str],
+    credentials_path: str | os.PathLike[str],
+) -> StartupData:
+    """Strictly read both UTF-8 startup files and atomically parse them."""
+
+    config_text = _read_startup_text(
+        config_path,
+        "configuration",
+        ConfigurationError,
+    )
+    credentials_text = _read_startup_text(
+        credentials_path,
+        "credential",
+        CredentialDataError,
+    )
+    return load_startup_json(config_text, credentials_text)

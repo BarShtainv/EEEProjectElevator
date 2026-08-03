@@ -235,3 +235,20 @@ Final watchdog 66/66 and full 562/562 passed. SP-06.7 controller remains deferre
 | `audit/file_change_ledger.md` | Added this SP-06.7 section. | Every earlier ledger section retained. |
 
 Final output 71/71, watchdog 68/68, controller 195/195, and full 759/759 suites passed. All named frozen documents, protected source collaborators, prior tests, prior audits, dependency metadata, and Git history remained unchanged. SP-06.8 CLI/file adapters and all later work remain deferred; no commit or push occurred.
+
+## SP-06.8 strict startup files and offline CLI
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_08_baseline.md` | New accepted-commit, clean-tree, environment, 759/759 baseline, reviewed contracts, and scope record. | Prior records retained. |
+| `src/elevator_access_sim/config.py` | Added `load_startup_files` with string/PathLike validation, explicit strict UTF-8 reads, atomic text-loader delegation, and configuration/credential error identity. | Existing JSON text loaders and validation rules unchanged; no defaults or cache. |
+| `src/elevator_access_sim/cli.py` | Added the four reviewed CLI APIs, all-or-none request parser, exclusive time options, raw source/frame adaptation, ordered controller delegation, deterministic response/snapshot/event JSON, exit policy, and module guard. | No domain-rule duplication, persistent write, service, device, thread, async, or later behavior. |
+| `src/elevator_access_sim/__init__.py` | Exported `load_startup_files` while retaining all prior exports. | CLI helpers remain available only from `elevator_access_sim.cli`. |
+| `pyproject.toml` | Added the single `elevator-access-sim = "elevator_access_sim.cli:run"` console entry. | Package name/version/Python requirement/dependencies/build/test policy unchanged. |
+| `tests/unit/test_config_files.py` | Added 58 temporary-file tests for valid paths/data/order/Unicode/endpoints, strict UTF-8, schemas, duplicates, path/read failures, atomicity, and text-loader preservation. | All test files are under pytest temporary directories. |
+| `tests/integration/test_cli.py` | Added 42 parser, adaptation, delegation, domain, timing/reset/watchdog, formatting, exit, determinism, metadata, and structural tests. | Normal execution remains offline and read-only. |
+| `audit/stage_reports/subproject_06_08.md` | New bounded handoff with exact results, smoke evidence, scope, and readiness. | Prior reports retained. |
+| `audit/validation/subproject_06_08_validation.md` | New command, file/CLI matrix, smoke, compile/import, cleanup, Git, and scope evidence. | Protected paths unchanged. |
+| `audit/file_change_ledger.md` | Added this SP-06.8 section. | Every earlier ledger section retained. |
+
+File adapter 58/58, CLI 42/42, and full 859/859 suites passed. The real temporary-file module smoke exited 0 with LF grant and output timeout at 3000, then its temporary directory was removed. SP-06.9 inventory consolidation, experiments/scalability, persistence, networking, databases, GUI, hardware, physical behavior, additional profiles, and optional policies remain deferred; no commit or push occurred.
