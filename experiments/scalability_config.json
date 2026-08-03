@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "configuration_id": "SP06_SCALABILITY_V1",
+  "workload_id": "MIXED_REQUESTS_V1",
+  "seed": 260516,
+  "credential_counts": [
+    10,
+    100,
+    1000,
+    10000
+  ],
+  "minimum_request_count": 1000,
+  "warmup_repetitions": 1,
+  "measured_repetitions": 3,
+  "profile": "PROJECT_WIEGAND_26",
+  "output_duration_ms": 100,
+  "watchdog_timeout_ms": 2000,
+  "watchdog_enabled": false,
+  "workload_mix_percent": {
+    "granted": 40,
+    "unauthorized_floor": 20,
+    "disabled_credential": 15,
+    "unknown_credential": 15,
+    "invalid_frame": 10
+  }
+}

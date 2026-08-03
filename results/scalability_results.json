@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "configuration_id": "SP06_SCALABILITY_V1",
+  "workload_id": "MIXED_REQUESTS_V1",
+  "seed": 260516,
+  "timer": "time.perf_counter_ns",
+  "results": [
+    {
+      "credential_count": 10,
+      "request_count": 1000,
+      "repetition": 1,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 9823.102,
+      "median_ns": 7730.5,
+      "p95_ns": 19418,
+      "throughput_cases_per_second": 101800.83643639249,
+      "credential_checksum_sha256": "e6b71173d03d5aa5a6529afb86f62a0db1c39057a8cfc208bc90ff06330beaee",
+      "request_checksum_sha256": "93dbc8c1f8fe624fad47c9e8a13d02f814bd6a0166777923719fb35456ab30b8",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 10,
+      "request_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 9214.758,
+      "median_ns": 8061.0,
+      "p95_ns": 14096,
+      "throughput_cases_per_second": 108521.56942157353,
+      "credential_checksum_sha256": "e6b71173d03d5aa5a6529afb86f62a0db1c39057a8cfc208bc90ff06330beaee",
+      "request_checksum_sha256": "93dbc8c1f8fe624fad47c9e8a13d02f814bd6a0166777923719fb35456ab30b8",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 10,
+      "request_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7295.545,
+      "median_ns": 7091.0,
+      "p95_ns": 9938,
+      "throughput_cases_per_second": 137069.9515937466,
+      "credential_checksum_sha256": "e6b71173d03d5aa5a6529afb86f62a0db1c39057a8cfc208bc90ff06330beaee",
+      "request_checksum_sha256": "93dbc8c1f8fe624fad47c9e8a13d02f814bd6a0166777923719fb35456ab30b8",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 100,
+      "request_count": 1000,
+      "repetition": 1,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7064.521,
+      "median_ns": 6912.0,
+      "p95_ns": 9577,
+      "throughput_cases_per_second": 141552.41381545897,
+      "credential_checksum_sha256": "2dbe74a204c5968756397ce3531a835f8f1a122e542048eb4ac8a1aba0077e3f",
+      "request_checksum_sha256": "c08bf3b836778aede71c75ace428bc7de76fab0f31828cda40e8ff208313a0da",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 100,
+      "request_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7293.622,
+      "median_ns": 6962.0,
+      "p95_ns": 9764,
+      "throughput_cases_per_second": 137106.0907735553,
+      "credential_checksum_sha256": "2dbe74a204c5968756397ce3531a835f8f1a122e542048eb4ac8a1aba0077e3f",
+      "request_checksum_sha256": "c08bf3b836778aede71c75ace428bc7de76fab0f31828cda40e8ff208313a0da",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 100,
+      "request_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7348.087,
+      "median_ns": 7058.5,
+      "p95_ns": 10412,
+      "throughput_cases_per_second": 136089.84215891836,
+      "credential_checksum_sha256": "2dbe74a204c5968756397ce3531a835f8f1a122e542048eb4ac8a1aba0077e3f",
+      "request_checksum_sha256": "c08bf3b836778aede71c75ace428bc7de76fab0f31828cda40e8ff208313a0da",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 1000,
+      "request_count": 1000,
+      "repetition": 1,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7607.566,
+      "median_ns": 7328.5,
+      "p95_ns": 10292,
+      "throughput_cases_per_second": 131448.08733831556,
+      "credential_checksum_sha256": "decf95c5b5002df2d80219c5b5a0adcad49c4956f9476ac7ad5c363649e1f87d",
+      "request_checksum_sha256": "625b9c80bdf6c2fd1ce0a2b45d8692ca347dc2e4377070cf7c7b7ba6be740d76",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 1000,
+      "request_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 7261.037,
+      "median_ns": 7233.0,
+      "p95_ns": 9976,
+      "throughput_cases_per_second": 137721.3750597883,
+      "credential_checksum_sha256": "decf95c5b5002df2d80219c5b5a0adcad49c4956f9476ac7ad5c363649e1f87d",
+      "request_checksum_sha256": "625b9c80bdf6c2fd1ce0a2b45d8692ca347dc2e4377070cf7c7b7ba6be740d76",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 1000,
+      "request_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "granted": 400,
+      "denied_by_reason": {
+        "unknown_credential": 150,
+        "disabled_credential": 150,
+        "unauthorized_floor": 200
+      },
+      "validation_failures": 100,
+      "validation_by_reason": {
+        "invalid_frame": 100
+      },
+      "other_outcomes": 0,
+      "average_ns": 8044.502,
+      "median_ns": 7611.0,
+      "p95_ns": 11269,
+      "throughput_cases_per_second": 124308.50287562859,
+      "credential_checksum_sha256": "decf95c5b5002df2d80219c5b5a0adcad49c4956f9476ac7ad5c363649e1f87d",
+      "request_checksum_sha256": "625b9c80bdf6c2fd1ce0a2b45d8692ca347dc2e4377070cf7c7b7ba6be740d76",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 10000,
+      "request_count": 10000,
+      "repetition": 1,
+      "processed": 10000,
+      "granted": 4000,
+      "denied_by_reason": {
+        "unknown_credential": 1500,
+        "disabled_credential": 1500,
+        "unauthorized_floor": 2000
+      },
+      "validation_failures": 1000,
+      "validation_by_reason": {
+        "invalid_frame": 1000
+      },
+      "other_outcomes": 0,
+      "average_ns": 8012.6433,
+      "median_ns": 7613.0,
+      "p95_ns": 11076,
+      "throughput_cases_per_second": 124802.7601578121,
+      "credential_checksum_sha256": "2c859c5b59825058c02ac7d6ae98e05632d35318f08e1937317aa9ac85fb2b1d",
+      "request_checksum_sha256": "c1ff8a6c7e6d63bfb50b323ee2d217ceddc7a2943927c88022464244f06eb55b",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 10000,
+      "request_count": 10000,
+      "repetition": 2,
+      "processed": 10000,
+      "granted": 4000,
+      "denied_by_reason": {
+        "unknown_credential": 1500,
+        "disabled_credential": 1500,
+        "unauthorized_floor": 2000
+      },
+      "validation_failures": 1000,
+      "validation_by_reason": {
+        "invalid_frame": 1000
+      },
+      "other_outcomes": 0,
+      "average_ns": 7921.3883,
+      "median_ns": 7552.5,
+      "p95_ns": 11021,
+      "throughput_cases_per_second": 126240.49751481063,
+      "credential_checksum_sha256": "2c859c5b59825058c02ac7d6ae98e05632d35318f08e1937317aa9ac85fb2b1d",
+      "request_checksum_sha256": "c1ff8a6c7e6d63bfb50b323ee2d217ceddc7a2943927c88022464244f06eb55b",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    },
+    {
+      "credential_count": 10000,
+      "request_count": 10000,
+      "repetition": 3,
+      "processed": 10000,
+      "granted": 4000,
+      "denied_by_reason": {
+        "unknown_credential": 1500,
+        "disabled_credential": 1500,
+        "unauthorized_floor": 2000
+      },
+      "validation_failures": 1000,
+      "validation_by_reason": {
+        "invalid_frame": 1000
+      },
+      "other_outcomes": 0,
+      "average_ns": 8064.5492,
+      "median_ns": 7579.0,
+      "p95_ns": 10946,
+      "throughput_cases_per_second": 123999.49150288524,
+      "credential_checksum_sha256": "2c859c5b59825058c02ac7d6ae98e05632d35318f08e1937317aa9ac85fb2b1d",
+      "request_checksum_sha256": "c1ff8a6c7e6d63bfb50b323ee2d217ceddc7a2943927c88022464244f06eb55b",
+      "environment_id": "env-ffbfdbefc2f5ed62",
+      "python_version": "3.13.13",
+      "python_implementation": "CPython",
+      "platform_system": "Linux",
+      "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+      "machine": "x86_64"
+    }
+  ]
+}

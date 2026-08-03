@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "environment_id": "env-ffbfdbefc2f5ed62",
+  "python_version": "3.13.13",
+  "python_implementation": "CPython",
+  "platform_system": "Linux",
+  "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+  "platform_machine": "x86_64",
+  "platform_processor": "unknown",
+  "cpu_count": 20,
+  "timer": "time.perf_counter_ns",
+  "configuration_id": "SP06_SCALABILITY_V1",
+  "workload_id": "MIXED_REQUESTS_V1",
+  "seed": 260516,
+  "credential_counts": [
+    10,
+    100,
+    1000,
+    10000
+  ],
+  "minimum_request_count": 1000,
+  "warmup_repetitions": 1,
+  "measured_repetitions": 3,
+  "interpretation_limits": [
+    "Measurements describe one Python software model and were observed on the recorded host environment.",
+    "Host timing uses time.perf_counter_ns around only Controller.submit; generation, initialization, output-expiry cleanup, validation, environment collection, and export are excluded.",
+    "The simulated watchdog is disabled in the frozen experiment configuration, and output-expiry cleanup occurs outside the measured interval.",
+    "Results are observational, no strict latency objective exists, and values may vary across hosts and runs.",
+    "Measurements are not real-time guarantees and do not measure RFID hardware or electrical outputs.",
+    "Measurements do not measure elevator movement or safety and do not establish reliability or commercial-controller equivalence.",
+    "Results must not be compared across hosts without considering recorded environment differences."
+  ]
+}
