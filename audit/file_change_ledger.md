@@ -436,3 +436,17 @@ The integrated summary, three tables, and three SVGs remain byte-identical. No b
 | `audit/file_change_ledger.md` | Added only this SP-07.4 section. | All earlier sections retained. |
 
 Output hashes are review summary `7d48384b...9b92`, anomaly register `0f997c8e...f7c9`, final ledger `c0db9e21...7745`, and source notes `6fbfdb19...81e6`. No benchmark, accepted artifact mutation, report, presentation, Subproject-8 work, release, commit, or push occurred.
+
+## SP-07.4R final review provenance and publication-cleanup repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/review_results.py` | Added anomaly-specific canonical evidence, stable three-decimal spread presentation, semantic anomaly validation, and handled staged/backup cleanup results across success and rollback states. | Quantitative reconciliations, ledger conclusions, source notes, dependencies, and no-benchmark boundary retained. |
+| `tests/analysis/test_review_results.py` | Added exact 29-row baseline reconciliation, anomaly provenance/generic-evidence rejection, and three cleanup-failure state tests; recovery tests now restore every destination and remove temporary files. | Existing source, arithmetic, figure, claim, determinism, CLI, and independence tests retained. |
+| `audit/baselines/subproject_07_04_baseline.md` | Corrected only the SP-07.1R and SP-07.3R canonical path labels while preserving their hashes and all other baseline content. | Exact ordered path/hash set now matches the reviewer constants. |
+| `data/results/sp07_anomaly_register.csv` | Deterministically regenerated 14 rows with observation-specific evidence and exact `122.189 ns` derived spread. | IDs, categories, severities, dispositions, implications, follow-ups, and nonblocking conclusions retained. |
+| `data/results/sp07_independent_review_summary.json` | Deterministically regenerated only repaired lookup-spread and historical-snapshot validity-threat text. | Schema, sources, reconciliation, conclusions, counts, and zero-blocker result retained. |
+| `audit/validation/subproject_07_04_repair.md` | Added accepted-state, defect, correction, generation, hash, independent-validation, test, scope, cleanup, and readiness evidence. | Earlier SP-07.4 reports remain unchanged historical records. |
+| `audit/file_change_ledger.md` | Appended only this SP-07.4R section. | Every earlier ledger section retained. |
+
+The final validation ledger remains byte-identical at `c0db9e213c7f2c2ddaf35baff3cc9f1a383c078de47cce03ed3aefee56f07745`; source notes remain byte-identical at `6fbfdb192b9ce7b184b1901cf454d5de5e1d470302e288d41074d62a062281e6`. No benchmark, accepted result, simulator, report, presentation, Subproject-8 work, release, commit, or push occurred.

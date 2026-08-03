@@ -20,6 +20,21 @@ def test_all_canonical_sources_manifest_and_outputs_validate(review,outputs):
     integrity=review.review_integrity(); assert integrity["source_count"]==29 and integrity["verified_hash_count"]==37 and integrity["mismatches"]==[]
     assert set(outputs)==set(review.OUTPUT_KEYS)
 
+def test_baseline_hash_table_matches_canonical_sources_exactly(review):
+    baseline=(ROOT/"audit/baselines/subproject_07_04_baseline.md").read_text(encoding="utf-8")
+    pairs=[]
+    for line in baseline.splitlines():
+        cells=[cell.strip() for cell in line.split("|")]
+        if len(cells)==4 and cells[1].startswith("`") and cells[2].startswith("`"):
+            path=cells[1].strip("`");digest=cells[2].strip("`")
+            if len(digest)==64:pairs.append((path,digest))
+    assert len(pairs)==29
+    assert [path for path,_ in pairs]==list(review.SOURCES)
+    assert dict(pairs)==review.EXPECTED_HASHES
+    assert all((ROOT/path).is_file() for path,_ in pairs)
+    assert "audit/validation/subproject_07_01_repair_validation.md" not in baseline
+    assert "audit/validation/subproject_07_03_repair_validation.md" not in baseline
+
 def test_malformed_utf8_json_duplicate_and_csv_schema_fail(review,tmp_path,monkeypatch):
     monkeypatch.setattr(review,"ROOT",tmp_path)
     (tmp_path/"bad").write_bytes(b"\xff")
@@ -107,10 +122,38 @@ def test_claim_ledger_schema_ids_sources_statuses_and_limits(review,outputs):
 
 def test_anomaly_register_required_entries_derived_and_nonblocking(review,outputs):
     anomalies=rows(outputs["anomaly_register"]);assert tuple(anomalies[0])==review.ANOMALY_COLUMNS and len(anomalies)==14
-    assert all(r["blocking"]=="no" and r["report_implication"] for r in anomalies)
+    expected=(
+        {"data/results/sp07_table_timing_summary.csv","results/scalability_results.json"},
+        {"data/results/sp07_table_timing_summary.csv","data/results/sp07_isolated_operation_results.json"},
+        {"data/results/sp07_table_timing_summary.csv","data/results/sp07_isolated_operation_results.json"},
+        {"data/results/sp07_table_timing_summary.csv","data/results/sp07_isolated_operation_results.json"},
+        {"experiments/scalability_config.json","experiments/isolated_operations_config.json","data/results/sp07_table_timing_summary.csv"},
+        {"results/scalability_environment.json","data/results/sp07_isolated_operation_environment.json"},
+        {"data/results/sp07_quantitative_summary_integrated.json","results/scalability_environment.json","data/results/sp07_isolated_operation_environment.json"},
+        {"data/results/sp07_quantitative_summary_integrated.json","results/scalability_environment.json","data/results/sp07_isolated_operation_environment.json"},
+        {"results/scalability_results.json","data/results/sp07_table_timing_summary.csv"},
+        {"results/scalability_environment.json","data/results/sp07_isolated_operation_environment.json","data/results/sp07_table_timing_summary.csv"},
+        {"experiments/scalability_config.json","experiments/isolated_operations_config.json"},
+        {"data/results/sp07_quantitative_summary_integrated.json"},
+        {"data/results/sp07_quantitative_summary_integrated.json","audit/validation/subproject_07_03_repair.md"},
+        {"data/results/sp07_quantitative_summary_integrated.json","results/scalability_environment.json","data/results/sp07_isolated_operation_environment.json"},
+    )
+    assert [r["anomaly_id"] for r in anomalies]==[f"ANM-{n:03d}" for n in range(1,15)]
+    assert all(r["severity"] in {"information","low","medium","high"} and r["blocking"]=="no" for r in anomalies)
+    assert all(r["disposition"] and r["report_implication"] and r["follow_up"] for r in anomalies)
+    assert [set(r["evidence"].split(";")) for r in anomalies]==list(expected)
+    assert all(path in review.SOURCES and (ROOT/path).is_file() for row in anomalies for path in row["evidence"].split(";"))
     text=" ".join(r["observation"].lower() for r in anomalies)
     for phrase in ("non-monotonic","greater than smaller","three measured repetitions","one recorded host","raw per-call","10000 requests","branch coverage","physical rfid"):assert phrase in text
     assert all("software defect" not in r["observation"].lower() for r in anomalies)
+    assert anomalies[12]["observation"]=="The accepted 976-test SP-06 verification snapshot is historical and differs from later accepted Subproject-7 repository-wide test baselines after analysis tests were added."
+    assert set(anomalies[12]["evidence"].split(";"))==expected[12]
+    assert "122.189 ns" in anomalies[2]["observation"] and "122.18900000000002" not in anomalies[2]["observation"]
+
+def test_generic_anomaly_evidence_is_rejected(review,outputs):
+    anomalies=rows(outputs["anomaly_register"])
+    for row in anomalies:row["evidence"]="data/results/sp07_table_timing_summary.csv;data/results/sp07_quantitative_summary_integrated.json"
+    with pytest.raises(review.ReviewError,match="anomaly evidence mismatch"):review.validate_anomalies(anomalies)
 
 def test_summary_exact_order_counts_authorized_and_prohibited(outputs):
     value=json.loads(outputs["review_summary"]);assert tuple(value)==("schema_version","review_id","source_artifacts","artifact_integrity","verification_reconciliation","mixed_controller_reconciliation","isolated_operation_reconciliation","timing_table_reconciliation","figure_reconciliation","claim_review_summary","anomaly_summary","validity_threats","authorized_conclusions","prohibited_conclusions","report_handoff","readiness")
@@ -153,6 +196,79 @@ def test_incomplete_rollback_retains_recoverable_backup(review,outputs,tmp_path,
     with pytest.raises(review.ReviewError,match="recovery backups retained"):review.publish(dest,outputs)
     retained=list(tmp_path.rglob("*.backup.*"));assert len(retained)==1 and retained[0].read_bytes()==b"old"
     assert dest["anomaly_register"].read_bytes()==b"old" and dest["validation_ledger"].read_bytes()==b"old" and dest["source_notes"].read_bytes()==b"old"
+    original(retained[0],dest["review_summary"])
+    assert all(path.read_bytes()==b"old" for path in dest.values()) and not list(tmp_path.rglob("*.tmp"))
+
+def test_failed_publication_rollback_with_failed_stage_cleanup_is_handled(review,outputs,tmp_path,monkeypatch):
+    dest=destinations(review,tmp_path);[path.write_bytes(b"old") for path in dest.values()]
+    original_replace=review.os.replace;original_unlink=Path.unlink;publication_count=0;cleanup_injected=False
+    def fail_replace(source,destination):
+        nonlocal publication_count
+        source=Path(source);destination=Path(destination)
+        if destination in dest.values() and ".backup." not in source.name:
+            publication_count+=1
+            if publication_count==3:raise OSError("publication injected")
+        return original_replace(source,destination)
+    def fail_unlink(path,*args,**kwargs):
+        nonlocal cleanup_injected
+        if not cleanup_injected and path.name.startswith(".validation_ledger.csv.") and ".backup." not in path.name:
+            cleanup_injected=True;raise OSError("cleanup injected")
+        return original_unlink(path,*args,**kwargs)
+    monkeypatch.setattr(review.os,"replace",fail_replace);monkeypatch.setattr(Path,"unlink",fail_unlink)
+    with pytest.raises(review.ReviewError) as raised:review.publish(dest,outputs)
+    message=str(raised.value);assert message.startswith("review publication failed; existing outputs were preserved; temporary cleanup incomplete: ")
+    assert str(tmp_path) not in message and all(path.read_bytes()==b"old" for path in dest.values())
+    retained=list(tmp_path.rglob("*.tmp"));assert len(retained)==1 and retained[0].is_file()
+    original_unlink(retained[0]);assert not list(tmp_path.rglob("*.tmp"))
+
+def test_successful_publication_failed_backup_cleanup_is_handled_by_cli(review,outputs,tmp_path,monkeypatch,capsys):
+    dest=destinations(review,tmp_path);old={key:f"old-{key}".encode() for key in dest}
+    for key,path in dest.items():path.write_bytes(old[key])
+    original_unlink=Path.unlink;cleanup_injected=False
+    def fail_unlink(path,*args,**kwargs):
+        nonlocal cleanup_injected
+        if not cleanup_injected and path.name.startswith(".review_summary.json.backup."):
+            cleanup_injected=True;raise OSError("cleanup injected")
+        return original_unlink(path,*args,**kwargs)
+    monkeypatch.setattr(Path,"unlink",fail_unlink)
+    args=[]
+    for key in review.OUTPUT_KEYS:args += ["--"+key.replace("_","-")+"-output",str(dest[key])]
+    assert review.main(args)==1
+    captured=capsys.readouterr();assert captured.out=="" and captured.err.count("\n")==1 and "Traceback" not in captured.err
+    assert captured.err.startswith("error: review publication completed; temporary cleanup incomplete: ")
+    assert "rollback" not in captured.err and "preserved" not in captured.err and str(tmp_path) not in captured.err
+    assert all(dest[key].read_bytes()==outputs[key] for key in dest)
+    retained=list(tmp_path.rglob("*.backup.*"));assert len(retained)==1 and retained[0].read_bytes()==old["review_summary"]
+    original_unlink(retained[0]);assert not list(tmp_path.rglob("*.tmp"))
+
+def test_incomplete_rollback_and_cleanup_failure_preserve_recovery_information(review,outputs,tmp_path,monkeypatch):
+    dest=destinations(review,tmp_path);[path.write_bytes(b"old") for path in dest.values()]
+    original_replace=review.os.replace;original_unlink=Path.unlink;publication_count=0;cleanup_injected=False;restorations=[]
+    def fail_replace(source,destination):
+        nonlocal publication_count
+        source=Path(source);destination=Path(destination)
+        if ".backup." in source.name:
+            restorations.append(destination)
+            if destination==dest["review_summary"]:raise OSError("restore injected")
+        elif destination in dest.values():
+            publication_count+=1
+            if publication_count==3:raise OSError("publication injected")
+        return original_replace(source,destination)
+    def fail_unlink(path,*args,**kwargs):
+        nonlocal cleanup_injected
+        if not cleanup_injected and path.name.startswith(".validation_ledger.csv.") and ".backup." not in path.name:
+            cleanup_injected=True;raise OSError("cleanup injected")
+        return original_unlink(path,*args,**kwargs)
+    monkeypatch.setattr(review.os,"replace",fail_replace);monkeypatch.setattr(Path,"unlink",fail_unlink)
+    with pytest.raises(review.ReviewError) as raised:review.publish(dest,outputs)
+    message=str(raised.value);assert message.startswith("review publication failed; rollback incomplete; recovery backups retained: ")
+    assert "; temporary cleanup incomplete: " in message and str(tmp_path) not in message
+    assert set(restorations)=={dest["review_summary"],dest["anomaly_register"]}
+    recovery=list(tmp_path.rglob("*.backup.*"));ordinary=[path for path in tmp_path.rglob("*.tmp") if ".backup." not in path.name]
+    assert len(recovery)==len(ordinary)==1 and recovery[0].read_bytes()==b"old"
+    assert dest["review_summary"].read_bytes()==outputs["review_summary"] and all(dest[key].read_bytes()==b"old" for key in review.OUTPUT_KEYS[1:])
+    original_replace(recovery[0],dest["review_summary"]);original_unlink(ordinary[0])
+    assert all(path.read_bytes()==b"old" for path in dest.values()) and not list(tmp_path.rglob("*.tmp"))
 
 def test_cli_success_failure_and_required_arguments(review,tmp_path,capsys):
     dest=destinations(review,tmp_path);args=[]

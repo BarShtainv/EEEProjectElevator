@@ -226,7 +226,7 @@
   "validity_threats": [
     "Mixed repetition-average medians are non-monotonic across sizes: [7820.085, 7032.656, 7882.918, 8189.5002].",
     "Lookup repetition-average medians are non-monotonic across sizes: [297.496, 278.224, 292.728, 351.938].",
-    "The 10000-credential lookup repetition-average spread is 122.18900000000002 ns, visibly greater than smaller groups.",
+    "The 10000-credential lookup repetition-average spread is 122.189 ns, visibly greater than smaller groups.",
     "Authorization repetition-average medians are non-monotonic across sizes: [590.139, 565.264, 616.682, 614.437].",
     "Only three measured repetitions exist per size and operation.",
     "Measurements come from one recorded host environment.",
@@ -236,7 +236,7 @@
     "Mixed, lookup, and authorization timing boundaries differ and must not be ranked directly.",
     "Correctness workloads are deterministic constructed workloads, not field-population estimates.",
     "Branch coverage is not independently available.",
-    "The accepted 976-test snapshot differs from the current suite because later analysis tests were added.",
+    "The accepted 976-test SP-06 verification snapshot is historical and differs from later accepted Subproject-7 repository-wide test baselines after analysis tests were added.",
     "No physical RFID, electrical output, elevator movement, field reliability, safety, certification, real-time, or commercial-controller performance was measured."
   ],
   "authorized_conclusions": [

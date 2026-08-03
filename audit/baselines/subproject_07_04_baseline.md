@@ -35,10 +35,10 @@
 | `docs/figures/sp07_authorization_average_ns.svg` | `433943136faf100dba84a68769d087ffb91b4c4d6914571d4948f0b9257592f9` |
 | `data/results/sp07_report_artifact_manifest.json` | `69235fab571b97e00b54f4a8dd202e8331dadbf381dcd8caa0c2250f4ed44851` |
 | `audit/validation/subproject_07_01_validation.md` | `675bb96506ef931c0ec2e26f15cf1ce3d61fe23540ff703d5c6ffbed83cfbd1e` |
-| `audit/validation/subproject_07_01_repair_validation.md` | `a4b14d0d7eed99c8049b2b2cf6b6ecfb2af9a1396db8b5016000f194c7dc6da6` |
+| `audit/validation/subproject_07_01_repair.md` | `a4b14d0d7eed99c8049b2b2cf6b6ecfb2af9a1396db8b5016000f194c7dc6da6` |
 | `audit/validation/subproject_07_02_validation.md` | `9849892b76a383b2b411b6cd46227e6d6d6741a92611c53f4f1d1c107d6a9775` |
 | `audit/validation/subproject_07_03_validation.md` | `896a6d38b952f18e73ba2dda1dbd4e94e869ae7bc65d49f0b52a729d405d6a9d` |
-| `audit/validation/subproject_07_03_repair_validation.md` | `e0d00c7b948ffbb3836836807437ee610dd8f3f7d966baf4ec9723814c6b0b9b` |
+| `audit/validation/subproject_07_03_repair.md` | `e0d00c7b948ffbb3836836807437ee610dd8f3f7d966baf4ec9723814c6b0b9b` |
 
 The accepted manifest is `SP07_REPORT_ARTIFACTS_V1`, with nine sources and eight nonrecursive generated artifacts. Accepted counts are seven experiments, 22 correctness rows, 12 timing rows, and three SVGs.
 

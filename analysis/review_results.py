@@ -319,27 +319,66 @@ def build_ledger(governance: dict[str, object], mixed: dict[str, object], isolat
 def build_anomalies(timing: list[dict[str, str]]) -> list[dict[str, str]]:
     grouped = {op: [float(row["average_ns_median"]) for row in timing if row["operation"] == op] for op in OPERATIONS}
     lookup_10000 = next(row for row in timing if row["operation"] == OPERATIONS[1] and row["credential_count"] == "10000")
-    spread = float(lookup_10000["average_ns_max"]) - float(lookup_10000["average_ns_min"])
+    spread = f"{float(lookup_10000['average_ns_max']) - float(lookup_10000['average_ns_min']):.3f}"
+    disposition = "Accepted validity threat or observation; not evidence of a software defect."
+    implication = "State this limitation or observation explicitly and avoid stronger causal or performance claims."
+    follow_up = "Preserve for Subproject-8 human technical review; new measurement requires separate authorization."
     specs = (
-        ("timing_variation", f"Mixed repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[0]]}.", "medium"),
-        ("timing_variation", f"Lookup repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[1]]}.", "medium"),
-        ("timing_variation", f"The 10000-credential lookup repetition-average spread is {spread} ns, visibly greater than smaller groups.", "medium"),
-        ("timing_variation", f"Authorization repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[2]]}.", "medium"),
-        ("sample_size", "Only three measured repetitions exist per size and operation.", "medium"),
-        ("environment", "Measurements come from one recorded host environment.", "medium"),
-        ("data_availability", "Raw per-call timing samples are not retained.", "medium"),
-        ("statistics", "Pooled medians, pooled p95, confidence intervals, and statistical significance are unavailable.", "medium"),
-        ("workload", "The 10000-credential mixed group uses 10000 requests per repetition; smaller sizes use 1000.", "low"),
-        ("scope", "Mixed, lookup, and authorization timing boundaries differ and must not be ranked directly.", "high"),
-        ("external_validity", "Correctness workloads are deterministic constructed workloads, not field-population estimates.", "medium"),
-        ("coverage", "Branch coverage is not independently available.", "low"),
-        ("snapshot", "The accepted 976-test snapshot differs from the current suite because later analysis tests were added.", "information"),
-        ("external_validity", "No physical RFID, electrical output, elevator movement, field reliability, safety, certification, real-time, or commercial-controller performance was measured.", "high"),
+        ("timing_variation", f"Mixed repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[0]]}.", "data/results/sp07_table_timing_summary.csv;results/scalability_results.json", "medium", disposition, implication, follow_up),
+        ("timing_variation", f"Lookup repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[1]]}.", "data/results/sp07_table_timing_summary.csv;data/results/sp07_isolated_operation_results.json", "medium", disposition, implication, follow_up),
+        ("timing_variation", f"The 10000-credential lookup repetition-average spread is {spread} ns, visibly greater than smaller groups.", "data/results/sp07_table_timing_summary.csv;data/results/sp07_isolated_operation_results.json", "medium", disposition, implication, follow_up),
+        ("timing_variation", f"Authorization repetition-average medians are non-monotonic across sizes: {grouped[OPERATIONS[2]]}.", "data/results/sp07_table_timing_summary.csv;data/results/sp07_isolated_operation_results.json", "medium", disposition, implication, follow_up),
+        ("sample_size", "Only three measured repetitions exist per size and operation.", "experiments/scalability_config.json;experiments/isolated_operations_config.json;data/results/sp07_table_timing_summary.csv", "medium", disposition, implication, follow_up),
+        ("environment", "Measurements come from one recorded host environment.", "results/scalability_environment.json;data/results/sp07_isolated_operation_environment.json", "medium", disposition, implication, follow_up),
+        ("data_availability", "Raw per-call timing samples are not retained.", "data/results/sp07_quantitative_summary_integrated.json;results/scalability_environment.json;data/results/sp07_isolated_operation_environment.json", "medium", disposition, implication, follow_up),
+        ("statistics", "Pooled medians, pooled p95, confidence intervals, and statistical significance are unavailable.", "data/results/sp07_quantitative_summary_integrated.json;results/scalability_environment.json;data/results/sp07_isolated_operation_environment.json", "medium", disposition, implication, follow_up),
+        ("workload", "The 10000-credential mixed group uses 10000 requests per repetition; smaller sizes use 1000.", "results/scalability_results.json;data/results/sp07_table_timing_summary.csv", "low", disposition, implication, follow_up),
+        ("scope", "Mixed, lookup, and authorization timing boundaries differ and must not be ranked directly.", "results/scalability_environment.json;data/results/sp07_isolated_operation_environment.json;data/results/sp07_table_timing_summary.csv", "high", disposition, implication, follow_up),
+        ("external_validity", "Correctness workloads are deterministic constructed workloads, not field-population estimates.", "experiments/scalability_config.json;experiments/isolated_operations_config.json", "medium", disposition, implication, follow_up),
+        ("coverage", "Branch coverage is not independently available.", "data/results/sp07_quantitative_summary_integrated.json", "low", disposition, implication, follow_up),
+        ("snapshot", "The accepted 976-test SP-06 verification snapshot is historical and differs from later accepted Subproject-7 repository-wide test baselines after analysis tests were added.", "data/results/sp07_quantitative_summary_integrated.json;audit/validation/subproject_07_03_repair.md", "information", disposition, implication, follow_up),
+        ("external_validity", "No physical RFID, electrical output, elevator movement, field reliability, safety, certification, real-time, or commercial-controller performance was measured.", "data/results/sp07_quantitative_summary_integrated.json;results/scalability_environment.json;data/results/sp07_isolated_operation_environment.json", "high", disposition, implication, follow_up),
     )
     rows = []
-    for index, (category, observation, severity) in enumerate(specs, 1):
-        rows.append({"anomaly_id": f"ANM-{index:03d}", "category": category, "observation": observation, "evidence": "data/results/sp07_table_timing_summary.csv;data/results/sp07_quantitative_summary_integrated.json", "severity": severity, "blocking": "no", "disposition": "Accepted validity threat or observation; not evidence of a software defect.", "report_implication": "State this limitation or observation explicitly and avoid stronger causal or performance claims.", "follow_up": "Preserve for Subproject-8 human technical review; new measurement requires separate authorization."})
+    for index, (category, observation, evidence, severity, disposition, report_implication, follow_up) in enumerate(specs, 1):
+        rows.append({"anomaly_id": f"ANM-{index:03d}", "category": category, "observation": observation, "evidence": evidence, "severity": severity, "blocking": "no", "disposition": disposition, "report_implication": report_implication, "follow_up": follow_up})
+    validate_anomalies(rows)
     return rows
+
+
+def validate_anomalies(rows: list[dict[str, str]]) -> None:
+    expected_evidence = (
+        ("data/results/sp07_table_timing_summary.csv", "results/scalability_results.json"),
+        ("data/results/sp07_table_timing_summary.csv", "data/results/sp07_isolated_operation_results.json"),
+        ("data/results/sp07_table_timing_summary.csv", "data/results/sp07_isolated_operation_results.json"),
+        ("data/results/sp07_table_timing_summary.csv", "data/results/sp07_isolated_operation_results.json"),
+        ("experiments/scalability_config.json", "experiments/isolated_operations_config.json", "data/results/sp07_table_timing_summary.csv"),
+        ("results/scalability_environment.json", "data/results/sp07_isolated_operation_environment.json"),
+        ("data/results/sp07_quantitative_summary_integrated.json", "results/scalability_environment.json", "data/results/sp07_isolated_operation_environment.json"),
+        ("data/results/sp07_quantitative_summary_integrated.json", "results/scalability_environment.json", "data/results/sp07_isolated_operation_environment.json"),
+        ("results/scalability_results.json", "data/results/sp07_table_timing_summary.csv"),
+        ("results/scalability_environment.json", "data/results/sp07_isolated_operation_environment.json", "data/results/sp07_table_timing_summary.csv"),
+        ("experiments/scalability_config.json", "experiments/isolated_operations_config.json"),
+        ("data/results/sp07_quantitative_summary_integrated.json",),
+        ("data/results/sp07_quantitative_summary_integrated.json", "audit/validation/subproject_07_03_repair.md"),
+        ("data/results/sp07_quantitative_summary_integrated.json", "results/scalability_environment.json", "data/results/sp07_isolated_operation_environment.json"),
+    )
+    if len(rows) != 14 or [row.get("anomaly_id") for row in rows] != [f"ANM-{index:03d}" for index in range(1, 15)]:
+        raise ReviewError("anomaly identity or ordering mismatch")
+    for index, (row, evidence) in enumerate(zip(rows, expected_evidence, strict=True), 1):
+        if row.get("severity") not in {"information", "low", "medium", "high"} or row.get("blocking") != "no":
+            raise ReviewError(f"anomaly status mismatch: ANM-{index:03d}")
+        if any(not row.get(field) for field in ("category", "observation", "disposition", "report_implication", "follow_up")):
+            raise ReviewError(f"incomplete anomaly: ANM-{index:03d}")
+        actual = tuple(row.get("evidence", "").split(";"))
+        if actual != evidence:
+            raise ReviewError(f"anomaly evidence mismatch: ANM-{index:03d}")
+        if any(path not in SOURCES or Path(path).is_absolute() or not (ROOT / path).is_file() for path in actual):
+            raise ReviewError(f"invalid anomaly evidence: ANM-{index:03d}")
+    if rows[12]["observation"] != "The accepted 976-test SP-06 verification snapshot is historical and differs from later accepted Subproject-7 repository-wide test baselines after analysis tests were added.":
+        raise ReviewError("historical snapshot anomaly mismatch")
+    if "122.189 ns" not in rows[2]["observation"] or "122.18900000000002" in rows[2]["observation"]:
+        raise ReviewError("lookup spread presentation mismatch")
 
 
 def build_notes(mixed: dict[str, object], isolated: dict[str, object], timing: list[dict[str, str]]) -> str:
@@ -424,47 +463,74 @@ def validate_outputs(outputs: dict[str, bytes]) -> None:
     summary = json.loads(outputs["review_summary"], object_pairs_hook=_unique_pairs)
     if tuple(summary) != ("schema_version", "review_id", "source_artifacts", "artifact_integrity", "verification_reconciliation", "mixed_controller_reconciliation", "isolated_operation_reconciliation", "timing_table_reconciliation", "figure_reconciliation", "claim_review_summary", "anomaly_summary", "validity_threats", "authorized_conclusions", "prohibited_conclusions", "report_handoff", "readiness") or summary["claim_review_summary"]["blocking_rows"] != 0:
         raise ReviewError("review summary schema or readiness mismatch")
+    parsed_csv: dict[str, list[dict[str, str]]] = {}
     for key, columns in (("anomaly_register", ANOMALY_COLUMNS), ("validation_ledger", LEDGER_COLUMNS)):
         reader = csv.DictReader(io.StringIO(outputs[key].decode()))
         rows = list(reader)
         if tuple(reader.fieldnames or ()) != columns or not rows: raise ReviewError(f"output CSV mismatch: {key}")
+        parsed_csv[key] = rows
+    validate_anomalies(parsed_csv["anomaly_register"])
     if not outputs["source_notes"].decode().startswith("# SP-07 Results and Discussion Source Notes\n"):
         raise ReviewError("source notes heading mismatch")
 
 
+def _cleanup_temporaries(stages: dict[str, Path], backups: dict[str, Path], retained: set[str]) -> list[str]:
+    failures: list[str] = []
+    for kind, paths in (("stage", stages), ("backup", backups)):
+        for key in OUTPUT_KEYS:
+            path = paths.get(key)
+            if path is None or (kind == "backup" and key in retained):
+                continue
+            try:
+                path.unlink(missing_ok=True)
+            except OSError:
+                failures.append(f"{kind}[{key}]={path.name}")
+    return failures
+
+
 def publish(destinations: dict[str, Path], outputs: dict[str, bytes]) -> None:
     stages: dict[str, Path] = {}; backups: dict[str, Path] = {}; published: list[str] = []; retained: set[str] = set()
+    publication_error: OSError | ReviewError | None = None
+    rollback_failures: list[str] = []
     try:
         for key in OUTPUT_KEYS:
             destination = destinations[key]; destination.parent.mkdir(parents=True, exist_ok=True)
             fd, name = tempfile.mkstemp(prefix=f".{destination.name}.", suffix=".tmp", dir=destination.parent)
-            with os.fdopen(fd, "wb") as handle: handle.write(outputs[key]); handle.flush(); os.fsync(handle.fileno())
             stages[key] = Path(name)
+            with os.fdopen(fd, "wb") as handle: handle.write(outputs[key]); handle.flush(); os.fsync(handle.fileno())
         for key in OUTPUT_KEYS:
             destination = destinations[key]
             if destination.exists():
-                fd, name = tempfile.mkstemp(prefix=f".{destination.name}.backup.", suffix=".tmp", dir=destination.parent); os.close(fd)
-                backups[key] = Path(name); backups[key].write_bytes(destination.read_bytes())
+                fd, name = tempfile.mkstemp(prefix=f".{destination.name}.backup.", suffix=".tmp", dir=destination.parent)
+                backups[key] = Path(name); os.close(fd); backups[key].write_bytes(destination.read_bytes())
         for key in OUTPUT_KEYS: os.replace(stages[key], destinations[key]); published.append(key)
         if any(destinations[key].read_bytes() != outputs[key] for key in OUTPUT_KEYS): raise ReviewError("post-write byte mismatch")
         validate_outputs({key: destinations[key].read_bytes() for key in OUTPUT_KEYS})
     except (OSError, ReviewError) as exc:
-        failures = []
+        publication_error = exc
         for key in reversed(published):
             try:
                 if key in backups and backups[key].exists(): os.replace(backups[key], destinations[key])
                 else: destinations[key].unlink(missing_ok=True)
             except OSError:
-                failures.append(key)
+                rollback_failures.append(key)
                 if key in backups and backups[key].exists(): retained.add(key)
-        if failures:
-            detail = ", ".join(f"{key}={backups[key].name}" if key in retained else key for key in failures)
-            raise ReviewError(f"review publication failed; rollback incomplete; recovery backups retained: {detail}") from exc
-        raise ReviewError("review publication failed; existing outputs were preserved") from exc
-    finally:
-        for path in stages.values(): path.unlink(missing_ok=True)
-        for key, path in backups.items():
-            if key not in retained: path.unlink(missing_ok=True)
+    cleanup_failures = _cleanup_temporaries(stages, backups, retained)
+    cleanup_detail = ", ".join(cleanup_failures)
+    if publication_error is None:
+        if cleanup_failures:
+            raise ReviewError(f"review publication completed; temporary cleanup incomplete: {cleanup_detail}")
+        return
+    if rollback_failures:
+        recovery_detail = ", ".join(f"{key}={backups[key].name}" if key in retained else key for key in rollback_failures)
+        message = f"review publication failed; rollback incomplete; recovery backups retained: {recovery_detail}"
+        if cleanup_failures:
+            message += f"; temporary cleanup incomplete: {cleanup_detail}"
+        raise ReviewError(message) from publication_error
+    message = "review publication failed; existing outputs were preserved"
+    if cleanup_failures:
+        message += f"; temporary cleanup incomplete: {cleanup_detail}"
+    raise ReviewError(message) from publication_error
 
 
 def parser() -> argparse.ArgumentParser:
