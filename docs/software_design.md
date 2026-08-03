@@ -41,15 +41,15 @@ Dependency direction is acyclic: `models` is the base; stateless/domain managers
 - Exceptions are limited to startup data, infrastructure, invariant, and programmer-use failures.
 - No global mutable state, network, database server, physical adapter, GUI, async framework, background thread, wall-clock sleep, or real-time test wait is used.
 - A method either commits its whole logical update or leaves owned state unchanged.
-- Text enum serialization is canonical lowercase; integer enum values match the logical register model.
+- `ReaderSource` serialization uses the frozen uppercase labels `LF` and `HF`; controller-state, event-type, result, and reason serialization is lowercase. Integer enum values match the logical register model.
 
 ## Shared types and enumerations
 
-`models.py` will use integer-valued enums whose members serialize through an explicit lowercase value map, never through `str(enum)`.
+`models.py` will use integer-valued enums whose members serialize through an explicit canonical-text method, never through `str(enum)`. The source labels preserve uppercase; every other textual enumeration uses lowercase member names.
 
 | Enum | Members and fixed numeric values | Canonical text |
 |---|---|---|
-| `ReaderSource` | `LF = 1`, `HF = 2` | `lf`, `hf` |
+| `ReaderSource` | `LF = 1`, `HF = 2` | `LF`, `HF` |
 | `ControllerState` | `RESETTING = 0`, `INITIALIZING = 1`, `IDLE = 2`, `VALIDATING = 3`, `LOOKUP = 4`, `AUTHORIZING = 5`, `OUTPUT_ACTIVE = 6` | lowercase member name |
 | `EventType` | `ACCESS_DECISION = 1`, `VALIDATION_ERROR = 2`, `OUTPUT_TIMEOUT = 3`, `MANUAL_RESET = 4`, `WATCHDOG_RESET = 5`, `LOGGING_ERROR = 6` | lowercase member name |
 | `Result` | `GRANTED = 1`, `DENIED = 2`, `ERROR = 3`, `COMPLETED = 4`, `RESET = 5` | lowercase member name |
@@ -250,10 +250,10 @@ Parsing and validation are all-or-nothing. No record is published until every re
 The in-memory tuple of immutable `EventRecord` values is the source of truth. Preferred export is UTF-8 JSON Lines, one successful append per line, with fields in this deterministic order:
 
 ```json
-{"sequence_number":1,"timestamp_ms":0,"event_type":"access_decision","reader_source":"lf","facility_code":1,"credential_number":100,"requested_floor":1,"result":"granted","reason":"authorized"}
+{"sequence_number":1,"timestamp_ms":0,"event_type":"access_decision","reader_source":"LF","facility_code":1,"credential_number":100,"requested_floor":1,"result":"granted","reason":"authorized"}
 ```
 
-Every object always has the nine fields `sequence_number`, `timestamp_ms`, `event_type`, `reader_source`, `facility_code`, `credential_number`, `requested_floor`, `result`, and `reason`. Conditional values serialize as JSON `null`, never omission. Enums serialize to canonical lowercase strings. Sequence begins at 1, increments once per successful append, and is strictly increasing. Timestamps are nonnegative simulated milliseconds and nondecreasing. A failed append creates no event and consumes no sequence. Rotation, persistent recovery, and redundant logs are deferred.
+Every object always has the nine fields `sequence_number`, `timestamp_ms`, `event_type`, `reader_source`, `facility_code`, `credential_number`, `requested_floor`, `result`, and `reason`. Conditional values serialize as JSON `null`, never omission. Reader sources serialize as canonical uppercase `LF`/`HF`; event types, results, and reasons serialize as canonical lowercase strings. Sequence begins at 1, increments once per successful append, and is strictly increasing. Timestamps are nonnegative simulated milliseconds and nondecreasing. A failed append creates no event and consumes no sequence. Rotation, persistent recovery, and redundant logs are deferred.
 
 ## Module contracts
 
@@ -429,6 +429,8 @@ With defaults, normal heartbeats at 1000 ms intervals keep a 3000 ms output aliv
 Startup clears controller/output/watchdog/log/transient state, validates candidate configuration and records, initializes the watchdog, and reaches `IDLE` only if all are valid. A startup failure remains all-inactive and non-operational in `INITIALIZING`.
 
 Manual and watchdog reset may interrupt every one of the seven states. They enter `RESETTING`, clear output/active-floor/expiry, request/decision transients, and watchdog service suppression before attempting a reset event; preserve validated configuration, credential repository, existing events, and next-sequence progression; reinitialize the watchdog; and return to `IDLE`. Reset completes despite an event append failure and returns `error/logging_error` with the fault visible. The simulated clock never rewinds. Manual reset returns `reset/manual_request`; watchdog reset returns `reset/watchdog_timeout` when logging succeeds.
+
+Normal transition tests observe controller behavior through public snapshots and event records. Reset-from-every-state tests may use a focused white-box fixture inside the test suite to construct each internally valid controller state before calling the public manual-reset operation. This fixture is not production API. The implementation must not add a state-forcing method, transition observer, pause/reentry hook, thread, or asynchronous task for testing.
 
 ## Fault-injection interfaces
 

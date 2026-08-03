@@ -100,7 +100,7 @@ All seven states have designed entry/exit observation:
 - manual/watchdog reset interrupts each state via `RESETTING → IDLE`;
 - invalid startup remains `INITIALIZING`, all inactive.
 
-Where intermediate states execute synchronously, a transition observer/fake collaborator records state entries without adding concurrency or pauses. State/output/log assertions are made through public snapshots/events; private state is inspected only in focused invariant tests if no public observation can prove the contract.
+Normal transition tests use public snapshots and event records to observe externally visible state progression. Because intermediate states execute synchronously, manual-reset-from-every-state tests use a focused white-box fixture in the test suite to construct each internally valid controller state before invoking the public reset operation. The helper is test-only: no production state-forcing or transition-observer method, thread, asynchronous task, pause mechanism, reentrant callback, or test hook is added.
 
 ## Reset tests
 
@@ -125,7 +125,7 @@ These are simulated chronological event tests. They use no loop per millisecond,
 
 ## Event-log tests
 
-The six event types, five result values, and all 17 reasons have designed coverage. Records always contain nine fields; unavailable source/decoded/floor fields are explicit `None` and JSON `null`. Sequences start at 1 and strictly increase once per successful append; timestamps are nondecreasing under simulated time. Retrieval returns an immutable tuple, JSON Lines is UTF-8 parseable with canonical lowercase enums and deterministic field order, and no duplicate timeout/reset is emitted.
+The six event types, five result values, and all 17 reasons have designed coverage. Records always contain nine fields; unavailable source/decoded/floor fields are explicit `None` and JSON `null`. Sequences start at 1 and strictly increase once per successful append; timestamps are nondecreasing under simulated time. Retrieval returns an immutable tuple, JSON Lines is UTF-8 parseable with uppercase `LF`/`HF` source labels, lowercase event/result/reason values, and deterministic field order; no duplicate timeout/reset is emitted.
 
 Injected append failure is tested at grant, denial/validation, busy, timeout, manual reset, and watchdog reset. Grant failure prevents activation. Denial/busy failure leaves output unchanged. Timeout/reset failure never reverses required clearing/recovery. Failure occurs before sequence allocation; after the fault is disabled, the next successful append uses the unconsumed number.
 
