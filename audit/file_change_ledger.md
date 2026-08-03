@@ -187,3 +187,17 @@ Scoped 149/149 and full 367/367 pytest cases passed. SP-06.4 and later behavior 
 | `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
 
 SP-06.5 and later behavior remains deferred; no commit or push occurred.
+
+## SP-06.5 output manager
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_05_baseline.md` | New accepted baseline and 425/425 gate. | Prior records retained. |
+| `src/elevator_access_sim/outputs.py` | New atomic 16-channel activation, expiry, reset, and snapshot manager; 63 scoped/488 full passed. | Models-only; no event/watchdog/controller/physical behavior. |
+| `tests/unit/test_outputs.py` | New all-floor, duration, invalid/concurrent, expiry, reset, immutability, and clock-caller tests. | Inventory unchanged. |
+| `src/elevator_access_sim/__init__.py` | Exported `OutputManager`. | Prior API retained. |
+| `audit/stage_reports/subproject_06_05.md` | New handoff. | Prior reports retained. |
+| `audit/validation/subproject_06_05_validation.md` | New execution/scope evidence. | Protected paths unchanged. |
+| `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
+
+SP-06.6 watchdog and later behavior remain deferred; no commit or push occurred.

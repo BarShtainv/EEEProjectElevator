@@ -10,6 +10,7 @@ from .config import (
 )
 from .credentials import CredentialRepository
 from .event_log import EventLog
+from .outputs import OutputManager
 from .models import (
     AuthorizationDecision,
     ClockError,
@@ -65,6 +66,7 @@ __all__ = [
     "FrameValidation",
     "LogAppendOutcome",
     "OutputSnapshot",
+    "OutputManager",
     "ReaderSource",
     "Reason",
     "RepositoryLookup",
