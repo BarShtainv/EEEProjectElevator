@@ -252,3 +252,19 @@ Final output 71/71, watchdog 68/68, controller 195/195, and full 759/759 suites 
 | `audit/file_change_ledger.md` | Added this SP-06.8 section. | Every earlier ledger section retained. |
 
 File adapter 58/58, CLI 42/42, and full 859/859 suites passed. The real temporary-file module smoke exited 0 with LF grant and output timeout at 3000, then its temporary directory was removed. SP-06.9 inventory consolidation, experiments/scalability, persistence, networking, databases, GUI, hardware, physical behavior, additional profiles, and optional policies remain deferred; no commit or push occurred.
+
+## SP-06.9 required integration completion and inventory resolution
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_09_baseline.md` | Recorded accepted commit, clean tree, external environment, exact 859/859 baseline, module/document counts, and authorized/protected ownership. | No implementation edit preceded the prescribed baseline. |
+| `tests/end_to_end/test_required_flows.py` | Added one four-case public-flow test for invalid source/frame/parity/floor followed by valid grant; 4/4 passed. | No production behavior or CLI command changed. |
+| `tests/inspection/test_inventory_traceability.py` | Added parsed requirement/trace/inventory resolution plus concrete-node and status/ownership checks; 2/2 passed. | Frozen traceability contained no broken ID and remained unchanged. |
+| `tests/inspection/test_scope_environment.py` | Added six deterministic AST/file inspections for title, scope, optional gates, ownership, environment, UTF-8/paths, and claim boundaries; 6/6 passed. | No network, device, fragile limitation-term rejection, or production mutation. |
+| `docs/test_case_inventory.csv` | Promoted 88 evidence-backed Task-9 rows from `designed` to `implemented`; retained 12 later/optional rows as `designed`. | Columns, IDs, requirements, expectations, fixtures, and notes unchanged. |
+| `audit/validation/subproject_06_09_inventory_resolution.csv` | Added 100 ordered mappings: 67 existing, 3 SP-06.9 executable, 18 SP-06.9 inspection, 5 SP-06.10, 1 SP-06.11, 6 optional, 0 unresolved. | No experiment or final-documentation row is falsely passed. |
+| `audit/stage_reports/subproject_06_09.md` | Added bounded gap analysis, evidence matrices, ownership, exact validation, deviations, and readiness. | Later stages and optional work remain distinct. |
+| `audit/validation/subproject_06_09_validation.md` | Added command outcomes, CSV/resolver results, behavior/fault/value matrices, scope checks, cleanup, and Git evidence. | No skipped/xfail result or unsupported claim. |
+| `audit/file_change_ledger.md` | Added this SP-06.9 section. | Every earlier ledger section retained. |
+
+Final end-to-end 4/4, integration 192/192, inspection 8/8, focused canonical matrix 97/97, and full 871/871 suites passed with no failures, skips, or xfails. Compilation, imports, and three-file standard-library CSV validation passed. No production source, requirement, traceability, architecture, register, design, sequence, decision, dependency, prior test/audit, evidence, literature, or Git-history change occurred. SP-06.10 experiments and SP-06.11 final documentation remain scheduled; optional work remains deferred; no commit or push occurred.
