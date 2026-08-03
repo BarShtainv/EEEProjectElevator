@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "environment_id": "env-5b6705a77f411683",
+  "python_version": "3.13.13",
+  "python_implementation": "CPython",
+  "platform_system": "Linux",
+  "platform_release": "6.18.33.2-microsoft-standard-WSL2",
+  "platform_machine": "x86_64",
+  "platform_processor": "unknown",
+  "cpu_count": 20,
+  "timer": "time.perf_counter_ns",
+  "configuration_id": "SP07_ISOLATED_OPERATIONS_V1",
+  "workload_id": "LOOKUP_AUTHORIZATION_MATRIX_V1",
+  "seed": 270516,
+  "credential_counts": [
+    10,
+    100,
+    1000,
+    10000
+  ],
+  "case_count_per_repetition": 1000,
+  "warmup_repetitions": 1,
+  "measured_repetitions": 3,
+  "operation_definitions": {
+    "credential_repository_lookup": "Times only CredentialRepository.lookup, including trusted-key validation, Python dictionary lookup, and RepositoryLookup construction.",
+    "authorization_decision": "Times only authorize, including trusted decoded/record validation, precedence and floor-mask logic, and AuthorizationDecision construction; repository lookup is excluded."
+  },
+  "interpretation_limits": [
+    "Results describe Python software operations observed on the recorded host environment.",
+    "Timer overhead from time.perf_counter_ns is retained and is not subtracted.",
+    "Credential generation, case generation, checksum calculation, and repository construction are excluded from timed regions.",
+    "Lookup timing includes trusted-key validation, Python dictionary lookup, and RepositoryLookup construction.",
+    "Authorization timing includes trusted-input validation, precedence and floor-mask logic, and AuthorizationDecision construction.",
+    "Authorization rows exclude credential repository lookup.",
+    "Both operations exclude controller coordination, Wiegand processing, event logging, output behavior, network access, database servers, and hardware behavior.",
+    "Host timings may vary across hosts and runs; no real-time target or performance threshold exists.",
+    "No physical RFID, electrical output, elevator movement, reliability, safety, certification, or commercial-equivalence result is established."
+  ]
+}

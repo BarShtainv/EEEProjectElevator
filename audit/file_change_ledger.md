@@ -354,3 +354,19 @@ The catalog and summary hashes are `511d0955fae5d501c0a4cb1caffaf64a8535a32cda36
 | `audit/file_change_ledger.md` | Added only this narrow SP-07.1R section. | Every earlier ledger section retained. |
 
 The quantitative summary remains byte-identical at `dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0`; all seven accepted source hashes and quantitative totals remain unchanged. No accepted measurement, behavior, traceability, benchmark, figure, SP-07.2 work, commit, or push occurred.
+
+## SP-07.2 isolated credential-lookup and authorization experiment
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/run_experiments.py` | Added the distinct strict standard-library runner with exact config parsing, three-domain deterministic generation, canonical checksums, isolated public-operation timing, complete matrices, nearest-rank metrics, validation, bounded environment collection, CLI, and rollback-safe paired publication. | No `Controller`, Wiegand, old-runner import, simulator mutation, dependency, network/database server, concurrency, sleep, plot, or threshold. |
+| `experiments/isolated_operations_config.json` | Added exact schema-1 `SP07_ISOLATED_OPERATIONS_V1` / `LOOKUP_AUTHORIZATION_MATRIX_V1`, seed 270516, four sizes, 1000 cases, 1/3 repetitions, 60/20/20 pools, 50/50 lookup, and 40/20/15/15/10 authorization. | Accepted mixed configuration remains unchanged. |
+| `data/results/sp07_isolated_operation_results.json` | Official single-run 24-row aggregate output with 12000 lookup plus 12000 authorization calls, diagonal matrices, explicit correct/incorrect counts, finite metrics, checksums, and one environment ID. | Contains no raw records/cases/samples, controller/event state, path, identity, or threshold claim. |
+| `data/results/sp07_isolated_operation_environment.json` | Added deterministic bounded host/config/operation-definition/interpretation record `env-5b6705a77f411683`. | Explicit software/host variability and no physical, real-time, safety, certification, or commercial inference. |
+| `tests/analysis/test_run_isolated_experiments.py` | Added 64 strict-config, generation, case, matrix, mismatch, metric, boundary, schema, environment, atomicity, CLI, and structural cases. | Existing tests and production remain unchanged. |
+| `audit/baselines/subproject_07_02_baseline.md` | Recorded clean accepted commit/environment, 1012/1012 baseline, accepted hashes, gap, scope, boundaries, and deferrals. | No implementation edit preceded the baseline. |
+| `audit/stage_reports/subproject_07_02.md` | Added exact configuration/generation/boundary/matrix/metric/run/reproduction/result/limit/test/protection/handoff record. | SP-07.3 and SP-07.4 remain deferred. |
+| `audit/validation/subproject_07_02_validation.md` | Added command, focused matrix, official run, reproduction, 24-row/aggregate/checksum/environment/independent/full/structural/scope/cleanup evidence. | No unexecuted success or unsupported performance claim. |
+| `audit/file_change_ledger.md` | Added only this SP-07.2 section. | Every earlier ledger section retained. |
+
+Official hashes are config `6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8589c1e299838`, results `5739eaf829fabce8aa83f9c7905d23093f9853753afb8e15c411541c2b2c64a1`, and environment `106eba0f338b2cbb215dbbd7536d2814985843856b650b749a983710ad55f7ec`. No simulator, accepted mixed benchmark, SP-07.1 artifact, figure, report, SP-07.3/SP-07.4 work, commit, or push occurred.

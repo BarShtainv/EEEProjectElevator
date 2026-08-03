@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "configuration_id": "SP07_ISOLATED_OPERATIONS_V1",
+  "workload_id": "LOOKUP_AUTHORIZATION_MATRIX_V1",
+  "seed": 270516,
+  "credential_counts": [
+    10,
+    100,
+    1000,
+    10000
+  ],
+  "case_count_per_repetition": 1000,
+  "warmup_repetitions": 1,
+  "measured_repetitions": 3,
+  "credential_pool_percent": {
+    "enabled_all_floors": 60,
+    "enabled_no_floors": 20,
+    "disabled": 20
+  },
+  "lookup_mix_percent": {
+    "hit": 50,
+    "miss": 50
+  },
+  "authorization_mix_percent": {
+    "authorized": 40,
+    "unauthorized_floor": 20,
+    "disabled_credential": 15,
+    "unknown_credential": 15,
+    "invalid_floor": 10
+  }
+}
