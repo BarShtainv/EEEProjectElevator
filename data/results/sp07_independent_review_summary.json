@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "review_id": "SP07_INDEPENDENT_REVIEW_V1",
+  "source_artifacts": [
+    {
+      "path": "final_engineering_project_plan.md",
+      "sha256": "fd761e0e9d8b1db9c52e16234762019ff9a8deaeeb1722ae110219ae4ef15e33"
+    },
+    {
+      "path": "docs/requirements.md",
+      "sha256": "9a29af817336f73a8f2ecf4a0b9731fdd32765fd8f2bed2ad3b78003085a202d"
+    },
+    {
+      "path": "docs/test_case_inventory.csv",
+      "sha256": "ce97fca1b72521536ffc85a4fe22c7cb8cf26f3dbb4220e1db394667e9178601"
+    },
+    {
+      "path": "docs/requirements_to_test_traceability.csv",
+      "sha256": "e830fb840375e574d342073b285987b574fdaa76d80613e40d558f7b96bb2289"
+    },
+    {
+      "path": "audit/validation/subproject_06_11_verification_records.csv",
+      "sha256": "623032dabefa0cd983812527ab09ba719a00998f1d3e6204ecea5fbe17da4e42"
+    },
+    {
+      "path": "data/results/sp07_experiment_catalog.csv",
+      "sha256": "c9a8568d1c64988aa694f6d9ad64578fac922ed1df8325c5b109d4ff1986f1cb"
+    },
+    {
+      "path": "data/results/sp07_quantitative_summary.json",
+      "sha256": "dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0"
+    },
+    {
+      "path": "experiments/scalability_config.json",
+      "sha256": "93ec68084c3b07c9badbb4e2f5d150d962fb8dceae7b4f092eb7909331491921"
+    },
+    {
+      "path": "results/scalability_results.json",
+      "sha256": "009381bf10bc74042b02abc4a12fe0a04b29437de3288b868f04d4cce1addc4f"
+    },
+    {
+      "path": "results/scalability_environment.json",
+      "sha256": "ed91091102ab910ceb28cc99f5bc9d7124d0b673261b65d476f5a91cbb8de4ba"
+    },
+    {
+      "path": "audit/validation/subproject_06_10_validation.md",
+      "sha256": "e6dc96bb105bf1af02ee170faf0c541f5a72f8e69686cfcfa6aca67f0d57f8d5"
+    },
+    {
+      "path": "experiments/isolated_operations_config.json",
+      "sha256": "6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8589c1e299838"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_results.json",
+      "sha256": "9d8edd077439a12000cc560c615208dff0f381a5b77f3c8474b3b92b4e540bdf"
+    },
+    {
+      "path": "data/results/sp07_isolated_operation_environment.json",
+      "sha256": "106eba0f338b2cbb215dbbd7536d2814985843856b650b749a983710ad55f7ec"
+    },
+    {
+      "path": "audit/validation/subproject_07_02_timing_boundary_repair.md",
+      "sha256": "1524a88db09641bd5f31a0411341d0e0e9b454ff2502ea99948fefc50879ef90"
+    },
+    {
+      "path": "data/results/sp07_experiment_catalog_integrated.csv",
+      "sha256": "9270a15ca480a78ade0e5685ca1dd41a246aa9b4e824cc5cd80304ca96916ff8"
+    },
+    {
+      "path": "data/results/sp07_quantitative_summary_integrated.json",
+      "sha256": "95f532d8c6a03603df93c1324c5f0bcb5ed0b21fea6a8defba472ec7114d670c"
+    },
+    {
+      "path": "data/results/sp07_table_experiment_coverage.csv",
+      "sha256": "f7aef89308e316dbfabb94f166b488294271fcf2a9c66c3e2631a5b4546ec78f"
+    },
+    {
+      "path": "data/results/sp07_table_correctness.csv",
+      "sha256": "2ee80a42df288fef0bdd2357fb09a562ddd364c18a7b25259e7c29d8b7b84224"
+    },
+    {
+      "path": "data/results/sp07_table_timing_summary.csv",
+      "sha256": "5c777e8f77b0c5e06f44e5c0a0b810e464dff663dfa2bfd47f9d18e09eaf0811"
+    },
+    {
+      "path": "docs/figures/sp07_mixed_controller_average_ns.svg",
+      "sha256": "7ad5f26515f55051794d39a61071c3fc1011e1a28a7ed56f73a71649d2d46930"
+    },
+    {
+      "path": "docs/figures/sp07_lookup_average_ns.svg",
+      "sha256": "26269c6243bae35ada6c7119878ff29799718c79f75052456d8fea84ae2ca096"
+    },
+    {
+      "path": "docs/figures/sp07_authorization_average_ns.svg",
+      "sha256": "433943136faf100dba84a68769d087ffb91b4c4d6914571d4948f0b9257592f9"
+    },
+    {
+      "path": "data/results/sp07_report_artifact_manifest.json",
+      "sha256": "69235fab571b97e00b54f4a8dd202e8331dadbf381dcd8caa0c2250f4ed44851"
+    },
+    {
+      "path": "audit/validation/subproject_07_01_validation.md",
+      "sha256": "675bb96506ef931c0ec2e26f15cf1ce3d61fe23540ff703d5c6ffbed83cfbd1e"
+    },
+    {
+      "path": "audit/validation/subproject_07_01_repair.md",
+      "sha256": "a4b14d0d7eed99c8049b2b2cf6b6ecfb2af9a1396db8b5016000f194c7dc6da6"
+    },
+    {
+      "path": "audit/validation/subproject_07_02_validation.md",
+      "sha256": "9849892b76a383b2b411b6cd46227e6d6d6741a92611c53f4f1d1c107d6a9775"
+    },
+    {
+      "path": "audit/validation/subproject_07_03_validation.md",
+      "sha256": "896a6d38b952f18e73ba2dda1dbd4e94e869ae7bc65d49f0b52a729d405d6a9d"
+    },
+    {
+      "path": "audit/validation/subproject_07_03_repair.md",
+      "sha256": "e0d00c7b948ffbb3836836807437ee610dd8f3f7d966baf4ec9723814c6b0b9b"
+    }
+  ],
+  "artifact_integrity": {
+    "source_count": 29,
+    "manifest_source_count": 9,
+    "manifest_generated_count": 8,
+    "verified_hash_count": 37,
+    "mismatches": [],
+    "schema_result": "passed",
+    "utf8_result": "passed",
+    "relative_path_result": "passed"
+  },
+  "verification_reconciliation": {
+    "collected": 976,
+    "passed": 976,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "pass_rate": 1.0,
+    "requirements_total": 66,
+    "required_verified": 60,
+    "optional_deferred": 6,
+    "inventory_total": 100,
+    "inventory_implemented": 94,
+    "inventory_optional_designed": 6,
+    "verification_records_passed": 94,
+    "verification_records_optional_deferred": 6,
+    "snapshot_scope": "accepted historical simulator-verification snapshot, not current repository-wide test count"
+  },
+  "mixed_controller_reconciliation": {
+    "rows": 12,
+    "processed": 39000,
+    "granted": 15600,
+    "denied": 19500,
+    "unauthorized_floor": 7800,
+    "disabled_credential": 5850,
+    "unknown_credential": 5850,
+    "invalid_frame": 3900,
+    "other_outcomes": 0
+  },
+  "isolated_operation_reconciliation": {
+    "rows": 24,
+    "calls": 24000,
+    "lookup_processed": 12000,
+    "correct_hits": 6000,
+    "correct_misses": 6000,
+    "lookup_mismatches": 0,
+    "authorization_processed": 12000,
+    "correct_grants": 4800,
+    "correct_denials": 6000,
+    "correct_errors": 1200,
+    "incorrect_grants": 0,
+    "incorrect_denials": 0,
+    "other_mismatches": 0
+  },
+  "timing_table_reconciliation": {
+    "rows_reviewed": 12,
+    "groups": 3,
+    "result": "passed",
+    "semantics": "min/median/max across exactly three repetition aggregates; no pooled percentiles"
+  },
+  "figure_reconciliation": {
+    "figures_reviewed": 3,
+    "details": [
+      {
+        "path": "docs/figures/sp07_mixed_controller_average_ns.svg",
+        "points": 12,
+        "medians": 4,
+        "whiskers": 4,
+        "result": "passed"
+      },
+      {
+        "path": "docs/figures/sp07_lookup_average_ns.svg",
+        "points": 12,
+        "medians": 4,
+        "whiskers": 4,
+        "result": "passed"
+      },
+      {
+        "path": "docs/figures/sp07_authorization_average_ns.svg",
+        "points": 12,
+        "medians": 4,
+        "whiskers": 4,
+        "result": "passed"
+      }
+    ],
+    "result": "passed"
+  },
+  "claim_review_summary": {
+    "total_ledger_rows": 39,
+    "supported": 0,
+    "supported_with_limit": 39,
+    "unresolved": 0,
+    "not_supported": 0,
+    "blocking_rows": 0
+  },
+  "anomaly_summary": {
+    "total_anomalies": 14,
+    "counts_by_severity": {
+      "information": 1,
+      "low": 2,
+      "medium": 9,
+      "high": 2
+    },
+    "blocking_anomaly_count": 0
+  },
+  "validity_threats": [
+    "Mixed repetition-average medians are non-monotonic across sizes: [7820.085, 7032.656, 7882.918, 8189.5002].",
+    "Lookup repetition-average medians are non-monotonic across sizes: [297.496, 278.224, 292.728, 351.938].",
+    "The 10000-credential lookup repetition-average spread is 122.18900000000002 ns, visibly greater than smaller groups.",
+    "Authorization repetition-average medians are non-monotonic across sizes: [590.139, 565.264, 616.682, 614.437].",
+    "Only three measured repetitions exist per size and operation.",
+    "Measurements come from one recorded host environment.",
+    "Raw per-call timing samples are not retained.",
+    "Pooled medians, pooled p95, confidence intervals, and statistical significance are unavailable.",
+    "The 10000-credential mixed group uses 10000 requests per repetition; smaller sizes use 1000.",
+    "Mixed, lookup, and authorization timing boundaries differ and must not be ranked directly.",
+    "Correctness workloads are deterministic constructed workloads, not field-population estimates.",
+    "Branch coverage is not independently available.",
+    "The accepted 976-test snapshot differs from the current suite because later analysis tests were added.",
+    "No physical RFID, electrical output, elevator movement, field reliability, safety, certification, real-time, or commercial-controller performance was measured."
+  ],
+  "authorized_conclusions": [
+    "Required software behavior was verified in the accepted simulator snapshot.",
+    "Deterministic workloads reconcile to expected outcome counts.",
+    "Mixed controller, lookup, and authorization host-software timing observations are available within distinct boundaries.",
+    "Accepted figures and tables reproduce source aggregates.",
+    "No incorrect grant or incorrect denial occurred in the isolated authorization workload."
+  ],
+  "prohibited_conclusions": [
+    "constant-time guarantee",
+    "asymptotic-complexity proof",
+    "persistent database performance",
+    "physical RFID timing",
+    "electrical output timing",
+    "elevator movement timing",
+    "field reliability",
+    "production readiness",
+    "safety certification",
+    "commercial-controller equivalence",
+    "real-time guarantee",
+    "population-level error rate",
+    "statistical significance"
+  ],
+  "report_handoff": {
+    "usable_artifacts": [
+      "data/results/sp07_table_experiment_coverage.csv",
+      "data/results/sp07_table_correctness.csv",
+      "data/results/sp07_table_timing_summary.csv",
+      "docs/figures/sp07_mixed_controller_average_ns.svg",
+      "docs/figures/sp07_lookup_average_ns.svg",
+      "docs/figures/sp07_authorization_average_ns.svg"
+    ],
+    "interpretation_authorities": [
+      "audit/validation/subproject_07_final_validation_ledger.csv",
+      "data/results/sp07_anomaly_register.csv"
+    ],
+    "notes_status": "source material, not final prose",
+    "subproject_8_requirement": "Preserve all limitations and obtain human technical review.",
+    "blocking_discrepancy": false
+  },
+  "readiness": "READY FOR HUMAN REVIEW"
+}

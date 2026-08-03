@@ -419,3 +419,20 @@ Generated hashes are integrated catalog `b86c0841...db9a`, integrated summary `9
 | `audit/file_change_ledger.md` | Added only this narrow SP-07.3R section. | Every prior ledger section retained. |
 
 The integrated summary, three tables, and three SVGs remain byte-identical. No benchmark, accepted measurement/configuration, simulator, historical analysis, report, presentation, SP-07.4, Subproject-8, release, commit, or push occurred.
+
+## SP-07.4 independent quantitative claim review
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/review_results.py` | Added independent standard-library hash/schema/governance/mixed/isolated/timing/SVG/claim/anomaly/note review and rollback-safe four-file CLI publication. | Imports/executes no generator, runner, simulator, network, database, subprocess, concurrency, sleep, random, or plotting code. |
+| `data/results/sp07_independent_review_summary.json` | Added deterministic 16-field integrity/reconciliation/claim/anomaly/validity/conclusion/handoff summary with 29 sources and zero blockers. | No timestamp, identity, new measurement, pooled statistic, or unsupported claim. |
+| `data/results/sp07_anomaly_register.csv` | Added 14 derived nonblocking timing-variation and validity-threat entries with severity, disposition, report implications, and follow-up. | Ordinary variation is not labeled a defect; blocking mismatches would not be hidden. |
+| `audit/validation/subproject_07_final_validation_ledger.csv` | Added 39 unique source-linked independently checked claims, all supported-with-limit and none blocking. | Every timing/deployment claim retains operation, host, sample, and external-validity limits. |
+| `docs/sp07_results_discussion_source_notes.md` | Added 14-section evidence-led non-final source notes with cited observations, interpretations, safe wording, and six-artifact insertion map. | Not final report prose; no unsupported trend, significance, hardware, safety, or commercial claim. |
+| `tests/analysis/test_review_results.py` | Added 26 source-corruption, reconciliation, repair-identity, timing, SVG, ledger, anomaly, note, determinism, publication/recovery, CLI, and AST cases. | Temporary fixtures only; existing tests and accepted artifacts unchanged. |
+| `audit/baselines/subproject_07_04_baseline.md` | Recorded accepted commit/environment, 1106 baseline, 29 hashes, manifest/counts, scope, independence, threats, and deferral. | No implementation preceded baseline. |
+| `audit/stage_reports/subproject_07_04.md` | Added final Subproject-7 review outcome, reconciliations, statuses, threats, conclusions, hashes, validation, and handoff. | Subproject 8 remains deferred. |
+| `audit/validation/subproject_07_04_validation.md` | Added exact commands/results, initial handled-error correction, hashes, independent checks, final tests/scope/cleanup/readiness. | Claims only executed results. |
+| `audit/file_change_ledger.md` | Added only this SP-07.4 section. | All earlier sections retained. |
+
+Output hashes are review summary `7d48384b...9b92`, anomaly register `0f997c8e...f7c9`, final ledger `c0db9e21...7745`, and source notes `6fbfdb19...81e6`. No benchmark, accepted artifact mutation, report, presentation, Subproject-8 work, release, commit, or push occurred.
