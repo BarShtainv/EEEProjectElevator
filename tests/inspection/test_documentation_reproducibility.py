@@ -10,6 +10,7 @@ import math
 from pathlib import Path
 import re
 import tomllib
+from types import MappingProxyType
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,6 +41,38 @@ VERIFICATION_COLUMNS = [
 ]
 OPTIONAL_IDS = {f"TST-OPT-{number:03d}" for number in range(1, 7)}
 MARKDOWN_LINK = re.compile(r"\[[^]]+\]\(([^)]+)\)")
+TEST_VALIDATION_PROVENANCE = MappingProxyType(
+    {
+        "tests/unit/test_models.py": "audit/validation/subproject_06_01_repair_validation.md",
+        "tests/unit/test_clock.py": "audit/validation/subproject_06_01_repair_validation.md",
+        "tests/unit/test_config.py": "audit/validation/subproject_06_01_repair_validation.md",
+        "tests/unit/test_wiegand.py": "audit/validation/subproject_06_02_validation.md",
+        "tests/unit/test_credentials.py": "audit/validation/subproject_06_03_validation.md",
+        "tests/unit/test_credential_config.py": "audit/validation/subproject_06_03_validation.md",
+        "tests/unit/test_authorization.py": "audit/validation/subproject_06_03_validation.md",
+        "tests/unit/test_event_log.py": "audit/validation/subproject_06_04_validation.md",
+        "tests/unit/test_outputs.py": "audit/validation/subproject_06_05_validation.md",
+        "tests/unit/test_watchdog.py": "audit/validation/subproject_06_06_validation.md",
+        "tests/unit/test_controller_initialization.py": "audit/validation/subproject_06_07_validation.md",
+        "tests/integration/test_controller_requests.py": "audit/validation/subproject_06_07_validation.md",
+        "tests/integration/test_controller_timing.py": "audit/validation/subproject_06_07_validation.md",
+        "tests/integration/test_controller_resets.py": "audit/validation/subproject_06_07_validation.md",
+        "tests/integration/test_controller_logging_faults.py": "audit/validation/subproject_06_07_validation.md",
+        "tests/integration/test_cli.py": "audit/validation/subproject_06_08_validation.md",
+        "tests/end_to_end/test_required_flows.py": "audit/validation/subproject_06_09_validation.md",
+        "tests/inspection/test_scope_environment.py": "audit/validation/subproject_06_09_validation.md",
+        "tests/inspection/test_inventory_traceability.py": "audit/validation/subproject_06_09_validation.md",
+        "tests/experiment/test_run_experiments.py": "audit/validation/subproject_06_10_validation.md",
+        "tests/inspection/test_documentation_reproducibility.py": "audit/validation/subproject_06_11_validation.md",
+    }
+)
+EXPERIMENT_IDS = {
+    "TST-REP-001",
+    "TST-REP-002",
+    "TST-SCL-001",
+    "TST-SCL-002",
+    "TST-SCL-003",
+}
 
 
 def _csv(path: Path) -> tuple[list[str], list[dict[str, str]]]:
@@ -159,14 +192,46 @@ def test_verification_records_schema_order_and_inventory_reconciliation() -> Non
         else:
             assert record["evaluation_status"] == "passed"
             assert record["actual_result"].startswith("passed:")
+        executable_paths: set[str] = set()
         for reference in _references(record["evidence"]):
             _assert_relative_reference(reference)
-        for reference in _references(record["environment_reference"]):
+            path_text, separator, node_text = reference.partition("::")
+            if separator and node_text.startswith("test_"):
+                assert path_text in TEST_VALIDATION_PROVENANCE, reference
+                executable_paths.add(path_text)
+        environment_references = set(_references(record["environment_reference"]))
+        for reference in environment_references:
             _assert_relative_reference(reference)
 
-    experiment_ids = {"TST-REP-001", "TST-REP-002", "TST-SCL-001", "TST-SCL-002", "TST-SCL-003"}
+        originating_validations = {
+            TEST_VALIDATION_PROVENANCE[path_text]
+            for path_text in executable_paths
+        }
+        if record["test_id"] in OPTIONAL_IDS:
+            assert environment_references == {
+                "audit/validation/subproject_06_11_validation.md"
+            }
+        elif record["test_id"] in EXPERIMENT_IDS:
+            assert originating_validations == {
+                "audit/validation/subproject_06_10_validation.md"
+            }
+            assert environment_references == {
+                "results/scalability_environment.json",
+                "audit/validation/subproject_06_10_validation.md",
+            }
+        elif record["test_id"] == "TST-TRC-005":
+            assert originating_validations == {
+                "audit/validation/subproject_06_11_validation.md"
+            }
+            assert environment_references == {
+                "audit/validation/subproject_06_11_validation.md"
+            }
+        else:
+            assert executable_paths, record["test_id"]
+            assert environment_references == originating_validations
+
     by_id = {row["test_id"]: row for row in records}
-    for test_id in experiment_ids:
+    for test_id in EXPERIMENT_IDS:
         evidence = by_id[test_id]["evidence"]
         assert "tests/experiment/test_run_experiments.py::test_" in evidence
         assert "results/scalability_results.json" in evidence
@@ -176,6 +241,11 @@ def test_verification_records_schema_order_and_inventory_reconciliation() -> Non
     trace_record = by_id["TST-TRC-005"]
     assert "complete 13-column verification-record schema" in trace_record["actual_result"]
     assert "test_verification_records_schema_order_and_inventory_reconciliation" in trace_record["evidence"]
+    assert by_id["TST-DAT-003"]["environment_reference"] == "audit/validation/subproject_06_07_validation.md"
+    assert by_id["TST-CRD-006"]["environment_reference"] == "audit/validation/subproject_06_07_validation.md"
+    assert by_id["TST-CFG-005"]["environment_reference"] == "audit/validation/subproject_06_07_validation.md"
+    assert by_id["TST-E2E-001"]["environment_reference"] == "audit/validation/subproject_06_08_validation.md"
+    assert by_id["TST-DAT-004"]["environment_reference"] == "audit/validation/subproject_06_03_validation.md"
 
 
 def test_final_inventory_is_94_implemented_and_six_optional_designed() -> None:

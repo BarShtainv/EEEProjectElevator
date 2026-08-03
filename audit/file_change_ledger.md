@@ -316,3 +316,14 @@ Final repaired-node 100/100, configuration-file 30/30 at 58 tests per run, varie
 | `audit/file_change_ledger.md` | Added only this SP-06.11 section. | Every earlier ledger section retained. |
 
 SP-06.11 final validation passed the documentation and historical resolver modules, every published pytest command, 976-test repository and copied-tree suites, CLI grant/timeout reproduction, temporary 12-row experiment, standalone reconciliation, compilation/import, UTF-8/path/link/schema/claim/metadata/repair preservation, Git scope, and cleanup gates. No protected behavior, optional feature, prior evidence, release, commit, or push occurred.
+
+## SP-06.11R final verification-record provenance repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/validation/subproject_06_11_verification_records.csv` | Corrected only 15 historically inaccurate `environment_reference` cells after auditing all 100 evidence rows against test-file creation commits and stage execution records. | Exact schema/order/content/evaluation counts retained; evidence nodes unchanged; experiment/SP-06.11/optional special provenance retained. |
+| `tests/inspection/test_documentation_reproducibility.py` | Extended the existing verification-record test with an explicit immutable 21-test-path provenance map, multi-stage semantics, exact environment ownership, special-case checks, and five named regressions. | Existing schema/order/expected-actual/node/inventory/traceability/UTF-8/path/claim/metadata/repair checks remain intact; test count stays 976. |
+| `audit/validation/subproject_06_11_provenance_repair.md` | Added accepted baseline, complete 15-row before/after evidence, pre-repair failure, semantic/standalone/full/copied/structural validation, scope, cleanup, and readiness. | Does not rewrite accepted SP-06.11 records or infer provenance from inventory category. |
+| `audit/file_change_ledger.md` | Added only this narrow provenance-repair section. | Every earlier ledger section retained. |
+
+Final provenance validation passed all 100 rows, documentation 11/11, resolver 2/2, full and copied-tree suites 976/976, compilation/import, Git scope, and cleanup. Inventory remains 94/6 and traceability remains 60/6. No simulator behavior, Subproject-7 work, release, commit, or push occurred.
