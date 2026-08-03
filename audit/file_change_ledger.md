@@ -297,3 +297,22 @@ R2 baseline 965/965, experiment 94/94, bounded smoke, official 12-row run, stand
 | `audit/file_change_ledger.md` | Added only this narrow repair section. | Every earlier ledger section retained. |
 
 Final repaired-node 100/100, configuration-file 30/30 at 58 tests per run, varied-seed full-suite 5/5 at 965 tests per run, and canonical baseline 965/965 validation passed with zero failures, skips, or xfails. Compilation and imports passed. No production source, SP-06.11 documentation, inventory, traceability, scalability artifact, dependency, optional feature, commit, or push occurred.
+
+## SP-06.11 final documentation, reproducibility, verification, and reconciliation
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `README.md` | Replaced the one-line placeholder with the exact title, status, capabilities, repository map, setup/test/CLI/experiment entry points, final verification state, and limitations/later work. | No unsupported commercial, physical, safety, real-time, production-readiness, CI, or approval claim. |
+| `docs/reproducibility.md` | Added the single detailed no-install/editable/focused-test/temporary-CLI/temporary-experiment/result-validation/cleanup/troubleshooting authority. | Uses repository-relative paths; no developer identity/path; no duplicate manual or timing threshold. |
+| `docs/test_plan.md` | Appended only `SP-06 execution outcome and canonical evidence`, distinguishing prospective SP-05 design from actual records and linking six canonical artifacts. | Every earlier designed expectation and non-pass disclaimer retained. |
+| `audit/validation/subproject_06_11_verification_records.csv` | Added 100 inventory-ordered expected-versus-actual rows with the exact 13 columns, 94 passed and six optional-deferred evaluations, concrete evidence, and environment references. | Optional work is not falsely passed; no fabricated timing or absolute path. |
+| `docs/test_case_inventory.csv` | Promoted only `TST-TRC-005.status` from designed to implemented after its verification-record test passed. | Final 94 implemented/6 optional designed; every other cell/order/ID retained. |
+| `docs/requirements_to_test_traceability.csv` | Changed only status cells: 60 required planned rows to verified and six optional planned rows to optional_deferred. | All other columns/order/IDs preserved; no optional requirement claimed verified. |
+| `tests/inspection/test_inventory_traceability.py` | Narrowly allowed the one historically scheduled SP-06.11 row, like SP-06.10 rows, to reflect later live implementation. | Historical SP-06.9 CSV/classes/counts/order/evidence/reference checks and optional-designed rule retained. |
+| `tests/inspection/test_documentation_reproducibility.py` | Added 11 README/reproducibility/verification/inventory/traceability/test-plan/UTF-8/link/claim/metadata/repair/scalability inspections. | Context-aware limitations; no order dependence, production import, network, or optional execution. |
+| `audit/baselines/subproject_06_11_baseline.md` | Recorded accepted clean commit/environment, 965/965 baseline, repair hash, 93/7 and 66-planned handoff, experiment artifacts, scope, approvals, and deferrals. | No edit preceded the prescribed baseline. |
+| `audit/stage_reports/subproject_06_11.md` | Added final documentation/reconciliation and reproduction handoff, including deviations and boundaries. | Human/later-project work remains explicit. |
+| `audit/validation/subproject_06_11_validation.md` | Added exact baseline, test, smoke, copy, artifact, failure/correction, final-command, cleanup, scope, and readiness evidence. | No unexecuted success or behavioral claim. |
+| `audit/file_change_ledger.md` | Added only this SP-06.11 section. | Every earlier ledger section retained. |
+
+SP-06.11 final validation passed the documentation and historical resolver modules, every published pytest command, 976-test repository and copied-tree suites, CLI grant/timeout reproduction, temporary 12-row experiment, standalone reconciliation, compilation/import, UTF-8/path/link/schema/claim/metadata/repair preservation, Git scope, and cleanup gates. No protected behavior, optional feature, prior evidence, release, commit, or push occurred.

@@ -182,3 +182,20 @@ Additional Wiegand profiles, administrative/time-based authorization, persistent
 ## Interpretation limitations
 
 Passing later software tests would demonstrate conformance of one Python implementation to this proposed model under controlled inputs. It would not demonstrate real-reader compatibility, commercial-card behavior, electrical correctness, elevator response, safety, certification, reliability in service, or a real-time guarantee. Host timing is observational and comparable only with its recorded workload/environment.
+
+## SP-06 execution outcome and canonical evidence
+
+This test plan was created before implementation and retains its designed expectations and historical framing. SP-05 did not claim executed or passing results. Actual outcomes are preserved separately from those expectations in the final verification records and stage validation.
+
+Final SP-06.11 validation collected and passed 976 automated tests with zero failures, skips, or xfails. Required scalability execution completed sizes 10, 100, 1,000, and 10,000 with three measured rows per size and 12 reconciled aggregate rows. The live inventory contains 94 implemented required/MVP rows and six designed optional rows. Requirements traceability contains 60 verified required rows and six optional-deferred rows.
+
+Canonical execution evidence is stored at:
+
+- inventory: `docs/test_case_inventory.csv`;
+- requirements traceability: `docs/requirements_to_test_traceability.csv`;
+- final expected-versus-actual records: `audit/validation/subproject_06_11_verification_records.csv`;
+- committed scalability aggregates: `results/scalability_results.json`;
+- scalability environment and interpretation limits: `results/scalability_environment.json`;
+- final SP-06.11 command and reconciliation evidence: `audit/validation/subproject_06_11_validation.md`.
+
+These results verify only the deterministic Python software model and its proposed project contracts. They do not provide hardware, RF, electrical, physical elevator-control, safety, certification, field-reliability, production-readiness, real-time, or commercial-equivalence evidence.
