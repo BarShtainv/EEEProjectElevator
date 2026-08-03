@@ -268,3 +268,22 @@ File adapter 58/58, CLI 42/42, and full 859/859 suites passed. The real temporar
 | `audit/file_change_ledger.md` | Added this SP-06.9 section. | Every earlier ledger section retained. |
 
 Final end-to-end 4/4, integration 192/192, inspection 8/8, focused canonical matrix 97/97, and full 871/871 suites passed with no failures, skips, or xfails. Compilation, imports, and three-file standard-library CSV validation passed. No production source, requirement, traceability, architecture, register, design, sequence, decision, dependency, prior test/audit, evidence, literature, or Git-history change occurred. SP-06.10 experiments and SP-06.11 final documentation remain scheduled; optional work remains deferred; no commit or push occurred.
+
+## SP-06.10 deterministic scalability experiments and evidence repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_10_baseline.md` | Recorded accepted SP-06.9 commit, clean 871/871 baseline, 88/12 inventory handoff, authorized paths, and interpretation boundary. | Preserved unchanged through repair. |
+| `audit/baselines/subproject_06_10_repair_baseline.md` | Recorded incomplete commit, clean 962/962 repair baseline, six existing artifacts, missing evidence, strict-mix defect, and repair boundary. | Original baseline/prior audits retained. |
+| `experiments/scalability_config.json` | Added strict schema-1 `SP06_SCALABILITY_V1` configuration with seed 260516, four sizes, 1/3 repetitions, 100/2000 timing configuration, disabled watchdog, and 40/20/15/15/10 mix. | Program defaults and requirements unchanged. |
+| `scripts/run_experiments.py` | Added strict parser, domain-seeded immutable generation, canonical checksums, public-controller repetitions, `Controller.submit` timing, fmean/median/nearest-rank-p95/throughput aggregation, reconciliation, environment/results validation, CLI, and atomic sibling output. Repair made the official mix an exact immutable comparison. | No production optimization, new dependency, concurrency, device/service, or threshold. |
+| `tests/experiment/test_run_experiments.py` | Added 94 configuration/generation/size/mix/outcome/p95/fake-timer/schema/environment/export/CLI/structure cases, including two positive total-100 official substitution regressions and non-official support. | No skip, xfail, external dependency, raw fixture, or production mutation. |
+| `results/scalability_results.json` | Runner-generated 12 aggregate rows for four sizes and three measured repetitions; all counts, metrics, checksums, and environment references validate. | Contains no generated inputs, event records, sample arrays, identifiers, paths, or threshold claim. |
+| `results/scalability_environment.json` | Runner-generated bounded non-secret environment/configuration/limitation record with stable ID. | Explicitly observational software-model evidence only. |
+| `docs/test_case_inventory.csv` | Promoted only `TST-REP-001`, `TST-REP-002`, and `TST-SCL-001`–`003`; final status 93 implemented/7 designed. | `TST-TRC-005`, six optional rows, every other cell, order, and IDs retained. |
+| `tests/inspection/test_inventory_traceability.py` | After a reproduced 964/1 regression, narrowly allowed historically scheduled SP-06.10 rows to reflect later implementation while still requiring SP-06.11 to remain designed. | SP-06.9 resolution CSV, class/status history, ID links, optional deferrals, and SP-06.11 gate retained. |
+| `audit/stage_reports/subproject_06_10.md` | Added complete handoff, generation/checksum, execution/metric, result, inventory, repair, scope, and readiness record. | SP-06.11 remains deferred. |
+| `audit/validation/subproject_06_10_validation.md` | Added exact commands/results, smoke/full outcomes, 12-row reconciliation, checksums, defect evidence/correction, final gates, cleanup, and scope record. | No unexecuted result claimed. |
+| `audit/file_change_ledger.md` | Added this complete SP-06.10/R/R2 section. | Every earlier ledger section retained. |
+
+R2 baseline 965/965, experiment 94/94, bounded smoke, official 12-row run, standalone schema/count/metric/checksum/environment checks, targeted resolver 2/2, corrected regression 965/965, compilation, imports, and final Git/scope/cleanup checks passed. The first promoted-inventory regression intentionally recorded the stale-test defect at 964/965 before its narrow correction. No SP-06.11 work, optional behavior, production source change, commit, or push occurred.

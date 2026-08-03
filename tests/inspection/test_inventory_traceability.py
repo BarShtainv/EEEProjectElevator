@@ -142,8 +142,11 @@ def test_sp06_09_resolution_is_complete_concrete_and_status_consistent() -> None
                 _assert_test_reference(reference.strip())
         elif coverage_class in SCHEDULED_CLASSES:
             assert status == "scheduled"
-            assert inventory_row["status"] == "designed"
             assert row["owner_stage"] in {"SP-06.10", "SP-06.11"}
+            if row["owner_stage"] == "SP-06.10":
+                assert inventory_row["status"] in {"designed", "implemented"}
+            else:
+                assert inventory_row["status"] == "designed"
             assert row["implementation_reference"].startswith("docs/implementation_sequence.md::Task ")
         else:
             assert coverage_class == "optional_deferred"
