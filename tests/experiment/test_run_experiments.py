@@ -247,6 +247,56 @@ def test_configuration_rejects_official_substitution_and_invalid_utf8(tmp_path: 
         runner.load_experiment_config(path)
 
 
+@pytest.mark.parametrize(
+    "substituted_mix",
+    [
+        {
+            "granted": 39,
+            "unauthorized_floor": 21,
+            "disabled_credential": 15,
+            "unknown_credential": 15,
+            "invalid_frame": 10,
+        },
+        {
+            "granted": 20,
+            "unauthorized_floor": 20,
+            "disabled_credential": 20,
+            "unknown_credential": 20,
+            "invalid_frame": 20,
+        },
+    ],
+)
+def test_official_configuration_rejects_positive_total_100_mix_substitution(
+    substituted_mix: dict[str, int],
+) -> None:
+    value = official_object()
+    value["workload_mix_percent"] = substituted_mix
+    with pytest.raises(
+        runner.ExperimentError,
+        match="official configuration values must not be substituted",
+    ):
+        parse_object(value)
+
+
+def test_nonofficial_bounded_configuration_retains_generic_mix_support() -> None:
+    value = official_object()
+    value.update(
+        configuration_id="SP06_SMOKE_V1",
+        credential_counts=[10],
+        minimum_request_count=100,
+        measured_repetitions=1,
+        workload_mix_percent={
+            "granted": 20,
+            "unauthorized_floor": 20,
+            "disabled_credential": 20,
+            "unknown_credential": 20,
+            "invalid_frame": 20,
+        },
+    )
+    config = parse_object(value)
+    assert config.mix() == value["workload_mix_percent"]
+
+
 @pytest.mark.parametrize("credential_count", [10, 100, 1000, 10000])
 def test_tst_rep_001_tst_scl_001_required_sizes_regenerate_exactly(
     credential_count: int,

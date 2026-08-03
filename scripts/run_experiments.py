@@ -46,6 +46,13 @@ CATEGORIES = (
     "unknown_credential",
     "invalid_frame",
 )
+OFFICIAL_MIX = (
+    ("granted", 40),
+    ("unauthorized_floor", 20),
+    ("disabled_credential", 15),
+    ("unknown_credential", 15),
+    ("invalid_frame", 10),
+)
 CONFIG_FIELDS = (
     "schema_version",
     "configuration_id",
@@ -298,7 +305,7 @@ def parse_experiment_config(text: str) -> ExperimentConfig:
             output_duration_ms == 100,
             watchdog_timeout_ms == 2000,
             watchdog_enabled is False,
-            all(percent > 0 for _, percent in mix),
+            tuple(mix) == OFFICIAL_MIX,
         )
         if not all(official_values):
             raise ExperimentError("official configuration values must not be substituted")
