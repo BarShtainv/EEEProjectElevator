@@ -1,0 +1,35 @@
+flowchart LR
+    NOTE["PROPOSED PROJECT ARCHITECTURE<br/>conceptual controller class; not commercial hardware"]
+
+    subgraph CONCEPT["Conceptual hardware reference — not implemented electrically"]
+        PWR["Power input / regulation / protection<br/>no ratings assigned"]
+        RDR["External reader boundary<br/>D0/D1 context only"]
+        ISO["Input conditioning / isolation<br/>concept only"]
+        ACQ["Frame-acquisition boundary"]
+        CORE["Controller core"]
+        MEM["Program · working · credential<br/>memory concepts"]
+        TMW["Timer · watchdog"]
+        ELOG["Event-log storage"]
+        SVC["Service / configuration"]
+        CH["16 abstract permission channels"]
+        DRV["Output driver / isolation<br/>concept only"]
+    end
+
+    subgraph SIM["Implemented project boundary — later Python simulator"]
+        FRAME["Complete frame + LF/HF metadata"]
+        MODEL["Validation · lookup · authorization<br/>timing · logging · reset"]
+        ABSTRACT["16 logical Boolean outputs"]
+    end
+
+    OUTSIDE["Outside implemented boundary:<br/>physical reader and elevator interface<br/>no wiring, motion, safety, or certification claim"]
+
+    PWR --> CORE
+    RDR --> ISO --> ACQ -. "simulator begins after acquisition" .-> FRAME
+    FRAME --> MODEL --> ABSTRACT
+    CORE --- MEM
+    CORE --- TMW
+    CORE --- ELOG
+    SVC --> CORE
+    CORE --> CH --> DRV -. "no modeled electrical command" .-> OUTSIDE
+    NOTE --- MODEL
+

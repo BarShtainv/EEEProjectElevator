@@ -77,3 +77,7 @@ These experiments evaluate the Python data model and test environment only. They
 ## Human review and scope approval
 
 The project owner has authorized SP-03 to proceed with DEC-008's abstract software-only boundary. Supervisor approval remains pending. Before architecture is treated as approved, human reviewers must confirm the working title, `PROJECT_WIEGAND_26` allocation, floor-mask mapping, timing values, watchdog timeout, busy policy, event schema, software-only boundary, and required-versus-optional deliverables. Any physical-integration expansion requires a separate evidence and approval stage.
+
+## SP-04 architecture derivation method
+
+The conceptual architecture assigns every required requirement to an owned responsibility, interface, state transition, logical memory/register construct, failure policy, verification boundary, or limitation. Ambiguities are resolved as proposed decisions without altering frozen requirements. Consistency is checked across ownership, state/output invariants, reset preservation, enumeration values, register fields, failure recovery, diagrams, and the architecture-to-requirements matrix. Conceptual hardware blocks provide context only; software architecture begins with a complete frame and ends at abstract outputs.

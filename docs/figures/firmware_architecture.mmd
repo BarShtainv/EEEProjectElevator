@@ -1,0 +1,31 @@
+flowchart LR
+    NOTE["PROPOSED PROJECT ARCHITECTURE<br/>responsibilities, not final Python classes"]
+    CLI["CLI / demo adapter<br/>ARC-CLI-001"]
+    TST["Test / experiment harness<br/>ARC-TST-001"]
+    CTL["Controller coordinator<br/>ARC-CTL-001<br/>owns transition policy"]
+    INP["Frame/profile handler<br/>ARC-INP-001"]
+    CRD[("Credential repository<br/>ARC-CRD-001")]
+    AUT["Authorization engine<br/>ARC-AUT-001"]
+    OUT["Output manager<br/>ARC-OUT-001<br/>owns output + expiry"]
+    LOG[("Event logger<br/>ARC-LOG-001<br/>owns sequence")]
+    TIM["Simulated clock<br/>ARC-TIM-001"]
+    WDG["Watchdog model<br/>ARC-WDG-001<br/>owns deadline"]
+    CFG["Configuration<br/>ARC-CFG-001"]
+
+    CLI --> CTL
+    TST --> CTL
+    TST --> TIM
+    TST --> WDG
+    CTL --> INP --> CRD --> AUT --> CTL
+    CTL --> LOG
+    CTL --> OUT
+    CFG --> INP
+    CFG --> CRD
+    CFG --> WDG
+    CFG --> OUT
+    TIM --> OUT
+    TIM --> WDG --> CTL
+    LOG --> TST
+    OUT --> TST
+    NOTE --- CTL
+

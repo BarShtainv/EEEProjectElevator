@@ -1,0 +1,23 @@
+flowchart TD
+    NOTE["PROPOSED PROJECT WATCHDOG<br/>simulated monotonic time; no MCU equivalence"]
+    INIT["Enable with default 2000 ms<br/>set last service + deadline"]
+    PROG["Coordinator reaches service checkpoint"]
+    SUP{"Fault injection suppresses service?"}
+    SERVICE["Update last service and deadline"]
+    ADV["Harness advances logical clock"]
+    EXP{"Deadline reached?"}
+    REQ["Emit exactly one watchdog reset request"]
+    OFF["Clear outputs and expiry"]
+    CLEAR["Clear transient state;<br/>preserve config, credentials, event history"]
+    LOG["Append watchdog_reset/reset/watchdog_timeout"]
+    REINIT["Reinitialize watchdog and return IDLE"]
+    LOGFAIL["On append failure expose logging_error;<br/>reset still completes"]
+
+    NOTE --> INIT --> PROG --> SUP
+    SUP -- no --> SERVICE --> ADV
+    SUP -- yes --> ADV
+    ADV --> EXP
+    EXP -- no --> PROG
+    EXP -- yes --> REQ --> OFF --> CLEAR --> LOG --> REINIT
+    LOG -. failure .-> LOGFAIL --> REINIT
+

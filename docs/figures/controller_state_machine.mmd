@@ -1,0 +1,29 @@
+stateDiagram-v2
+    direction LR
+    note right of IDLE
+      PROPOSED PROJECT STATE MACHINE
+      all outputs inactive in IDLE
+    end note
+
+    [*] --> RESETTING: startup / clear outputs and transient state
+    RESETTING --> INITIALIZING: startup reset complete
+    RESETTING --> IDLE: runtime reset complete / preserved state valid
+    INITIALIZING --> IDLE: config and repository valid
+    INITIALIZING --> INITIALIZING: initialization invalid / all inactive
+    IDLE --> VALIDATING: request / snapshot and service watchdog
+    VALIDATING --> IDLE: invalid / log error
+    VALIDATING --> LOOKUP: valid frame / retain decoded key
+    LOOKUP --> IDLE: unknown or disabled / log denial
+    LOOKUP --> AUTHORIZING: known enabled credential
+    AUTHORIZING --> IDLE: invalid or unauthorized floor / log outcome
+    AUTHORIZING --> OUTPUT_ACTIVE: grant event appended / activate one output
+    AUTHORIZING --> IDLE: grant event append failure / logging_error
+    OUTPUT_ACTIVE --> OUTPUT_ACTIVE: new request / controller_busy; preserve expiry
+    OUTPUT_ACTIVE --> IDLE: timeout / clear output
+    RESETTING --> RESETTING: manual or watchdog reset
+    INITIALIZING --> RESETTING: manual or watchdog reset
+    IDLE --> RESETTING: manual or watchdog reset
+    VALIDATING --> RESETTING: manual or watchdog reset
+    LOOKUP --> RESETTING: manual or watchdog reset
+    AUTHORIZING --> RESETTING: manual or watchdog reset
+    OUTPUT_ACTIVE --> RESETTING: manual or watchdog reset

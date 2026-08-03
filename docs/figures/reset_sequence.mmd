@@ -1,0 +1,24 @@
+flowchart TD
+    NOTE["PROPOSED PROJECT RESET SEQUENCE<br/>logical reset; not physical safety certification"]
+    CAUSE{"Startup or runtime reset?"}
+    OFF["Force all 16 outputs inactive"]
+    CANCEL["Cancel expiry; clear request / decode / decision"]
+    START["Initialize event sequence + time references"]
+    PRES["Preserve valid config, credentials,<br/>prior events, sequence progression"]
+    CFG["Load / validate configuration and repository"]
+    LOG["Append manual_reset/manual_request<br/>or watchdog_reset/watchdog_timeout"]
+    WDG["Initialize watchdog state"]
+    VALID{"Configuration and repository valid?"}
+    IDLE["Enter IDLE"]
+    BLOCK["Remain INITIALIZING<br/>all inactive; reject normal requests"]
+    FAULT["If reset-event append fails:<br/>complete reset and expose logging fault"]
+
+    NOTE --> CAUSE
+    CAUSE -- startup --> OFF --> CANCEL --> START --> CFG
+    CAUSE -- manual/watchdog --> OFF --> CANCEL --> PRES --> LOG --> WDG --> VALID
+    LOG -. failure .-> FAULT --> WDG
+    START --> WDG
+    CFG --> WDG
+    VALID -- yes --> IDLE
+    VALID -- no --> BLOCK
+
