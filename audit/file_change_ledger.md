@@ -370,3 +370,15 @@ The quantitative summary remains byte-identical at `dc168fec1b5f5cb018fd9be818c4
 | `audit/file_change_ledger.md` | Added only this SP-07.2 section. | Every earlier ledger section retained. |
 
 Official hashes are config `6668ba4b744ef2a708dbdc471457751535370d4baba2d9754ec8589c1e299838`, results `5739eaf829fabce8aa83f9c7905d23093f9853753afb8e15c411541c2b2c64a1`, and environment `106eba0f338b2cbb215dbbd7536d2814985843856b650b749a983710ad55f7ec`. No simulator, accepted mixed benchmark, SP-07.1 artifact, figure, report, SP-07.3/SP-07.4 work, commit, or push occurred.
+
+## SP-07.2R direct-call timing-boundary repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/run_experiments.py` | Removed the callable-executing timer helper and lambda wrappers; added captured-reading validation and direct lookup/authorization calls between timer reads. | Workload generation, classification, matrices, metrics, schemas, public operations, and production source remain unchanged. |
+| `tests/analysis/test_run_isolated_experiments.py` | Added an AST regression proving direct operation placement, no lambda/generic executor, post-timer classification, pre-timer argument binding, and pre-loop repository construction. | Retained behavioral event-order, fake-timer, 24-row, schema, CLI, atomicity, and structural coverage. |
+| `data/results/sp07_isolated_operation_results.json` | Replaced the superseded wrapper-inclusive timing values with the single corrected direct-call run. | All non-timing fields are identical; no raw cases, credentials, or timing samples were added. |
+| `audit/validation/subproject_07_02_timing_boundary_repair.md` | Added accepted-state, defect, correction, regression, single-run, identity, reproduction, independent, final-validation, scope, and readiness evidence. | Existing SP-07.2 baseline/stage/validation records remain historical and unchanged. |
+| `audit/file_change_ledger.md` | Added only this SP-07.2R section. | Every earlier ledger section retained. |
+
+The result hash changed from `5739eaf829fabce8aa83f9c7905d23093f9853753afb8e15c411541c2b2c64a1` to `9d8edd077439a12000cc560c615208dff0f381a5b77f3c8474b3b92b4e540bdf`; environment bytes remain unchanged. The original timing rows are superseded, and no cross-boundary performance comparison was made. No simulator, mixed benchmark, SP-07.1 artifact, SP-07.3/SP-07.4 work, commit, or push occurred.

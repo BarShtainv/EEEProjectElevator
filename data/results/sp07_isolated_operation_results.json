@@ -41,90 +41,90 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 278.217,
-      "median_ns": 279.0,
-      "p95_ns": 327,
-      "throughput_cases_per_second": 3594316.666486951,
-      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
-      "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "credential_repository_lookup",
-      "credential_count": 10,
-      "case_count": 1000,
-      "repetition": 2,
-      "processed": 1000,
-      "expected_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "actual_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "confusion_matrix": {
-        "hit": {
-          "hit": 500,
-          "miss": 0
-        },
-        "miss": {
-          "hit": 0,
-          "miss": 500
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": null,
-      "correct_denial_count": null,
-      "correct_error_count": null,
-      "incorrect_grant_count": null,
-      "incorrect_denial_count": null,
-      "other_mismatch_count": null,
-      "average_ns": 281.215,
-      "median_ns": 278.0,
-      "p95_ns": 356,
-      "throughput_cases_per_second": 3555998.079761037,
-      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
-      "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "credential_repository_lookup",
-      "credential_count": 10,
-      "case_count": 1000,
-      "repetition": 3,
-      "processed": 1000,
-      "expected_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "actual_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "confusion_matrix": {
-        "hit": {
-          "hit": 500,
-          "miss": 0
-        },
-        "miss": {
-          "hit": 0,
-          "miss": 500
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": null,
-      "correct_denial_count": null,
-      "correct_error_count": null,
-      "incorrect_grant_count": null,
-      "incorrect_denial_count": null,
-      "other_mismatch_count": null,
-      "average_ns": 280.936,
+      "average_ns": 297.496,
       "median_ns": 272.0,
-      "p95_ns": 375,
-      "throughput_cases_per_second": 3559529.572571689,
+      "p95_ns": 351,
+      "throughput_cases_per_second": 3361389.7329712,
+      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+      "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "credential_repository_lookup",
+      "credential_count": 10,
+      "case_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "expected_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "actual_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "confusion_matrix": {
+        "hit": {
+          "hit": 500,
+          "miss": 0
+        },
+        "miss": {
+          "hit": 0,
+          "miss": 500
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": null,
+      "correct_denial_count": null,
+      "correct_error_count": null,
+      "incorrect_grant_count": null,
+      "incorrect_denial_count": null,
+      "other_mismatch_count": null,
+      "average_ns": 286.191,
+      "median_ns": 269.0,
+      "p95_ns": 328,
+      "throughput_cases_per_second": 3494169.97739272,
+      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+      "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "credential_repository_lookup",
+      "credential_count": 10,
+      "case_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "expected_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "actual_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "confusion_matrix": {
+        "hit": {
+          "hit": 500,
+          "miss": 0
+        },
+        "miss": {
+          "hit": 0,
+          "miss": 500
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": null,
+      "correct_denial_count": null,
+      "correct_error_count": null,
+      "incorrect_grant_count": null,
+      "incorrect_denial_count": null,
+      "other_mismatch_count": null,
+      "average_ns": 320.778,
+      "median_ns": 286.0,
+      "p95_ns": 366,
+      "throughput_cases_per_second": 3117420.770751111,
       "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
       "case_checksum_sha256": "b8b93c16a186d77e341c0627d5ec8dc088643bc5e057009da9350a49c820db64",
       "environment_id": "env-5b6705a77f411683"
@@ -161,90 +161,90 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 278.265,
-      "median_ns": 275.5,
-      "p95_ns": 337,
-      "throughput_cases_per_second": 3593696.6560652615,
-      "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
-      "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "credential_repository_lookup",
-      "credential_count": 100,
-      "case_count": 1000,
-      "repetition": 2,
-      "processed": 1000,
-      "expected_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "actual_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "confusion_matrix": {
-        "hit": {
-          "hit": 500,
-          "miss": 0
-        },
-        "miss": {
-          "hit": 0,
-          "miss": 500
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": null,
-      "correct_denial_count": null,
-      "correct_error_count": null,
-      "incorrect_grant_count": null,
-      "incorrect_denial_count": null,
-      "other_mismatch_count": null,
-      "average_ns": 276.223,
-      "median_ns": 278.0,
-      "p95_ns": 337,
-      "throughput_cases_per_second": 3620263.337955203,
-      "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
-      "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "credential_repository_lookup",
-      "credential_count": 100,
-      "case_count": 1000,
-      "repetition": 3,
-      "processed": 1000,
-      "expected_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "actual_outcomes": {
-        "hit": 500,
-        "miss": 500
-      },
-      "confusion_matrix": {
-        "hit": {
-          "hit": 500,
-          "miss": 0
-        },
-        "miss": {
-          "hit": 0,
-          "miss": 500
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": null,
-      "correct_denial_count": null,
-      "correct_error_count": null,
-      "incorrect_grant_count": null,
-      "incorrect_denial_count": null,
-      "other_mismatch_count": null,
-      "average_ns": 274.165,
-      "median_ns": 271.0,
+      "average_ns": 271.767,
+      "median_ns": 267.0,
       "p95_ns": 335,
-      "throughput_cases_per_second": 3647438.586252804,
+      "throughput_cases_per_second": 3679622.617904308,
+      "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
+      "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "credential_repository_lookup",
+      "credential_count": 100,
+      "case_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "expected_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "actual_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "confusion_matrix": {
+        "hit": {
+          "hit": 500,
+          "miss": 0
+        },
+        "miss": {
+          "hit": 0,
+          "miss": 500
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": null,
+      "correct_denial_count": null,
+      "correct_error_count": null,
+      "incorrect_grant_count": null,
+      "incorrect_denial_count": null,
+      "other_mismatch_count": null,
+      "average_ns": 278.224,
+      "median_ns": 266.5,
+      "p95_ns": 324,
+      "throughput_cases_per_second": 3594226.2349761343,
+      "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
+      "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "credential_repository_lookup",
+      "credential_count": 100,
+      "case_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "expected_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "actual_outcomes": {
+        "hit": 500,
+        "miss": 500
+      },
+      "confusion_matrix": {
+        "hit": {
+          "hit": 500,
+          "miss": 0
+        },
+        "miss": {
+          "hit": 0,
+          "miss": 500
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": null,
+      "correct_denial_count": null,
+      "correct_error_count": null,
+      "incorrect_grant_count": null,
+      "incorrect_denial_count": null,
+      "other_mismatch_count": null,
+      "average_ns": 306.548,
+      "median_ns": 290.5,
+      "p95_ns": 379,
+      "throughput_cases_per_second": 3262131.868418649,
       "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
       "case_checksum_sha256": "2197f4be64abb04b7b0f4c255ee3307de626ce3833e968d228a97bb9e2ab50cd",
       "environment_id": "env-5b6705a77f411683"
@@ -281,10 +281,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 294.593,
-      "median_ns": 285.5,
-      "p95_ns": 351,
-      "throughput_cases_per_second": 3394513.7868177453,
+      "average_ns": 291.953,
+      "median_ns": 283.0,
+      "p95_ns": 349,
+      "throughput_cases_per_second": 3425208.8521097573,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "aef62d7e8c6853e24e28529658c7d8398b819852eef21b1a1d2f693424a97dfe",
       "environment_id": "env-5b6705a77f411683"
@@ -321,10 +321,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 365.403,
-      "median_ns": 305.5,
-      "p95_ns": 470,
-      "throughput_cases_per_second": 2736704.405820423,
+      "average_ns": 292.728,
+      "median_ns": 289.0,
+      "p95_ns": 402,
+      "throughput_cases_per_second": 3416140.58101719,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "aef62d7e8c6853e24e28529658c7d8398b819852eef21b1a1d2f693424a97dfe",
       "environment_id": "env-5b6705a77f411683"
@@ -361,10 +361,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 338.588,
-      "median_ns": 305.0,
-      "p95_ns": 463,
-      "throughput_cases_per_second": 2953441.941238319,
+      "average_ns": 295.824,
+      "median_ns": 290.5,
+      "p95_ns": 361,
+      "throughput_cases_per_second": 3380388.339012386,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "aef62d7e8c6853e24e28529658c7d8398b819852eef21b1a1d2f693424a97dfe",
       "environment_id": "env-5b6705a77f411683"
@@ -401,10 +401,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 329.885,
-      "median_ns": 291.0,
-      "p95_ns": 364,
-      "throughput_cases_per_second": 3031359.4131288175,
+      "average_ns": 351.938,
+      "median_ns": 334.0,
+      "p95_ns": 532,
+      "throughput_cases_per_second": 2841409.5664577284,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "aa6b1afaa8d8e65f3b121c60ea8b40c6b7188bba76f6abcbb0efdacfe232862b",
       "environment_id": "env-5b6705a77f411683"
@@ -441,10 +441,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 373.23,
-      "median_ns": 302.0,
-      "p95_ns": 396,
-      "throughput_cases_per_second": 2679313.0241406104,
+      "average_ns": 294.767,
+      "median_ns": 290.0,
+      "p95_ns": 372,
+      "throughput_cases_per_second": 3392510.0163858235,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "aa6b1afaa8d8e65f3b121c60ea8b40c6b7188bba76f6abcbb0efdacfe232862b",
       "environment_id": "env-5b6705a77f411683"
@@ -481,10 +481,10 @@
       "incorrect_grant_count": null,
       "incorrect_denial_count": null,
       "other_mismatch_count": null,
-      "average_ns": 357.429,
-      "median_ns": 324.0,
-      "p95_ns": 615,
-      "throughput_cases_per_second": 2797758.435941124,
+      "average_ns": 416.956,
+      "median_ns": 334.0,
+      "p95_ns": 674,
+      "throughput_cases_per_second": 2398334.596456221,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "aa6b1afaa8d8e65f3b121c60ea8b40c6b7188bba76f6abcbb0efdacfe232862b",
       "environment_id": "env-5b6705a77f411683"
@@ -560,247 +560,247 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 589.45,
-      "median_ns": 596.0,
-      "p95_ns": 690,
-      "throughput_cases_per_second": 1696496.7342437867,
-      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
-      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "authorization_decision",
-      "credential_count": 10,
-      "case_count": 1000,
-      "repetition": 2,
-      "processed": 1000,
-      "expected_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100
-      },
-      "actual_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100,
-        "other": 0
-      },
-      "confusion_matrix": {
-        "granted_authorized": {
-          "granted_authorized": 400,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unauthorized_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 200,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_disabled_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 150,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unknown_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 150,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "error_invalid_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 100,
-          "other": 0
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": 400,
-      "correct_denial_count": 500,
-      "correct_error_count": 100,
-      "incorrect_grant_count": 0,
-      "incorrect_denial_count": 0,
-      "other_mismatch_count": 0,
-      "average_ns": 595.195,
-      "median_ns": 583.5,
-      "p95_ns": 752,
-      "throughput_cases_per_second": 1680121.6408067944,
-      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
-      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "authorization_decision",
-      "credential_count": 10,
-      "case_count": 1000,
-      "repetition": 3,
-      "processed": 1000,
-      "expected_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100
-      },
-      "actual_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100,
-        "other": 0
-      },
-      "confusion_matrix": {
-        "granted_authorized": {
-          "granted_authorized": 400,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unauthorized_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 200,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_disabled_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 150,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unknown_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 150,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "error_invalid_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 100,
-          "other": 0
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": 400,
-      "correct_denial_count": 500,
-      "correct_error_count": 100,
-      "incorrect_grant_count": 0,
-      "incorrect_denial_count": 0,
-      "other_mismatch_count": 0,
-      "average_ns": 603.463,
-      "median_ns": 588.5,
-      "p95_ns": 657,
-      "throughput_cases_per_second": 1657102.4238437153,
-      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
-      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
-      "environment_id": "env-5b6705a77f411683"
-    },
-    {
-      "operation": "authorization_decision",
-      "credential_count": 100,
-      "case_count": 1000,
-      "repetition": 1,
-      "processed": 1000,
-      "expected_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100
-      },
-      "actual_outcomes": {
-        "granted_authorized": 400,
-        "denied_unauthorized_floor": 200,
-        "denied_disabled_credential": 150,
-        "denied_unknown_credential": 150,
-        "error_invalid_floor": 100,
-        "other": 0
-      },
-      "confusion_matrix": {
-        "granted_authorized": {
-          "granted_authorized": 400,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unauthorized_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 200,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_disabled_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 150,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "denied_unknown_credential": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 150,
-          "error_invalid_floor": 0,
-          "other": 0
-        },
-        "error_invalid_floor": {
-          "granted_authorized": 0,
-          "denied_unauthorized_floor": 0,
-          "denied_disabled_credential": 0,
-          "denied_unknown_credential": 0,
-          "error_invalid_floor": 100,
-          "other": 0
-        }
-      },
-      "correct_count": 1000,
-      "mismatch_count": 0,
-      "correct_grant_count": 400,
-      "correct_denial_count": 500,
-      "correct_error_count": 100,
-      "incorrect_grant_count": 0,
-      "incorrect_denial_count": 0,
-      "other_mismatch_count": 0,
-      "average_ns": 574.873,
-      "median_ns": 568.0,
+      "average_ns": 590.139,
+      "median_ns": 597.0,
       "p95_ns": 680,
-      "throughput_cases_per_second": 1739514.6406249728,
+      "throughput_cases_per_second": 1694516.0377470392,
+      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "authorization_decision",
+      "credential_count": 10,
+      "case_count": 1000,
+      "repetition": 2,
+      "processed": 1000,
+      "expected_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100
+      },
+      "actual_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100,
+        "other": 0
+      },
+      "confusion_matrix": {
+        "granted_authorized": {
+          "granted_authorized": 400,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unauthorized_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 200,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_disabled_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 150,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unknown_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 150,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "error_invalid_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 100,
+          "other": 0
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": 400,
+      "correct_denial_count": 500,
+      "correct_error_count": 100,
+      "incorrect_grant_count": 0,
+      "incorrect_denial_count": 0,
+      "other_mismatch_count": 0,
+      "average_ns": 557.965,
+      "median_ns": 564.0,
+      "p95_ns": 655,
+      "throughput_cases_per_second": 1792227.1110195084,
+      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "authorization_decision",
+      "credential_count": 10,
+      "case_count": 1000,
+      "repetition": 3,
+      "processed": 1000,
+      "expected_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100
+      },
+      "actual_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100,
+        "other": 0
+      },
+      "confusion_matrix": {
+        "granted_authorized": {
+          "granted_authorized": 400,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unauthorized_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 200,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_disabled_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 150,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unknown_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 150,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "error_invalid_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 100,
+          "other": 0
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": 400,
+      "correct_denial_count": 500,
+      "correct_error_count": 100,
+      "incorrect_grant_count": 0,
+      "incorrect_denial_count": 0,
+      "other_mismatch_count": 0,
+      "average_ns": 601.094,
+      "median_ns": 595.0,
+      "p95_ns": 717,
+      "throughput_cases_per_second": 1663633.3086006516,
+      "credential_checksum_sha256": "34895fc2a08325ce7b68a30e2062508d567cc0f4cddbf6e511ce39a541dbf6fe",
+      "case_checksum_sha256": "962de00f51de0d49141c54370ce1954b3ce04c1a585c0be7a10018fc79df2f8c",
+      "environment_id": "env-5b6705a77f411683"
+    },
+    {
+      "operation": "authorization_decision",
+      "credential_count": 100,
+      "case_count": 1000,
+      "repetition": 1,
+      "processed": 1000,
+      "expected_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100
+      },
+      "actual_outcomes": {
+        "granted_authorized": 400,
+        "denied_unauthorized_floor": 200,
+        "denied_disabled_credential": 150,
+        "denied_unknown_credential": 150,
+        "error_invalid_floor": 100,
+        "other": 0
+      },
+      "confusion_matrix": {
+        "granted_authorized": {
+          "granted_authorized": 400,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unauthorized_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 200,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_disabled_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 150,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "denied_unknown_credential": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 150,
+          "error_invalid_floor": 0,
+          "other": 0
+        },
+        "error_invalid_floor": {
+          "granted_authorized": 0,
+          "denied_unauthorized_floor": 0,
+          "denied_disabled_credential": 0,
+          "denied_unknown_credential": 0,
+          "error_invalid_floor": 100,
+          "other": 0
+        }
+      },
+      "correct_count": 1000,
+      "mismatch_count": 0,
+      "correct_grant_count": 400,
+      "correct_denial_count": 500,
+      "correct_error_count": 100,
+      "incorrect_grant_count": 0,
+      "incorrect_denial_count": 0,
+      "other_mismatch_count": 0,
+      "average_ns": 565.264,
+      "median_ns": 577.0,
+      "p95_ns": 654,
+      "throughput_cases_per_second": 1769084.8877692546,
       "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
       "case_checksum_sha256": "d9fafe565308dac634818ba753f321a6a237c043e39635843f8d65a578b25528",
       "environment_id": "env-5b6705a77f411683"
@@ -876,10 +876,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 569.083,
-      "median_ns": 570.0,
-      "p95_ns": 688,
-      "throughput_cases_per_second": 1757212.919732271,
+      "average_ns": 560.972,
+      "median_ns": 578.0,
+      "p95_ns": 640,
+      "throughput_cases_per_second": 1782620.1664254188,
       "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
       "case_checksum_sha256": "d9fafe565308dac634818ba753f321a6a237c043e39635843f8d65a578b25528",
       "environment_id": "env-5b6705a77f411683"
@@ -955,10 +955,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 768.567,
-      "median_ns": 596.0,
-      "p95_ns": 700,
-      "throughput_cases_per_second": 1301122.7388113204,
+      "average_ns": 623.174,
+      "median_ns": 586.0,
+      "p95_ns": 696,
+      "throughput_cases_per_second": 1604688.2572122714,
       "credential_checksum_sha256": "03efe39531cd6122ea01420ccbf61f105959bd3beffa44608633577ad46cd39f",
       "case_checksum_sha256": "d9fafe565308dac634818ba753f321a6a237c043e39635843f8d65a578b25528",
       "environment_id": "env-5b6705a77f411683"
@@ -1034,10 +1034,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 686.151,
-      "median_ns": 629.5,
-      "p95_ns": 773,
-      "throughput_cases_per_second": 1457405.1484294273,
+      "average_ns": 620.939,
+      "median_ns": 608.0,
+      "p95_ns": 723,
+      "throughput_cases_per_second": 1610464.1518732114,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "4fc387ecb695267694582643f3f627afeaaf632d4be8642f165580bceed72521",
       "environment_id": "env-5b6705a77f411683"
@@ -1113,10 +1113,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 605.12,
-      "median_ns": 613.0,
-      "p95_ns": 715,
-      "throughput_cases_per_second": 1652564.7805393972,
+      "average_ns": 599.708,
+      "median_ns": 586.0,
+      "p95_ns": 714,
+      "throughput_cases_per_second": 1667478.1727107193,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "4fc387ecb695267694582643f3f627afeaaf632d4be8642f165580bceed72521",
       "environment_id": "env-5b6705a77f411683"
@@ -1192,10 +1192,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 645.071,
+      "average_ns": 616.682,
       "median_ns": 610.0,
-      "p95_ns": 720,
-      "throughput_cases_per_second": 1550216.952862553,
+      "p95_ns": 718,
+      "throughput_cases_per_second": 1621581.3012216995,
       "credential_checksum_sha256": "f03e5da84c34c773d1cf0480189bca0dfd9895da39ec44ca4763c3845dcc3f6e",
       "case_checksum_sha256": "4fc387ecb695267694582643f3f627afeaaf632d4be8642f165580bceed72521",
       "environment_id": "env-5b6705a77f411683"
@@ -1271,10 +1271,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 632.989,
-      "median_ns": 581.5,
-      "p95_ns": 689,
-      "throughput_cases_per_second": 1579806.284153437,
+      "average_ns": 627.181,
+      "median_ns": 615.5,
+      "p95_ns": 719,
+      "throughput_cases_per_second": 1594436.0559391945,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "c7c426886244ab156cf90ad449831d63895200f70d4366903f58b700e72c0b31",
       "environment_id": "env-5b6705a77f411683"
@@ -1350,10 +1350,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 601.963,
-      "median_ns": 596.0,
-      "p95_ns": 690,
-      "throughput_cases_per_second": 1661231.6703850569,
+      "average_ns": 614.437,
+      "median_ns": 587.0,
+      "p95_ns": 694,
+      "throughput_cases_per_second": 1627506.1560420352,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "c7c426886244ab156cf90ad449831d63895200f70d4366903f58b700e72c0b31",
       "environment_id": "env-5b6705a77f411683"
@@ -1429,10 +1429,10 @@
       "incorrect_grant_count": 0,
       "incorrect_denial_count": 0,
       "other_mismatch_count": 0,
-      "average_ns": 583.227,
-      "median_ns": 594.0,
-      "p95_ns": 676,
-      "throughput_cases_per_second": 1714598.2610544437,
+      "average_ns": 607.636,
+      "median_ns": 595.5,
+      "p95_ns": 682,
+      "throughput_cases_per_second": 1645722.1099474027,
       "credential_checksum_sha256": "f739b3912091956c9772d4b585d372a5fa6614025a7386da79c3b64cca5180c6",
       "case_checksum_sha256": "c7c426886244ab156cf90ad449831d63895200f70d4366903f58b700e72c0b31",
       "environment_id": "env-5b6705a77f411683"

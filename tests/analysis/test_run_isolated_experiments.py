@@ -372,6 +372,95 @@ def test_timed_regions_exclude_construction_and_classification(
     assert events == ["timer", "authorize", "timer", "classify"]
 
 
+def test_ast_proves_direct_call_timing_boundaries() -> None:
+    tree = ast.parse(SCRIPT.read_text(encoding="utf-8"), filename=str(SCRIPT))
+    functions = {
+        node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)
+    }
+    assert "_timer_sample" not in functions
+
+    def assignment(function: ast.FunctionDef, name: str) -> tuple[int, ast.Assign]:
+        loop = next(node for node in function.body if isinstance(node, ast.For))
+        for index, statement in enumerate(loop.body):
+            if (
+                isinstance(statement, ast.Assign)
+                and len(statement.targets) == 1
+                and isinstance(statement.targets[0], ast.Name)
+                and statement.targets[0].id == name
+            ):
+                return index, statement
+        raise AssertionError(f"missing assignment to {name}")
+
+    def direct_call(statement: ast.Assign) -> ast.Call:
+        assert isinstance(statement.value, ast.Call)
+        return statement.value
+
+    for name in ("run_lookup_repetition", "run_authorization_repetition"):
+        function = functions[name]
+        assert not any(isinstance(node, ast.Lambda) for node in ast.walk(function))
+        assert not any(
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "_timer_sample"
+            for node in ast.walk(function)
+        )
+
+    lookup = functions["run_lookup_repetition"]
+    lookup_loop_index = next(
+        index for index, node in enumerate(lookup.body) if isinstance(node, ast.For)
+    )
+    repository_index = next(
+        index
+        for index, node in enumerate(lookup.body)
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(call.func, ast.Attribute)
+            and call.func.attr == "from_records"
+            for call in ast.walk(node)
+            if isinstance(call, ast.Call)
+        )
+    )
+    assert repository_index < lookup_loop_index
+    key_index, _ = assignment(lookup, "key")
+    lookup_start_index, lookup_start = assignment(lookup, "start")
+    lookup_call_index, lookup_outcome = assignment(lookup, "outcome")
+    lookup_end_index, lookup_end = assignment(lookup, "end")
+    lookup_classify_index, lookup_label = assignment(lookup, "actual_label")
+    assert key_index < lookup_start_index < lookup_call_index < lookup_end_index
+    assert lookup_end_index < lookup_classify_index
+    assert isinstance(direct_call(lookup_start).func, ast.Name)
+    assert direct_call(lookup_start).func.id == "timer"  # type: ignore[union-attr]
+    lookup_target = direct_call(lookup_outcome)
+    assert isinstance(lookup_target.func, ast.Attribute)
+    assert isinstance(lookup_target.func.value, ast.Name)
+    assert (lookup_target.func.value.id, lookup_target.func.attr) == ("repository", "lookup")
+    assert [argument.id for argument in lookup_target.args if isinstance(argument, ast.Name)] == ["key"]
+    assert isinstance(direct_call(lookup_end).func, ast.Name)
+    assert direct_call(lookup_end).func.id == "timer"  # type: ignore[union-attr]
+    assert isinstance(direct_call(lookup_label).func, ast.Name)
+    assert direct_call(lookup_label).func.id == "classify_lookup"  # type: ignore[union-attr]
+
+    authorization = functions["run_authorization_repetition"]
+    field_indices = [assignment(authorization, name)[0] for name in ("decoded", "record", "requested_floor")]
+    auth_start_index, auth_start = assignment(authorization, "start")
+    auth_call_index, auth_decision = assignment(authorization, "decision")
+    auth_end_index, auth_end = assignment(authorization, "end")
+    auth_classify_index, auth_label = assignment(authorization, "actual_label")
+    assert max(field_indices) < auth_start_index < auth_call_index < auth_end_index
+    assert auth_end_index < auth_classify_index
+    assert isinstance(direct_call(auth_start).func, ast.Name)
+    assert direct_call(auth_start).func.id == "timer"  # type: ignore[union-attr]
+    auth_target = direct_call(auth_decision)
+    assert isinstance(auth_target.func, ast.Name) and auth_target.func.id == "authorize"
+    assert [argument.id for argument in auth_target.args if isinstance(argument, ast.Name)] == [
+        "decoded", "record", "requested_floor"
+    ]
+    assert isinstance(direct_call(auth_end).func, ast.Name)
+    assert direct_call(auth_end).func.id == "timer"  # type: ignore[union-attr]
+    assert isinstance(direct_call(auth_label).func, ast.Name)
+    assert direct_call(auth_label).func.id == "classify_authorization"  # type: ignore[union-attr]
+
+
 def test_complete_fake_timer_run_has_24_measured_rows_and_no_warmups(
     experiment: ModuleType, config: object
 ) -> None:

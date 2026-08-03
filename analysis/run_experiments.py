@@ -686,13 +686,12 @@ def calculate_metrics(samples: Sequence[int]) -> dict[str, int | float]:
     }
 
 
-def _timer_sample(timer: Callable[[], int], operation: Callable[[], object]) -> tuple[int, object]:
-    start = timer()
-    outcome = operation()
-    end = timer()
+def elapsed_nanoseconds(start: object, end: object) -> int:
+    """Validate two captured timer readings and return their elapsed nanoseconds."""
+
     if type(start) is not int or type(end) is not int or end < start:
         raise ExperimentError("timer must return nondecreasing integer nanoseconds")
-    return end - start, outcome
+    return end - start
 
 
 def run_lookup_repetition(
@@ -714,10 +713,15 @@ def run_lookup_repetition(
     for case in cases_tuple:
         if not isinstance(case, LookupCase):
             raise ExperimentError("lookup cases must be immutable LookupCase values")
-        elapsed, outcome = _timer_sample(timer, lambda case=case: repository.lookup(case.key))
+        key = case.key
+        start = timer()
+        outcome = repository.lookup(key)
+        end = timer()
+        elapsed = elapsed_nanoseconds(start, end)
+        actual_label = classify_lookup(outcome, key)
         samples.append(elapsed)
         expected.append(case.expected_label)
-        actual.append(classify_lookup(outcome, case.key))  # type: ignore[arg-type]
+        actual.append(actual_label)
     summary = build_confusion_summary(expected, actual, OPERATIONS[0])
     return {
         "operation": OPERATIONS[0],
@@ -748,13 +752,17 @@ def run_authorization_repetition(
     for case in cases_tuple:
         if not isinstance(case, AuthorizationCase):
             raise ExperimentError("authorization cases must be immutable AuthorizationCase values")
-        elapsed, decision = _timer_sample(
-            timer,
-            lambda case=case: authorize(case.decoded, case.record, case.requested_floor),
-        )
+        decoded = case.decoded
+        record = case.record
+        requested_floor = case.requested_floor
+        start = timer()
+        decision = authorize(decoded, record, requested_floor)
+        end = timer()
+        elapsed = elapsed_nanoseconds(start, end)
+        actual_label = classify_authorization(decision)
         samples.append(elapsed)
         expected.append(case.expected_label)
-        actual.append(classify_authorization(decision))  # type: ignore[arg-type]
+        actual.append(actual_label)
     summary = build_confusion_summary(expected, actual, OPERATIONS[1])
     return {
         "operation": OPERATIONS[1],
