@@ -147,12 +147,36 @@ def test_integrated_catalog_exact_and_only_exp05_changes(generator, inputs, arti
     assert [row["experiment_id"] for row in integrated] == [f"EXP-{number:02d}" for number in range(1, 8)]
     assert all(integrated[index] == historical[index] for index in (0, 1, 2, 3, 5, 6))
     exp05 = integrated[4]
+    assert historical[4]["planned_question"] == (
+        "What mixed controller request-processing host timing is present across 10, 100, "
+        "1000, and 10000 credentials, and which isolated measurements are still absent?"
+    )
+    assert exp05["planned_question"] == generator.INTEGRATED_EXP05_QUESTION
+    for phrase in (
+        "Controller.submit", "CredentialRepository.lookup", "authorize", "10", "100",
+        "1000", "10000", "operation boundaries", "limitations",
+    ):
+        assert phrase in exp05["planned_question"]
+    lowered_question = exp05["planned_question"].lower()
+    assert "still absent" not in lowered_question
+    assert "isolated measurements are absent" not in lowered_question
     assert exp05["evidence_status"] == "complete_existing_with_limit"
     assert "results/scalability_results.json" in exp05["quantitative_artifacts"]
     assert "sp07_isolated_operation_results.json" in exp05["quantitative_artifacts"]
     for phrase in ("Controller.submit", "public repository method", "public authorization function", "host-software", "raw per-call", "constant-time", "asymptotic"):
         assert phrase in exp05["scope_limit"]
     assert "SP-07.4" in exp05["next_action"] and "optional" not in exp05["evidence_status"]
+    generator.validate_integrated_catalog(historical, integrated)
+
+
+def test_integrated_catalog_semantic_validator_rejects_stale_exp05_question(
+    generator, inputs, artifacts
+) -> None:
+    historical = generator.load_csv(inputs["historical_catalog"], generator.CATALOG_COLUMNS)
+    integrated = _csv(artifacts["integrated_catalog"])
+    integrated[4]["planned_question"] = historical[4]["planned_question"]
+    with pytest.raises(generator.ArtifactError, match="planned question"):
+        generator.validate_integrated_catalog(historical, integrated)
 
 
 def test_integrated_summary_identity_order_sources_and_snapshots(generator, artifacts) -> None:
@@ -307,6 +331,92 @@ def test_injected_publication_failure_restores_old_files(generator, artifacts, t
     with pytest.raises(generator.ArtifactError, match="preserved"):
         generator.publish_artifacts(outputs, artifacts)
     assert all(path.read_bytes() == b"old" for path in outputs.values())
+    assert not list(tmp_path.rglob("*.tmp"))
+
+
+def _inject_publication_and_restoration_failure(
+    generator, outputs: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> tuple[object, list[str]]:
+    original = generator.os.replace
+    destination_keys = {path: key for key, path in outputs.items()}
+    restoration_attempts: list[str] = []
+
+    def fail_publication_and_one_restoration(source, destination):
+        source_path = Path(source)
+        destination_path = Path(destination)
+        key = destination_keys[destination_path]
+        if ".backup." in source_path.name:
+            restoration_attempts.append(key)
+            if key == "integrated_catalog":
+                raise OSError("injected restoration failure")
+        elif key == "correctness_table":
+            raise OSError("injected publication failure")
+        return original(source, destination)
+
+    monkeypatch.setattr(generator.os, "replace", fail_publication_and_one_restoration)
+    return original, restoration_attempts
+
+
+def test_rollback_incomplete_retains_recoverable_backup_and_attempts_all_restorations(
+    generator, artifacts, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    outputs = _output_paths(generator, tmp_path)
+    old_bytes = {key: f"old-{key}".encode() for key in outputs}
+    for key, path in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(old_bytes[key])
+    original, restoration_attempts = _inject_publication_and_restoration_failure(
+        generator, outputs, monkeypatch
+    )
+
+    with pytest.raises(generator.ArtifactError) as raised:
+        generator.publish_artifacts(outputs, artifacts)
+    message = str(raised.value)
+    assert message.startswith(
+        "artifact publication failed; rollback incomplete; recovery backups retained: "
+    )
+    assert "integrated_catalog=" in message and str(tmp_path) not in message
+    assert set(restoration_attempts) == {
+        "integrated_catalog", "integrated_summary", "coverage_table"
+    }
+    assert outputs["integrated_catalog"].read_bytes() == artifacts["integrated_catalog"]
+    for key in outputs:
+        if key != "integrated_catalog":
+            assert outputs[key].read_bytes() == old_bytes[key]
+    retained = list(tmp_path.rglob("*.backup.*.tmp"))
+    assert len(retained) == 1 and retained[0].read_bytes() == old_bytes["integrated_catalog"]
+    assert set(tmp_path.rglob("*.tmp")) == set(retained)
+
+    original(retained[0], outputs["integrated_catalog"])
+    assert outputs["integrated_catalog"].read_bytes() == old_bytes["integrated_catalog"]
+    assert not list(tmp_path.rglob("*.tmp"))
+
+
+def test_cli_reports_rollback_incomplete_without_false_preservation_claim(
+    generator, inputs, tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    outputs = _output_paths(generator, tmp_path)
+    for key, path in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(f"old-{key}".encode())
+    original, restoration_attempts = _inject_publication_and_restoration_failure(
+        generator, outputs, monkeypatch
+    )
+
+    assert generator.main(_cli_arguments(generator, inputs, outputs)) == 1
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert len(captured.err.splitlines()) == 1
+    assert captured.err.startswith("error: artifact publication failed; rollback incomplete;")
+    assert "existing outputs were preserved" not in captured.err
+    assert "Traceback" not in captured.err and str(tmp_path) not in captured.err
+    assert set(restoration_attempts) == {
+        "integrated_catalog", "integrated_summary", "coverage_table"
+    }
+    retained = list(tmp_path.rglob("*.backup.*.tmp"))
+    assert len(retained) == 1
+    original(retained[0], outputs["integrated_catalog"])
     assert not list(tmp_path.rglob("*.tmp"))
 
 

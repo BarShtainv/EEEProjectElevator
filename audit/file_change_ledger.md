@@ -406,3 +406,16 @@ Canonical inputs were the immutable historical catalog/summary, accepted mixed c
 | `audit/file_change_ledger.md` | Added only this SP-07.3 section. | Every earlier ledger section retained. |
 
 Generated hashes are integrated catalog `b86c0841...db9a`, integrated summary `95f532d8...670c`, coverage `f7aef893...c78f`, correctness `2ee80a42...224`, timing `5c777e8f...0811`, mixed SVG `7ad5f265...6930`, lookup SVG `26269c62...a096`, authorization SVG `43394313...2f9`, and manifest `f4fe7d51...16b1`. Two official generations were byte-identical. No benchmark, accepted-source mutation, report, presentation, SP-07.4, Subproject-8, release, commit, or push occurred.
+
+## SP-07.3R integrated-catalog semantics and publication-rollback repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/generate_figures.py` | Added the exact repaired EXP-05 question and semantic validator; pre-backs up all destinations; attempts all restorations; retains failed-recovery backups; distinguishes complete/incomplete rollback without catching programming defects. | Calculations, sources, tables, figures, manifest schema, dependencies, and no-benchmark boundary retained. |
+| `tests/analysis/test_generate_figures.py` | Added exact historical/repaired question checks, stale-question rejection, incomplete-rollback restoration/backup/recovery coverage, and honest CLI failure coverage. | All existing success, identity, determinism, table, SVG, manifest, normal rollback, CLI, and AST tests retained. |
+| `data/results/sp07_experiment_catalog_integrated.csv` | Deterministically regenerated only the EXP-05 planned question; hash `b86c0841...db9a` → `9270a15c...6ff8`. | Six rows and all other EXP-05 fields remain identical; historical catalog unchanged. |
+| `data/results/sp07_report_artifact_manifest.json` | Deterministically refreshed only the integrated-catalog generated-artifact hash; manifest hash `f4fe7d51...16b1` → `69235fab...4851`. | Manifest schema, sources, seven other generated hashes, contract, and limitations retained. |
+| `audit/validation/subproject_07_03_repair.md` | Added baseline, defects, exact question delta, rollback algorithm, recovery, tests, regeneration, hashes, independent/final validation, scope, cleanup, and readiness evidence. | Prior SP-07.3 audit records remain unchanged historical evidence. |
+| `audit/file_change_ledger.md` | Added only this narrow SP-07.3R section. | Every prior ledger section retained. |
+
+The integrated summary, three tables, and three SVGs remain byte-identical. No benchmark, accepted measurement/configuration, simulator, historical analysis, report, presentation, SP-07.4, Subproject-8, release, commit, or push occurred.

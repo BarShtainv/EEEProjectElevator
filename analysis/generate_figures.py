@@ -24,6 +24,12 @@ class ArtifactError(Exception):
 ROOT = Path(__file__).resolve().parents[1]
 SIZES = (10, 100, 1000, 10000)
 OPERATIONS = ("mixed_controller_submit", "credential_repository_lookup", "authorization_decision")
+INTEGRATED_EXP05_QUESTION = (
+    "What do the accepted mixed Controller.submit and isolated "
+    "CredentialRepository.lookup and authorize host-software measurements show across "
+    "10, 100, 1000, and 10000 credentials within their stated operation boundaries "
+    "and limitations?"
+)
 CATALOG_COLUMNS = (
     "experiment_id", "experiment_name", "planned_question", "mapped_test_ids",
     "evidence_references", "evidence_status", "quantitative_artifacts", "scope_limit",
@@ -315,12 +321,57 @@ def descriptive(rows: list[dict[str, object]]) -> dict[str, object]:
 def build_integrated_catalog(historical: list[dict[str, str]]) -> list[dict[str, str]]:
     rows = [dict(row) for row in historical]
     exp05 = rows[4]
+    exp05["planned_question"] = INTEGRATED_EXP05_QUESTION
     exp05["evidence_status"] = "complete_existing_with_limit"
     exp05["evidence_references"] += ";experiments/isolated_operations_config.json;data/results/sp07_isolated_operation_results.json;data/results/sp07_isolated_operation_environment.json;audit/validation/subproject_07_02_timing_boundary_repair.md"
     exp05["quantitative_artifacts"] = "experiments/scalability_config.json;results/scalability_results.json;results/scalability_environment.json;experiments/isolated_operations_config.json;data/results/sp07_isolated_operation_results.json;data/results/sp07_isolated_operation_environment.json"
     exp05["scope_limit"] = "Mixed timing measures Controller.submit; lookup timing measures the public repository method; authorization timing measures the public authorization function. All values are host-software observations; raw per-call samples are unavailable. No real-time, hardware, database-server, constant-time, or asymptotic result is established."
     exp05["next_action"] = "SP-07.4 independently reviews bounded claims; no additional MVP benchmark is required, and broader scalability questions remain outside this evidence."
+    validate_integrated_catalog(historical, rows)
     return rows
+
+
+def validate_integrated_catalog(
+    historical: list[dict[str, str]], integrated: list[dict[str, str]]
+) -> None:
+    if len(historical) != 7 or len(integrated) != 7:
+        raise ArtifactError("integrated catalog must contain seven rows")
+    if any(integrated[index] != historical[index] for index in (0, 1, 2, 3, 5, 6)):
+        raise ArtifactError("only integrated EXP-05 may differ from the historical catalog")
+    old = historical[4]
+    repaired = integrated[4]
+    if repaired.get("planned_question") != INTEGRATED_EXP05_QUESTION:
+        raise ArtifactError("integrated EXP-05 planned question is stale or invalid")
+    for field in ("experiment_id", "experiment_name", "mapped_test_ids"):
+        if repaired.get(field) != old.get(field):
+            raise ArtifactError(f"integrated EXP-05 must preserve {field}")
+    if repaired.get("evidence_status") != "complete_existing_with_limit":
+        raise ArtifactError("integrated EXP-05 evidence status is invalid")
+    required_question_terms = (
+        "Controller.submit", "CredentialRepository.lookup", "authorize",
+        "10", "100", "1000", "10000", "operation boundaries", "limitations",
+    )
+    question = repaired["planned_question"]
+    if not all(term in question for term in required_question_terms):
+        raise ArtifactError("integrated EXP-05 planned question omits required semantics")
+    stale_claims = ("still absent", "isolated measurements are absent", "still unavailable")
+    if any(claim in question.lower() for claim in stale_claims):
+        raise ArtifactError("integrated EXP-05 planned question claims accepted evidence is absent")
+    for required in (
+        "results/scalability_results.json",
+        "data/results/sp07_isolated_operation_results.json",
+        "audit/validation/subproject_07_02_timing_boundary_repair.md",
+    ):
+        if required not in repaired["evidence_references"]:
+            raise ArtifactError("integrated EXP-05 evidence references are incomplete")
+    for required in (
+        "results/scalability_results.json",
+        "data/results/sp07_isolated_operation_results.json",
+    ):
+        if required not in repaired["quantitative_artifacts"]:
+            raise ArtifactError("integrated EXP-05 quantitative artifacts are incomplete")
+    if not repaired["scope_limit"] or "SP-07.4" not in repaired["next_action"]:
+        raise ArtifactError("integrated EXP-05 scope or next action is invalid")
 
 
 def build_timing_rows(mixed: list[dict[str, object]], isolated: list[dict[str, object]], timer: str) -> list[dict[str, object]]:
@@ -597,6 +648,7 @@ def publish_artifacts(destinations: dict[str, Path], artifacts: dict[str, bytes]
     stages: dict[str, Path] = {}
     backups: dict[str, Path] = {}
     published: list[str] = []
+    retained_backups: set[str] = set()
     try:
         for key, destination in destinations.items():
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -614,25 +666,48 @@ def publish_artifacts(destinations: dict[str, Path], artifacts: dict[str, bytes]
                 backup = Path(backup_name)
                 backup.write_bytes(destination.read_bytes())
                 backups[key] = backup
+        for key, destination in destinations.items():
             os.replace(stages[key], destination)
             published.append(key)
         for key, destination in destinations.items():
             if destination.read_bytes() != artifacts[key]:
                 raise ArtifactError(f"post-write validation failed: {destination}")
         validate_artifact_bytes({key: destinations[key].read_bytes() for key in destinations})
-    except Exception as exc:
+    except (ArtifactError, OSError) as exc:
+        restoration_failures: list[str] = []
         for key in reversed(published):
             destination = destinations[key]
             backup = backups.get(key)
-            if backup and backup.exists():
-                os.replace(backup, destination)
-            elif destination.exists():
-                destination.unlink()
-        if isinstance(exc, ArtifactError):
-            raise
-        raise ArtifactError(f"artifact publication failed; existing outputs preserved: {exc}") from exc
+            try:
+                if backup and backup.exists():
+                    os.replace(backup, destination)
+                elif destination.exists():
+                    destination.unlink()
+            except OSError:
+                restoration_failures.append(key)
+                if backup and backup.exists():
+                    retained_backups.add(key)
+        if restoration_failures:
+            recoveries = ", ".join(
+                f"{key}={backups[key].name}" if key in retained_backups else key
+                for key in restoration_failures
+            )
+            raise ArtifactError(
+                "artifact publication failed; rollback incomplete; "
+                f"recovery backups retained: {recoveries}"
+            ) from exc
+        raise ArtifactError(
+            "artifact publication failed; existing outputs were preserved"
+        ) from exc
     finally:
-        for path in (*stages.values(), *backups.values()):
+        for path in stages.values():
+            try:
+                path.unlink(missing_ok=True)
+            except OSError:
+                pass
+        for key, path in backups.items():
+            if key in retained_backups:
+                continue
             try:
                 path.unlink(missing_ok=True)
             except OSError:
