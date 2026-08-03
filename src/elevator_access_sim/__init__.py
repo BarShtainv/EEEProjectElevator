@@ -9,6 +9,7 @@ from .config import (
     load_startup_json,
 )
 from .credentials import CredentialRepository
+from .controller import Controller
 from .event_log import EventLog
 from .outputs import OutputManager
 from .models import (
@@ -48,6 +49,7 @@ __all__ = [
     "Clock",
     "ClockError",
     "ConfigurationError",
+    "Controller",
     "ControllerResponse",
     "ControllerSnapshot",
     "ControllerState",

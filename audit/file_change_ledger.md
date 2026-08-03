@@ -216,3 +216,22 @@ SP-06.6 watchdog and later behavior remain deferred; no commit or push occurred.
 | `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
 
 Final watchdog 66/66 and full 562/562 passed. SP-06.7 controller remains deferred; no commit or push occurred.
+
+## SP-06.7 controller coordination
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_07_baseline.md` | New accepted-commit, clean-tree, environment, 562/562 baseline, reviewed contracts, scope, and deferred-work record. | Prior records retained. |
+| `tests/unit/test_watchdog.py` | Added direct two-epoch suppression reinjection and disabled-reinitialization coverage; final 68/68 passed. | `watchdog.py` and SP-06.6 records unchanged. |
+| `src/elevator_access_sim/controller.py` | New deterministic controller implementing atomic startup, seven states, busy-first processing, validation/lookup/authorization coordination, grant logging gate, due-time scheduler, timeout, resets, immutable observations, and narrow log-fault conversion. | Uses only reviewed managers/models; no CLI, files, experiment, persistence, network, hardware, thread, or async behavior. |
+| `src/elevator_access_sim/__init__.py` | Exported `Controller` while retaining every prior public export and explicit `__all__`. | No private helper or later-stage API exported. |
+| `tests/unit/test_controller_initialization.py` | New constructor, exact API, startup validation/mapping, atomic publication, correction, guard, and import-scope tests; 45/45 passed. | No JSON/file adapter used. |
+| `tests/integration/test_controller_requests.py` | New LF/HF, all-floor, validation/denial/grant/busy, context, order, atomicity, recovery, and invalid-collaborator tests; 94/94 passed. | No production observer or state-forcing API. |
+| `tests/integration/test_controller_timing.py` | New clock-boundary, heartbeat, exact timeout, 3000/2000, 30000/2000, suppression, collision, reinjection, partition, replay, and stale-marker tests; 29/29 passed. | Simulated due-time jumps only; no real wait. |
+| `tests/integration/test_controller_resets.py` | New manual/watchdog preservation, canceled-timeout, recovery, null-context, and all-seven-state white-box reset tests; 12/12 passed. | State construction remains test-only. |
+| `tests/integration/test_controller_logging_faults.py` | New 11-path append-failure matrix, sequence recovery, ordering, and no-op fault persistence tests; 15/15 passed. | No synthetic logging-error event. |
+| `audit/stage_reports/subproject_06_07.md` | New bounded implementation handoff with exact results and readiness. | Prior reports retained. |
+| `audit/validation/subproject_06_07_validation.md` | New command, outcome, timing, transition, fault, replay, API, scope, cleanup, and Git evidence. | Protected paths unchanged. |
+| `audit/file_change_ledger.md` | Added this SP-06.7 section. | Every earlier ledger section retained. |
+
+Final output 71/71, watchdog 68/68, controller 195/195, and full 759/759 suites passed. All named frozen documents, protected source collaborators, prior tests, prior audits, dependency metadata, and Git history remained unchanged. SP-06.8 CLI/file adapters and all later work remain deferred; no commit or push occurred.

@@ -99,3 +99,40 @@ def test_late_expiry_one_shot_and_reinitialize_failure()->None:
 
 def test_import_scope()->None:
     tree=ast.parse(inspect.getsource(module)); assert {n.module for n in ast.walk(tree) if isinstance(n,ast.ImportFrom) and n.level}=={"models"}
+
+
+def test_suppressed_expiry_is_reinjectable_once_per_reinitialized_epoch() -> None:
+    watchdog = Watchdog(True, 2000, 0)
+    watchdog.set_service_suppressed(True)
+
+    assert not watchdog.process_heartbeat(1000)
+    assert not watchdog.expiry_request_if_due(1000)
+    assert not watchdog.process_heartbeat(2000)
+    assert watchdog.expiry_request_if_due(2000)
+    assert not watchdog.expiry_request_if_due(2000)
+
+    watchdog.reinitialize(2000)
+    assert watchdog.next_heartbeat_ms() == 3000
+    assert watchdog.expiry_deadline_ms() == 4000
+    assert watchdog.service(2000)
+    watchdog.set_service_suppressed(True)
+    assert not watchdog.process_heartbeat(3000)
+    assert not watchdog.expiry_request_if_due(3000)
+    assert not watchdog.process_heartbeat(4000)
+    assert watchdog.expiry_request_if_due(4000)
+    assert not watchdog.expiry_request_if_due(4000)
+
+
+def test_disabled_reinitialize_preserves_interval_and_clears_suppression() -> None:
+    watchdog = Watchdog(False, 2000, 0)
+    watchdog.set_service_suppressed(True)
+
+    watchdog.reinitialize(2000)
+
+    assert watchdog.heartbeat_interval_ms() == 1000
+    assert watchdog.next_heartbeat_ms() is None
+    assert watchdog.expiry_deadline_ms() is None
+    assert watchdog._suppressed is False
+    assert not watchdog.process_heartbeat(3000)
+    assert not watchdog.expiry_request_if_due(4000)
+    assert not watchdog.service(4000)
