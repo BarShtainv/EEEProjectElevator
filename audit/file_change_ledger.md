@@ -130,3 +130,14 @@ No product image or listing snapshot was copied because none was available in th
 | `audit/validation/subproject_06_01_validation.md` | new | Recorded commands, successful non-pytest checks, failed pytest availability, hashes, scope, and Git state. | Preserve accurate execution evidence. | Prior validations retained. | Final compilation/import/custom/Git checks. |
 
 No Wiegand, credential loading/repository, authorization, event logger, output, watchdog, controller, CLI, experiment, physical, database, network, async, or thread implementation was added. Pytest was not installed or otherwise modified; its absence remains the stage blocker.
+
+## SP-06.1R pytest validation unblock
+
+| Path | Pre-existing or new | Change made | Reason | Protected-content check | Validation performed |
+|---|---|---|---|---|---|
+| `audit/baselines/subproject_06_01_repair_baseline.md` | new | Recorded the accepted commit, clean state, base pytest blocker, external-environment path, authorized scope, protected paths, and pre-repair hashes. | Preserve the narrow repair starting point. | Original blocked records and all protected engineering content retained. | Git, Python/pytest availability, path, history, later-module, and SHA-256 checks. |
+| `audit/stage_reports/subproject_06_01_repair.md` | new | Recorded isolated-tool versions, no-defect/no-code-change decision, pytest results, compile/import results, protected scope, deferred work, and readiness. | Provide the SP-06.1R handoff without overwriting historical blocked evidence. | No prior stage report changed. | Scoped/full pytest, compile/import, metadata/API, path, hash, cache, and Git checks. |
+| `audit/validation/subproject_06_01_repair_validation.md` | new | Preserved exact environment, installation, version, pytest, compile/import, inspection, cleanup, and Git evidence. | Replace the environmental blocker with reproducible real-pytest evidence. | No source, test, frozen engineering document, or later-stage path changed. | 114/114 scoped and 114/114 full tests passed; final whitespace/status/scope checks passed. |
+| `audit/file_change_ledger.md` | pre-existing | Added this SP-06.1R section. | Maintain the canonical change audit. | Every prior ledger section retained. | Final diff, UTF-8, whitespace, changed-path, and status review. |
+
+No production or test file changed because real pytest exposed no defect. No Wiegand or later-stage implementation was added. The isolated environment exists only at `/home/bar/.venvs/eeeproject-elevator`, outside the repository.
