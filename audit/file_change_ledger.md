@@ -450,3 +450,20 @@ Output hashes are review summary `7d48384b...9b92`, anomaly register `0f997c8e..
 | `audit/file_change_ledger.md` | Appended only this SP-07.4R section. | Every earlier ledger section retained. |
 
 The final validation ledger remains byte-identical at `c0db9e213c7f2c2ddaf35baff3cc9f1a383c078de47cce03ed3aefee56f07745`; source notes remain byte-identical at `6fbfdb192b9ce7b184b1901cf454d5de5e1d470302e288d41074d62a062281e6`. No benchmark, accepted result, simulator, report, presentation, Subproject-8 work, release, commit, or push occurred.
+
+## SP-08.1 submission requirements gate and report evidence architecture
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `report/submission_requirements.md` | Added a 37-input authority-ordered internal gate with explicit values/statuses/owners/stages, SP-08.2 blockers, nonblocking planning, and human checklist. | No university rule, identity, approval, language, format, deadline, or duration was invented. |
+| `report/report_outline.md` | Added the exact 15-section template-neutral content architecture with ten evidence/claim/asset/limitation/blocker fields per section. | Contains planning text only, not final narrative prose or a chosen template. |
+| `report/report_claim_source_matrix.csv` | Added 27 ordered high-impact report claim families with source/ledger resolution, evidence classes, qualifiers, statuses, and blockers. | Quantitative wording remains controlled by the final SP-07 ledger; product unknowns and proposed design remain distinct. |
+| `report/report_asset_register.csv` | Added 16 tables/figures/diagrams/appendix/product-image entries, including six manifest-verified SP-07 report assets. | No figure/export/image was generated; product imagery remains missing pending provenance and permission. |
+| `report/bibliography_readiness.csv` | Added all 25 source-index IDs with visible metadata, authority, readiness, missing fields, and access state. | No author/date/title/publisher/standard/URL was invented; incomplete and missing sources are not citation-ready. |
+| `tests/inspection/test_report_preparation.py` | Added 16 independent gate/outline/claim/asset/bibliography/UTF-8/path/claim/scope/hash inspections. | Existing tests, production, evidence, and dependencies remain unchanged. |
+| `audit/baselines/subproject_08_01_baseline.md` | Recorded accepted commit/environment, exact 1137 baseline, 28 principal hashes, submission state, scope, and deferrals. | No stage implementation preceded the baseline. |
+| `audit/stage_reports/subproject_08_01.md` | Added authority method, register counts/results, human blockers, validation summary, protected boundaries, and deferrals. | SP-08.2–SP-08.4 remain deferred. |
+| `audit/validation/subproject_08_01_validation.md` | Added source inspection, exact schemas/counts/mappings/hashes, test and independent-validation evidence, final gates, cleanup, and readiness. | Claims only executed validation outcomes. |
+| `audit/file_change_ledger.md` | Appended only this SP-08.1 section. | Every earlier section retained. |
+
+No final report source/prose, university template, PDF, presentation, demonstration package, benchmark, accepted measurement/table/figure/manifest/review artifact, release, archive, tag, commit, or push was created or changed.
