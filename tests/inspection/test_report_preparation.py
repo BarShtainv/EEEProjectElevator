@@ -23,6 +23,29 @@ CLAIM_COLUMNS = ("report_claim_id", "chapter_number", "claim_or_topic", "evidenc
 ASSET_COLUMNS = ("asset_id", "asset_type", "path", "intended_chapter", "source_artifacts", "caption_or_title", "interpretation_limit", "readiness_status", "required_action", "notes")
 BIB_COLUMNS = ("source_id", "title", "author_or_organization", "year", "source_type", "canonical_path_or_url", "authority", "planned_report_use", "metadata_status", "access_status", "citation_ready", "missing_fields", "notes")
 SECTION_NAMES = ("Abstract", "Introduction", "Product Under Study and Available Evidence", "Research Methodology and Limitations", "Literature Review", "Requirements and System Boundary", "Proposed Reference Architecture", "Software-Model Design and Implementation", "Verification and Experimental Method", "Results", "Discussion", "Limitations and Validity Threats", "Conclusions and Future Work", "References", "Appendices")
+CANONICAL_MERMAID_PATHS = (
+    "docs/figures/system_context.mmd",
+    "docs/figures/top_level_architecture.mmd",
+    "docs/figures/firmware_architecture.mmd",
+    "docs/figures/controller_state_machine.mmd",
+    "docs/figures/data_flow.mmd",
+    "docs/figures/reset_sequence.mmd",
+    "docs/figures/watchdog_sequence.mmd",
+)
+ORIGINAL_ASSET_ROWS_SHA256 = "cf6705e29eafd44e2796978984b6df0630e60d568a37fa721ded6dff09614ed3"
+EXPECTED_REPAIR_ASSET_ROWS = (
+    ("AST-017", "diagram", "docs/figures/system_context.mmd", "2", "docs/architecture.md;docs/requirements.md", "System context and software-only project boundary", "LF and HF are logical labels; outputs are abstract permission signals; no physical reader or elevator interface or safety behavior or commercial equivalence is represented.", "needs_export", "Export only after report format and language and rendering method are approved", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
+    ("AST-018", "diagram", "docs/figures/firmware_architecture.mmd", "7", "docs/architecture.md;docs/software_design.md", "Proposed simulator responsibility architecture", "Represents project module responsibilities; not commercial firmware or MCU selection or hardware execution.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
+    ("AST-019", "diagram", "docs/figures/reset_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Logical reset sequence", "Startup and manual-reset and watchdog-reset behavior is simulated software behavior; not a physical fail-safe or safety-certification result.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
+    ("AST-020", "diagram", "docs/figures/watchdog_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Simulated watchdog and heartbeat sequence", "Uses simulated monotonic time; does not establish MCU-watchdog equivalence or real-time behavior or reliability or physical safety.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
+)
+PROTECTED_REPORT_HASHES = {
+    "report/submission_requirements.md": "5c6ebfcd7470a1fb8ab7dc9ff643eb3411f2eee736a324c5a32dbafba8d21c71",
+    "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
+    "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
+    "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
+}
+EXPORT_SUFFIXES = (".svg", ".png", ".pdf", ".jpg", ".jpeg", ".webp", ".bmp", ".tif", ".tiff")
 
 
 def csv_rows(path: Path, columns: tuple[str, ...]) -> list[dict[str, str]]:
@@ -55,6 +78,36 @@ def source_index_ids() -> set[str]:
 def evidence_ids() -> set[str]:
     rows = csv_rows(ROOT / "evidence/claim_evidence_matrix.csv", ("claim_id", "claim_text", "evidence_class", "source_id", "source_path", "source_location", "status", "confidence", "notes"))
     return {row["source_id"] for row in rows}
+
+
+def explicit_mermaid_paths(path: Path) -> set[str]:
+    return set(re.findall(r"docs/figures/[A-Za-z0-9_./-]+\.mmd", path.read_text(encoding="utf-8")))
+
+
+def validate_canonical_mermaid_rows(rows: list[dict[str, str]]) -> None:
+    expected = set(CANONICAL_MERMAID_PATHS)
+    architecture_paths = explicit_mermaid_paths(ROOT / "docs/architecture.md")
+    outline_paths = explicit_mermaid_paths(OUTLINE)
+    registered = [row["path"] for row in rows if row["path"].endswith(".mmd")]
+    assert architecture_paths == expected
+    assert set(registered) == expected and len(registered) == len(expected)
+    assert architecture_paths <= set(registered)
+    assert outline_paths <= set(registered)
+    for canonical_path in CANONICAL_MERMAID_PATHS:
+        assert registered.count(canonical_path) == 1
+
+    diagram_rows = [row for row in rows if row["asset_type"] == "diagram"]
+    assert len({row["path"] for row in diagram_rows}) == len(diagram_rows)
+    for row in diagram_rows:
+        path = Path(row["path"])
+        assert not path.is_absolute() and (ROOT / path).is_file()
+        assert row["readiness_status"] == "needs_export"
+        assert row["interpretation_limit"].strip()
+        for source in row["source_artifacts"].split(";"):
+            assert not Path(source).is_absolute() and (ROOT / source).is_file()
+        if row["path"] in expected:
+            for suffix in EXPORT_SUFFIXES:
+                assert not (ROOT / path.with_suffix(suffix)).exists()
 
 
 def test_submission_requirements_gate_is_explicit_and_complete():
@@ -149,7 +202,7 @@ def test_timing_and_high_impact_claim_rules_are_enforced():
 
 def test_asset_register_schema_paths_and_required_assets():
     rows = csv_rows(ASSETS, ASSET_COLUMNS)
-    assert len(rows) == 16 and [row["asset_id"] for row in rows] == [f"AST-{index:03d}" for index in range(1, 17)]
+    assert len(rows) == 20 and [row["asset_id"] for row in rows] == [f"AST-{index:03d}" for index in range(1, 21)]
     assert all(row["asset_type"] in {"table", "figure", "diagram", "appendix_artifact", "external_product_image"} for row in rows)
     assert all(row["readiness_status"] in {"report_ready", "ready_with_limit", "needs_export", "needs_human_permission", "missing", "appendix_only", "not_for_report"} for row in rows)
     for row in rows:
@@ -161,6 +214,44 @@ def test_asset_register_schema_paths_and_required_assets():
             assert not Path(source).is_absolute() and (ROOT / source).exists()
     required = {"data/results/sp07_table_experiment_coverage.csv", "data/results/sp07_table_correctness.csv", "data/results/sp07_table_timing_summary.csv", "docs/figures/sp07_mixed_controller_average_ns.svg", "docs/figures/sp07_lookup_average_ns.svg", "docs/figures/sp07_authorization_average_ns.svg"}
     assert required <= {row["path"] for row in rows}
+
+
+def test_original_and_repair_asset_rows_are_exact():
+    rows = csv_rows(ASSETS, ASSET_COLUMNS)
+    original_payload = json.dumps(
+        [tuple(row[column] for column in ASSET_COLUMNS) for row in rows[:16]],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    assert hashlib.sha256(original_payload).hexdigest() == ORIGINAL_ASSET_ROWS_SHA256
+    assert tuple(tuple(row[column] for column in ASSET_COLUMNS) for row in rows[16:]) == EXPECTED_REPAIR_ASSET_ROWS
+
+
+def test_canonical_mermaid_sources_reconcile_with_architecture_and_outline():
+    rows = csv_rows(ASSETS, ASSET_COLUMNS)
+    validate_canonical_mermaid_rows(rows)
+    outline = OUTLINE.read_text(encoding="utf-8")
+    assert all(value in outline for value in ("firmware architecture", "data flow", "state machine", "watchdog/reset sequences"))
+    limits = {row["path"]: row["interpretation_limit"].lower() for row in rows}
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[0]] for value in ("logical labels", "abstract permission signals", "physical reader", "elevator interface", "safety behavior", "commercial equivalence"))
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[2]] for value in ("project module responsibilities", "commercial firmware", "mcu selection", "hardware execution"))
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[5]] for value in ("startup", "manual-reset", "watchdog-reset", "simulated software behavior", "physical fail-safe", "safety-certification"))
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[6]] for value in ("simulated monotonic time", "mcu-watchdog equivalence", "real-time behavior", "reliability", "physical safety"))
+
+
+def test_removing_any_canonical_mermaid_registration_fails_validation():
+    rows = csv_rows(ASSETS, ASSET_COLUMNS)
+    for missing_path in CANONICAL_MERMAID_PATHS:
+        incomplete = [row for row in rows if row["path"] != missing_path]
+        with pytest.raises(AssertionError):
+            validate_canonical_mermaid_rows(incomplete)
+
+
+def test_protected_report_registers_and_human_gate_are_unchanged():
+    for path, expected in PROTECTED_REPORT_HASHES.items():
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
+    submission_rows = markdown_table(SUBMISSION, "requirement_id")
+    assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 25
 
 
 def test_sp07_asset_hashes_match_manifest_and_timing_captions_keep_limits():

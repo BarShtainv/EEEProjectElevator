@@ -467,3 +467,14 @@ The final validation ledger remains byte-identical at `c0db9e213c7f2c2ddaf35baff
 | `audit/file_change_ledger.md` | Appended only this SP-08.1 section. | Every earlier section retained. |
 
 No final report source/prose, university template, PDF, presentation, demonstration package, benchmark, accepted measurement/table/figure/manifest/review artifact, release, archive, tag, commit, or push was created or changed.
+
+## SP-08.1R canonical report-diagram asset coverage repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `report/report_asset_register.csv` | Appended AST-017 through AST-020 for the canonical system-context, firmware/responsibility, reset-sequence, and watchdog-sequence Mermaid sources. | AST-001 through AST-016 and the ten-column schema remain unchanged; all seven canonical Mermaid rows are unique and remain `needs_export`. |
+| `tests/inspection/test_report_preparation.py` | Added immutable original-row, exact repair-row, architecture/outline reconciliation, boundary/export, negative-removal, and protected-register regression checks. | Every existing inspection remains; accepted report gates and six SP-07 hashes remain enforced. |
+| `audit/validation/subproject_08_01_asset_repair.md` | Added accepted-handoff, defect, mapping, reconciliation, hash, focused/independent/full-suite, compilation/import, scope, cleanup, and readiness evidence. | Existing SP-08.1 audit records remain unchanged historical evidence. |
+| `audit/file_change_ledger.md` | Appended only this SP-08.1R section. | Every earlier ledger section remains unchanged. |
+
+No report prose, canonical diagram edit/export, product image, accepted SP-07 artifact, simulator behavior, benchmark, SP-08.2 work, release, commit, or push occurred.
