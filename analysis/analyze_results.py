@@ -31,6 +31,15 @@ CANONICAL_SOURCES = (
     "results/scalability_results.json",
     "results/scalability_environment.json",
 )
+CANONICAL_SOURCE_ARGUMENTS = (
+    "verification_records",
+    "inventory",
+    "traceability",
+    "final_validation",
+    "scalability_config",
+    "scalability_results",
+    "scalability_environment",
+)
 INVENTORY_COLUMNS = (
     "test_id",
     "test_level",
@@ -167,6 +176,11 @@ OFFICIAL_MIX = MappingProxyType(
 OPTIONAL_IDS = frozenset(f"TST-OPT-{number:03d}" for number in range(1, 7))
 EXPERIMENT_TEST_IDS = frozenset(
     {"TST-REP-001", "TST-REP-002", "TST-SCL-001", "TST-SCL-002", "TST-SCL-003"}
+)
+EXP07_REQUIRED_EVIDENCE = (
+    "tests/unit/test_config_files.py::test_configuration_file_failures_keep_configuration_identity",
+    "tests/unit/test_config_files.py::test_credential_file_failures_keep_credential_identity",
+    "tests/unit/test_controller_initialization.py::test_corrected_initialization_after_failure_clears_error_event",
 )
 TEST_VALIDATION_PROVENANCE = MappingProxyType(
     {
@@ -721,6 +735,11 @@ EXPERIMENT_DEFINITIONS = (
             "TST-CRD-002", "TST-CRD-003", "TST-CRD-005", "TST-CRD-006",
             "TST-CFG-001", "TST-CFG-002", "TST-CFG-003", "TST-CFG-004", "TST-CFG-005", "TST-RST-004",
         ),
+        "additional_evidence_references": EXP07_REQUIRED_EVIDENCE
+        + (
+            "audit/validation/subproject_06_08_validation.md",
+            "audit/validation/subproject_06_07_validation.md",
+        ),
         "evidence_status": "complete_existing",
         "quantitative_artifacts": ("audit/validation/subproject_06_11_verification_records.csv",),
         "scope_limit": "Robustness is bounded to specified software inputs and failure injection; it is not field-reliability or adversarial-security evidence.",
@@ -749,6 +768,10 @@ def build_experiment_catalog(
                 _resolve_reference(reference)
                 if reference not in evidence:
                     evidence.append(reference)
+        for reference in definition.get("additional_evidence_references", ()):
+            _resolve_reference(reference)
+            if reference not in evidence:
+                evidence.append(reference)
         for reference in definition["quantitative_artifacts"]:
             _resolve_reference(reference)
         row = {
@@ -771,7 +794,23 @@ def build_experiment_catalog(
         if row["evidence_status"] == "gap_identified" and "SP-07.2" not in row["next_action"]:
             raise AnalysisError(f"catalog gap lacks a bounded later action: {definition['experiment_id']}")
         catalog.append(row)
+    validate_experiment_evidence(catalog)
     return catalog
+
+
+def validate_experiment_evidence(catalog: list[dict[str, str]]) -> None:
+    """Require direct evidence that is semantically mandatory for EXP-07."""
+
+    matches = [row for row in catalog if row.get("experiment_id") == "EXP-07"]
+    if len(matches) != 1:
+        raise AnalysisError("EXP-07 evidence sufficiency requires exactly one catalog row")
+    row = matches[0]
+    evidence = _references(row.get("evidence_references", ""))
+    missing = [reference for reference in EXP07_REQUIRED_EVIDENCE if reference not in evidence]
+    if missing:
+        raise AnalysisError(f"EXP-07 mandatory direct evidence is missing: {missing[0]}")
+    if row.get("evidence_status") != "complete_existing":
+        raise AnalysisError("EXP-07 mandatory evidence requires complete_existing status")
 
 
 def safe_descriptive_statistics(values: Sequence[int | float], label: str) -> dict[str, int | float]:
@@ -1094,6 +1133,26 @@ def build_analysis(arguments: argparse.Namespace) -> tuple[list[dict[str, str]],
     return catalog, summary
 
 
+def validate_canonical_source_paths(arguments: argparse.Namespace) -> None:
+    """Prevent CLI inputs from being labeled as different canonical sources."""
+
+    for argument_name, relative_path in zip(
+        CANONICAL_SOURCE_ARGUMENTS, CANONICAL_SOURCES, strict=True
+    ):
+        supplied = getattr(arguments, argument_name)
+        try:
+            supplied_path = supplied.resolve(strict=True)
+            canonical_path = (ROOT / relative_path).resolve(strict=True)
+        except OSError as error:
+            raise AnalysisError(
+                f"canonical source path cannot be resolved: --{argument_name.replace('_', '-')}"
+            ) from error
+        if supplied_path != canonical_path:
+            raise AnalysisError(
+                f"canonical source path mismatch: --{argument_name.replace('_', '-')}"
+            )
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the required-path command-line parser."""
 
@@ -1112,6 +1171,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     arguments = build_parser().parse_args(argv)
     try:
+        validate_canonical_source_paths(arguments)
         catalog, summary = build_analysis(arguments)
         catalog_hash, summary_hash = write_outputs_atomically(
             arguments.catalog_output, catalog, arguments.summary_output, summary

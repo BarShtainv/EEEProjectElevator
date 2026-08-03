@@ -342,3 +342,15 @@ Final provenance validation passed all 100 rows, documentation 11/11, resolver 2
 | `audit/file_change_ledger.md` | Added only this SP-07.1 section. | Every earlier ledger section retained. |
 
 The catalog and summary hashes are `511d0955fae5d501c0a4cb1caffaf64a8535a32cda366f0eea74b99da8916808` and `dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0`. The accepted inputs remain byte-identical. SP-07.1 creates no benchmark result, raw timing data, figure, report prose, optional behavior, Subproject-8 work, release, commit, or push.
+
+## SP-07.1R catalog evidence and canonical-source integrity repair
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `analysis/analyze_results.py` | Added explicit EXP-07 direct/context evidence, mandatory sufficiency validation, and seven-input CLI canonical resolved-path identity enforcement before parsing/publication. | Lower-level temporary-fixture validation remains available; output paths remain selectable; no benchmark, package, simulator, or dependency change. |
+| `tests/analysis/test_analyze_results.py` | Added five focused tests covering complete EXP-07 evidence, resolving-but-incomplete rejection, relative/absolute canonical identity, byte-identical/valid substitute rejection, label/hash identity, stable CLI error, and output preservation. | Generic catalog, optional, EXP-05, corruption, determinism, atomicity, CLI, and structural checks remain intact. |
+| `data/results/sp07_experiment_catalog.csv` | Deterministically regenerated EXP-07 with three required executable nodes plus SP-06.8/SP-06.7 validation context; new hash `c9a8568d1c64988aa694f6d9ad64578fac922ed1df8325c5b109d4ff1986f1cb`. | Same nine columns, seven ordered rows, mapped IDs, classifications, quantitative artifacts, limitations, and actions. |
+| `audit/validation/subproject_07_01_repair.md` | Added exact baseline, defects, corrections, regressions, regeneration/hashes, independent validation, test/structural results, scope, cleanup, and readiness. | Accepted SP-07.1 baseline, stage, and validation records remain historical and unchanged. |
+| `audit/file_change_ledger.md` | Added only this narrow SP-07.1R section. | Every earlier ledger section retained. |
+
+The quantitative summary remains byte-identical at `dc168fec1b5f5cb018fd9be818c4c27a7015317ded36e52a4a2079dd070a9cc0`; all seven accepted source hashes and quantitative totals remain unchanged. No accepted measurement, behavior, traceability, benchmark, figure, SP-07.2 work, commit, or push occurred.

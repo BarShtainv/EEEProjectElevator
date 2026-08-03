@@ -81,6 +81,13 @@ def _build(analysis_module: ModuleType, tmp_path: Path):
     return analysis_module.build_analysis(_arguments(tmp_path))
 
 
+def _argv(arguments: argparse.Namespace) -> list[str]:
+    result: list[str] = []
+    for name, value in vars(arguments).items():
+        result.extend((f"--{name.replace('_', '-')}", str(value)))
+    return result
+
+
 def test_exact_accepted_files_parse_and_reconcile(
     analysis_module: ModuleType, tmp_path: Path
 ) -> None:
@@ -247,6 +254,118 @@ def test_exp05_is_mixed_submit_timing_and_preserves_isolated_gap(
     assert "lookup latency" not in text and "database query latency" not in text
 
 
+def test_exp07_has_mandatory_direct_evidence_and_bounded_complete_claim(
+    analysis_module: ModuleType, tmp_path: Path
+) -> None:
+    catalog, _ = _build(analysis_module, tmp_path)
+    row = next(item for item in catalog if item["experiment_id"] == "EXP-07")
+    evidence = row["evidence_references"].split(";")
+    assert row["evidence_status"] == "complete_existing"
+    assert all(reference in evidence for reference in analysis_module.EXP07_REQUIRED_EVIDENCE)
+    assert "audit/validation/subproject_06_08_validation.md" in evidence
+    assert "audit/validation/subproject_06_07_validation.md" in evidence
+    inventory_status = {
+        item["test_id"]: item["status"]
+        for item in analysis_module.load_csv(
+            SOURCE_ARGUMENTS["inventory"], analysis_module.INVENTORY_COLUMNS
+        )
+    }
+    assert all(
+        inventory_status[test_id] == "implemented"
+        for test_id in row["mapped_test_ids"].split(";")
+    )
+    assert "specified software inputs" in row["scope_limit"]
+    assert "not field-reliability" in row["scope_limit"]
+    combined = " ".join(row.values()).lower()
+    assert "hardware compatibility is established" not in combined
+    assert "security is established" not in combined
+
+
+def test_exp07_resolving_but_incomplete_evidence_is_rejected(
+    analysis_module: ModuleType, tmp_path: Path
+) -> None:
+    catalog, _ = _build(analysis_module, tmp_path)
+    incomplete = [dict(row) for row in catalog]
+    row = next(item for item in incomplete if item["experiment_id"] == "EXP-07")
+    references = row["evidence_references"].split(";")
+    removed = analysis_module.EXP07_REQUIRED_EVIDENCE[0]
+    assert removed in references
+    row["evidence_references"] = ";".join(
+        reference for reference in references if reference != removed
+    )
+    for reference in row["evidence_references"].split(";"):
+        analysis_module._resolve_reference(reference)
+    with pytest.raises(analysis_module.AnalysisError, match="mandatory direct evidence"):
+        analysis_module.validate_experiment_evidence(incomplete)
+
+
+def test_canonical_source_paths_accept_relative_and_absolute_identity(
+    analysis_module: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    absolute = _arguments(tmp_path)
+    analysis_module.validate_canonical_source_paths(absolute)
+    _, summary = analysis_module.build_analysis(absolute)
+    for argument_name, item in zip(
+        analysis_module.CANONICAL_SOURCE_ARGUMENTS,
+        summary["source_artifacts"],
+        strict=True,
+    ):
+        supplied = getattr(absolute, argument_name).resolve(strict=True)
+        recorded = (ROOT / item["path"]).resolve(strict=True)
+        assert supplied == recorded
+        assert item["sha256"] == hashlib.sha256(recorded.read_bytes()).hexdigest()
+
+    monkeypatch.chdir(ROOT)
+    relative = _arguments(tmp_path)
+    for argument_name, canonical in zip(
+        analysis_module.CANONICAL_SOURCE_ARGUMENTS,
+        analysis_module.CANONICAL_SOURCES,
+        strict=True,
+    ):
+        setattr(relative, argument_name, Path(canonical))
+    analysis_module.validate_canonical_source_paths(relative)
+
+
+def test_byte_identical_and_semantically_valid_substitute_sources_fail_identity(
+    analysis_module: ModuleType, tmp_path: Path
+) -> None:
+    inventory_copy = _copy(SOURCE_ARGUMENTS["inventory"], tmp_path)
+    copied_arguments = _arguments(tmp_path, inventory=inventory_copy)
+    assert inventory_copy.read_bytes() == SOURCE_ARGUMENTS["inventory"].read_bytes()
+    with pytest.raises(analysis_module.AnalysisError, match="canonical source path"):
+        analysis_module.validate_canonical_source_paths(copied_arguments)
+
+    final_copy = tmp_path / "alternate-final-validation.md"
+    final_copy.write_text(
+        SOURCE_ARGUMENTS["final_validation"].read_text(encoding="utf-8")
+        + "\nSemantically irrelevant alternate-source fixture.\n",
+        encoding="utf-8",
+    )
+    alternate_arguments = _arguments(tmp_path, final_validation=final_copy)
+    analysis_module.build_analysis(alternate_arguments)
+    with pytest.raises(analysis_module.AnalysisError, match="canonical source path"):
+        analysis_module.validate_canonical_source_paths(alternate_arguments)
+
+
+def test_cli_source_identity_failure_preserves_outputs_without_traceback(
+    analysis_module: ModuleType,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    inventory_copy = _copy(SOURCE_ARGUMENTS["inventory"], tmp_path)
+    arguments = _arguments(tmp_path, inventory=inventory_copy)
+    arguments.catalog_output.write_bytes(b"old catalog")
+    arguments.summary_output.write_bytes(b"old summary")
+    assert analysis_module.main(_argv(arguments)) == 1
+    output = capsys.readouterr()
+    assert output.out == ""
+    assert len(output.err.splitlines()) == 1
+    assert output.err.startswith("error: ") and "canonical source path" in output.err
+    assert "Traceback" not in output.err
+    assert arguments.catalog_output.read_bytes() == b"old catalog"
+    assert arguments.summary_output.read_bytes() == b"old summary"
+
+
 def test_summary_order_identity_hashes_and_reconciliation(
     analysis_module: ModuleType, tmp_path: Path
 ) -> None:
@@ -376,9 +495,7 @@ def test_cli_valid_and_handled_input_failure_contract(
     analysis_module: ModuleType, tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     arguments = _arguments(tmp_path)
-    argv: list[str] = []
-    for name, value in vars(arguments).items():
-        argv.extend((f"--{name.replace('_', '-')}", str(value)))
+    argv = _argv(arguments)
     assert analysis_module.main(argv) == 0
     output = capsys.readouterr()
     assert output.err == ""
