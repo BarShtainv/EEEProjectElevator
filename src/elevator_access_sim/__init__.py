@@ -9,6 +9,7 @@ from .config import (
     load_startup_json,
 )
 from .credentials import CredentialRepository
+from .event_log import EventLog
 from .models import (
     AuthorizationDecision,
     ClockError,
@@ -58,6 +59,7 @@ __all__ = [
     "ElevatorAccessSimError",
     "EventDraft",
     "EventLogError",
+    "EventLog",
     "EventRecord",
     "EventType",
     "FrameValidation",

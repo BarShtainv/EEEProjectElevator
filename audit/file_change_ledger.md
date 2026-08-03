@@ -173,3 +173,17 @@ No SP-06.3 or later behavior was implemented. The existing external pytest envir
 | `audit/file_change_ledger.md` | modified | Added this section. | Earlier ledger retained. |
 
 Scoped 149/149 and full 367/367 pytest cases passed. SP-06.4 and later behavior remains deferred.
+
+## SP-06.4 event log
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_04_baseline.md` | New baseline with accepted commit, 367/367 gate, frozen schema/API, and scope. | Prior records retained. |
+| `src/elevator_access_sim/event_log.py` | New atomic in-memory log, sequence/timestamp ownership, failure injection, startup clear, and JSONL; 58 scoped/425 full tests passed. | Models-only dependency; no persistence/later behavior. |
+| `tests/unit/test_event_log.py` | New sequence, timestamp, failure, enum, null/order/export, clear, invariant, and inspection tests. | Inventory unchanged. |
+| `src/elevator_access_sim/__init__.py` | Exported `EventLog`, retaining prior API. | No private/later export. |
+| `audit/stage_reports/subproject_06_04.md` | New bounded handoff. | Prior reports retained. |
+| `audit/validation/subproject_06_04_validation.md` | New execution and scope evidence. | Protected paths unchanged. |
+| `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
+
+SP-06.5 and later behavior remains deferred; no commit or push occurred.
