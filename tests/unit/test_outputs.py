@@ -81,3 +81,22 @@ def test_simulated_clock_caller_and_import_scope()->None:
     c=SimulatedClock(); m=OutputManager(); m.activate(1,c.now_ms(),3000); c.advance_to(2999)
     assert not m.expire_if_due(c.now_ms()); c.advance_to(3000); assert m.expire_if_due(c.now_ms())
     tree=ast.parse(inspect.getsource(module)); assert {n.module for n in ast.walk(tree) if isinstance(n,ast.ImportFrom) and n.level}=={"models"}
+
+
+@pytest.mark.parametrize("now", [-1, True, 1.0, "1", None, [], object()])
+def test_inactive_invalid_expiry_time_preserves_state(now: object) -> None:
+    manager = OutputManager()
+    before = manager.snapshot()
+    with pytest.raises(StateInvariantError):
+        manager.expire_if_due(now)  # type: ignore[arg-type]
+    assert manager.snapshot() == before
+    assert manager.next_expiry_ms() is None
+
+
+def test_immediate_and_repeated_startup_reset_is_idempotent() -> None:
+    manager = OutputManager()
+    inactive = manager.snapshot()
+    assert manager.reset() == inactive
+    assert manager.reset() == inactive
+    assert manager.snapshot() == inactive
+    assert manager.next_expiry_ms() is None

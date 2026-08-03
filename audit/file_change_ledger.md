@@ -201,3 +201,18 @@ SP-06.5 and later behavior remains deferred; no commit or push occurred.
 | `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
 
 SP-06.6 watchdog and later behavior remain deferred; no commit or push occurred.
+
+## SP-06.6 watchdog
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `audit/baselines/subproject_06_06_baseline.md` | New accepted baseline, 488/488 gate, frozen schedule/API/scope. | Prior records retained. |
+| `tests/unit/test_outputs.py` | Added inactive invalid-expiry and startup-reset closure tests; 71/71 passed. | `outputs.py` unchanged. |
+| `src/elevator_access_sim/watchdog.py` | New deterministic heartbeat/service/suppression/one-shot-expiry/reinitialize manager. | Models-only; no clock/output/event/controller behavior. |
+| `tests/unit/test_watchdog.py` | Added 66 formula, boundary, service, suppression, heartbeat, expiry, epoch, schedule, invalid, and inspection cases. | Inventory unchanged. |
+| `src/elevator_access_sim/__init__.py` | Exported `Watchdog`, retaining prior API. | No private/later export. |
+| `audit/stage_reports/subproject_06_06.md` | New bounded handoff. | Prior reports retained. |
+| `audit/validation/subproject_06_06_validation.md` | New execution, correction, and scope evidence. | Protected paths unchanged. |
+| `audit/file_change_ledger.md` | Added this section. | Earlier ledger retained. |
+
+Final watchdog 66/66 and full 562/562 passed. SP-06.7 controller remains deferred; no commit or push occurred.

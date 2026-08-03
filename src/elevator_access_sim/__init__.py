@@ -41,6 +41,7 @@ from .models import (
     StateInvariantError,
 )
 from .wiegand import decode_frame, encode_frame, has_valid_parity, validate_frame
+from .watchdog import Watchdog
 
 __all__ = [
     "AuthorizationDecision",
@@ -75,6 +76,7 @@ __all__ = [
     "SimulatorConfig",
     "StartupData",
     "StateInvariantError",
+    "Watchdog",
     "authorize",
     "decode_frame",
     "default_config",

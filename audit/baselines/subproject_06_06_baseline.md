@@ -1,0 +1,5 @@
+# SP-06.6 Baseline
+
+Accepted clean baseline: `/mnt/c/Users/Bar/Desktop/EEEProjectElevator`, `main`, commit `c75475ee886a73dfc33c272c1e4c524d475dbbf8`; Python 3.13.13, pip 26.2, pytest 9.1.1; 488 collected/passed, 0 failed/skipped/xfailed in 1.24s. Existing SP-06.1–06.5 records were accepted. No conflicting changes or repository instructions existed.
+
+SP-06.5 review closure adds direct inactive invalid-expiry and startup-reset tests only. Frozen watchdog timeout is exact integer 1–4294967295; heartbeat is `max(1, timeout//2)`; normal heartbeat precedes same-time watchdog expiry. Reviewed API is `Watchdog` with interval/heartbeat/deadline observations, suppression, service, heartbeat processing, expiry request, and reinitialization. Authorized paths are `watchdog.py`, `test_watchdog.py`, `test_outputs.py`, package exports, this baseline, SP-06.6 stage/validation, and ledger. Controller and all later behavior remain deferred; engineering documents, prior audits, and other source/tests are protected.
