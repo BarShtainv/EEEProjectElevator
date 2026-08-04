@@ -478,3 +478,17 @@ No final report source/prose, university template, PDF, presentation, demonstrat
 | `audit/file_change_ledger.md` | Appended only this SP-08.1R section. | Every earlier ledger section remains unchanged. |
 
 No report prose, canonical diagram edit/export, product image, accepted SP-07 artifact, simulator behavior, benchmark, SP-08.2 work, release, commit, or push occurred.
+
+## SP-08.2G human drafting-input resolution gate
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `report/human_input_request.md` | Added a concise eight-section human request with six minimum decision groups, a 22-field placeholder-only paste-back template, evidence requests, decision rules, and blocked readiness. | Contains no approval, actual human answer, identification number, report prose, chosen language/style/date/template, or public restricted-document request. |
+| `report/drafting_gate_snapshot.csv` | Added 37 ordered DGT rows mapped one-to-one to SUB-001 through SUB-037 with exact copied canonical fields, minimum semantics, privacy classes, and direct requests. | Canonical submission requirements remain the sole authority and unchanged. |
+| `tests/inspection/test_drafting_gate_packet.py` | Added reconciliation, group, request, privacy, protected-hash, stage-boundary, and eight negative-fixture inspections. | Existing tests, production, dependencies, accepted report registers, and SP-07 artifacts remain unchanged. |
+| `audit/baselines/subproject_08_02_gate_baseline.md` | Recorded exact accepted commit/environment, 1157-test baseline, five register hashes, counts, six groups, privacy, scope, and drafting deferral. | No packet implementation preceded the baseline. |
+| `audit/stage_reports/subproject_08_02_gate.md` | Added packet purpose, group/later-decision handling, privacy, reconciliation, verification, scope, and drafting deferral. | It is a stage record, not report prose or human approval. |
+| `audit/validation/subproject_08_02_gate_validation.md` | Added command, baseline, snapshot, group, template, privacy, negative-fixture, protected-hash, test, independent, compilation/import, Git, cleanup, and readiness evidence. | Records only executed outcomes; no human value is inferred. |
+| `audit/file_change_ledger.md` | Appended only this SP-08.2G section. | Every previous ledger section remains unchanged. |
+
+No human-filled decision file, personal value, report chapter/source, template, PDF, presentation, diagram export, benchmark, accepted artifact mutation, release, archive, tag, commit, or push occurred. Report drafting remains blocked until authoritative humans resolve all six minimum groups.
