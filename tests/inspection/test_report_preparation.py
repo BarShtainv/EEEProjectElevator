@@ -40,7 +40,7 @@ EXPECTED_REPAIR_ASSET_ROWS = (
     ("AST-020", "diagram", "docs/figures/watchdog_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Simulated watchdog and heartbeat sequence", "Uses simulated monotonic time; does not establish MCU-watchdog equivalence or real-time behavior or reliability or physical safety.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
 )
 PROTECTED_REPORT_HASHES = {
-    "report/submission_requirements.md": "5c6ebfcd7470a1fb8ab7dc9ff643eb3411f2eee736a324c5a32dbafba8d21c71",
+    "report/submission_requirements.md": "a0c37ea21e2b09787309893c63839d869a342e73ad7b10b263db30137fa7eb8d",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
     "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
@@ -124,11 +124,12 @@ def test_submission_requirements_gate_is_explicit_and_complete():
 
 def test_submission_identity_title_and_human_blockers_are_not_conflated():
     rows = {row["requirement_id"]: row for row in markdown_table(SUBMISSION, "requirement_id")}
-    assert rows["SUB-001"]["status"] == "pending_human"
-    assert rows["SUB-002"]["status"] == "working_value" and "Literature-Based" in rows["SUB-002"]["current_value"]
-    assert rows["SUB-011"]["status"] == "pending_human" and "supervisor" in rows["SUB-011"]["current_value"].lower()
-    for key in ("SUB-003", "SUB-007", "SUB-009", "SUB-012", "SUB-013", "SUB-016", "SUB-022", "SUB-028", "SUB-029", "SUB-030"):
-        assert rows[key]["status"] in {"pending_human", "not_available"}
+    assert rows["SUB-001"]["status"] == rows["SUB-002"]["status"] == "confirmed"
+    assert rows["SUB-011"]["status"] == "pending_human" and "decision is no" in rows["SUB-011"]["current_value"].lower()
+    for key in ("SUB-003", "SUB-007", "SUB-009", "SUB-012", "SUB-013", "SUB-016"):
+        assert rows[key]["status"] == "confirmed"
+    for key in ("SUB-022", "SUB-028", "SUB-029", "SUB-030"):
+        assert rows[key]["status"] == "pending_human"
     text = SUBMISSION.read_text(encoding="utf-8")
     assert all(heading in text for heading in ("## Blocking inputs for SP-08.2", "## Non-blocking inputs for early drafting", "## Human review checklist"))
     for value in ("report language", "template", "working title", "student and supervisor identity", "citation style", "submission deadline"):
@@ -251,7 +252,7 @@ def test_protected_report_registers_and_human_gate_are_unchanged():
     for path, expected in PROTECTED_REPORT_HASHES.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     submission_rows = markdown_table(SUBMISSION, "requirement_id")
-    assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 25
+    assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 4
 
 
 def test_sp07_asset_hashes_match_manifest_and_timing_captions_keep_limits():

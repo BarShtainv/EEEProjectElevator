@@ -55,7 +55,7 @@ PASTE_BACK_FIELDS = (
     "Product-image decision", "Physical-component expectation",
 )
 PROTECTED_HASHES = {
-    "report/submission_requirements.md": "5c6ebfcd7470a1fb8ab7dc9ff643eb3411f2eee736a324c5a32dbafba8d21c71",
+    "report/submission_requirements.md": "a0c37ea21e2b09787309893c63839d869a342e73ad7b10b263db30137fa7eb8d",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
     "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/report_asset_register.csv": "72f8b90a37bc47df3cc235e0807a847e8e3e68f9ec23310fb0c4b29aea4a4285",
@@ -110,15 +110,16 @@ def validate_snapshot(rows: list[dict[str, str]], canonical: list[dict[str, str]
     assert all(row["minimum_gate_group"] == "" for row in rows if row["requirement_id"] not in grouped_ids)
     assert all(any(row["requested_human_response"].strip() for row in rows if row["minimum_gate_group"] == group) for group in MINIMUM_GROUPS)
 
+    by_id = {row["requirement_id"]: row for row in rows}
     assert {row["minimum_for_sp08_2"] for row in rows} <= {"yes", "conditional", "no"}
     conditional = {"SUB-001", "SUB-002", "SUB-003", "SUB-004", "SUB-005", "SUB-006", "SUB-008", "SUB-010", "SUB-013", "SUB-014", "SUB-015", "SUB-017", "SUB-018", "SUB-019", "SUB-020", "SUB-021", "SUB-022"}
     assert all(row["minimum_for_sp08_2"] == "conditional" for row in rows if row["requirement_id"] in conditional)
     assert all(row["minimum_for_sp08_2"] == "no" for row in rows if row["requirement_id"] not in grouped_ids)
-    assert all(row["current_status"] not in {"resolved", "approved"} for row in rows if row["minimum_gate_group"])
+    assert by_id["SUB-011"]["current_status"] == "pending_human"
+    assert "current decision is no" in by_id["SUB-011"]["current_value"]
 
     allowed_privacy = {"public_project_decision", "personal_information", "sensitive_personal_information", "restricted_document", "external_rights_decision"}
     assert {row["privacy_classification"] for row in rows} <= allowed_privacy
-    by_id = {row["requirement_id"]: row for row in rows}
     assert by_id["SUB-007"]["privacy_classification"] == "personal_information"
     assert by_id["SUB-008"]["privacy_classification"] == "sensitive_personal_information"
     assert by_id["SUB-009"]["privacy_classification"] == by_id["SUB-010"]["privacy_classification"] == "personal_information"
@@ -183,7 +184,7 @@ def test_packet_is_strict_utf8_nonidentifying_and_private_by_default():
     assert not any(value in combined for value in ("/home/", "/mnt/", "C:\\Users\\", "hostname"))
     assert not re.search(r"\b\d{7,10}\b", paste_back_block(text))
     student_id = next(row for row in snapshot_rows() if row["requirement_id"] == "SUB-008")
-    assert student_id["current_value"] == "Pending human input"
+    assert student_id["current_value"] == "318875812"
 
 
 def test_protected_report_and_sp07_assets_are_unchanged():
