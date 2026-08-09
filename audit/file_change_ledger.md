@@ -513,3 +513,17 @@ Removed 47 tracked generated Python cache files, added narrow cache ignores, exp
 | `audit/baselines/subproject_08_02_human_privacy_reverification_baseline.md`; `audit/stage_reports/subproject_08_02_human_privacy_reverification.md`; `audit/validation/subproject_08_02_human_privacy_reverification.md`; `audit/validation/subproject_08_02_history_remediation_authorization_gate.md` | Added clean-baseline, reverification, and explicit owner-authorization-gate evidence. |
 
 No history rewrite, force-push, commit, push, or report drafting occurred.
+
+## SP-08.2D evidence-led final-report drafting
+
+| Path | Change and validation | Protected result |
+|---|---|---|
+| `report/final_report.md` | Added the 6,707-word template-neutral report with exact authorized front matter, 15 ordered sections, evidence-led prose, accepted quantitative tables, three unchanged SP-07 figures, eight IEEE references, limitations, and appendices. | Software-only and product-unknown boundaries retained; no physical, safety, real-time, production, or commercial-equivalence claim. |
+| `report/report_draft_traceability.csv` | Added the exact eight-column, 15-row section map covering all 27 RPT claims, 40 source paths, accepted citation keys/assets, limitations, and review statuses. | Unknown-only and limited claims remain bounded; all paths, keys, and asset IDs resolve. |
+| `tests/inspection/test_final_report_draft.py` | Added 22 standard-library/pytest inspections, including 13 temporary negative report fixtures plus missing-source and unregistered-asset checks. | Canonical inputs are never modified; structure, metadata, privacy, citations, quantities, scope, assets, and forbidden outputs are enforced. |
+| `audit/baselines/subproject_08_02_report_draft_baseline.md` | Recorded exact clean starting state, environment, 1,176-test baseline, authorization/gates, hashes, and scope. | No drafting preceded the baseline. |
+| `audit/stage_reports/subproject_08_02_report_draft.md` | Recorded drafting outcome, evidence/citation method, quantitative and asset handling, scope, validation, human-review boundary, and readiness. | Draft creation is not final report or submission approval. |
+| `audit/validation/subproject_08_02_report_draft_validation.md` | Recorded concrete hashes, counts, reconciliations, privacy/claim/asset scans, tests, independent validation, imports, Git scope, cleanup, and readiness. | Claims only executed validation and preserves protected inputs. |
+| `audit/file_change_ledger.md` | Appended only this SP-08.2D section. | All earlier ledger sections retained. |
+
+No protected input, accepted SP-07 artifact, production source, existing test, dependency, README, or project plan was changed. No DOCX, PDF, presentation, product image, Mermaid export, archive, release, history rewrite, commit, or push occurred.
