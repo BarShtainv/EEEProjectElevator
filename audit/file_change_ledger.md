@@ -500,6 +500,10 @@ No report prose, canonical diagram edit/export, product image, accepted SP-07 ar
 
 No human-filled decision file, personal value, report chapter/source, template, PDF, presentation, diagram export, benchmark, accepted artifact mutation, release, archive, tag, commit, or push occurred. Report drafting remains blocked until authoritative humans resolve all six minimum groups.
 
+## SP-08.2IRR repository-hygiene and authorization-validation repair
+
+Removed 47 tracked generated Python cache files, added narrow cache ignores, expanded the supervisor-authorization inspection, and added baseline/stage/validation records. Accepted drafting-gate artifacts remain unchanged and report drafting was not started. The prior SP-08.2IR ledger section was absent; this entry records the accepted net SP-08.2IR/IRR closure without rewriting historical sections.
+
 ## SP-08.2HRR privacy-repair reverification and authorization gate
 
 | Path | Change |
