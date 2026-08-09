@@ -30,11 +30,11 @@ IEEE citation style; no minimum reference-count rule.
 
 ## Schedule direction
 
-The final deadline and accepted interim schedule are unresolved.
+The final submission due date is not yet established. It is an SP-08.4 administrative requirement and does not block report drafting.
 
 ## Decisions still pending
 
-Supervisor drafting authorization and schedule direction remain pending, along with later-stage submission and presentation decisions.
+Supervisor drafting authorization is the remaining drafting blocker. The submission due date remains a later SP-08.4 administrative item, along with other later-stage submission and presentation decisions.
 
 ## Drafting scope authorized
 
@@ -46,4 +46,4 @@ No report chapter, final PDF, presentation, release, or submission is approved.
 
 ## Readiness
 
-REPORT DRAFTING NOT AUTHORIZED — supervisor drafting authorization and a final deadline or accepted interim drafting schedule remain unresolved
+REPORT DRAFTING NOT AUTHORIZED — supervisor drafting authorization remains unresolved

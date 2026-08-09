@@ -40,7 +40,7 @@ EXPECTED_REPAIR_ASSET_ROWS = (
     ("AST-020", "diagram", "docs/figures/watchdog_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Simulated watchdog and heartbeat sequence", "Uses simulated monotonic time; does not establish MCU-watchdog equivalence or real-time behavior or reliability or physical safety.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
 )
 PROTECTED_REPORT_HASHES = {
-    "report/submission_requirements.md": "698de2a26919d3acb9184d13cbc3fe7ff6681b49dd1af42ef5aedbcd81c19e1c",
+    "report/submission_requirements.md": "0e49e8fbc9d73ddd63bc881adfeca86c40fd9aa1811c4100f6d3c4dddadeb874",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
     "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
@@ -252,7 +252,7 @@ def test_protected_report_registers_and_human_gate_are_unchanged():
     for path, expected in PROTECTED_REPORT_HASHES.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     submission_rows = markdown_table(SUBMISSION, "requirement_id")
-    assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 4
+    assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 3
 
 
 def test_sp07_asset_hashes_match_manifest_and_timing_captions_keep_limits():

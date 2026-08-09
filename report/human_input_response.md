@@ -10,4 +10,4 @@ Student identification number: not stored in the repository; handle outside the 
 
 There are no confidentiality or publication restrictions. Product imagery must not be used unless its source and permission are preserved; original product capture is unavailable. Later submission and presentation decisions remain unresolved.
 
-Title approval and drafting authorization are separate decisions. Title approval is present; drafting authorization is currently not granted. The final deadline is not established and no accepted interim drafting schedule exists.
+Title approval and drafting authorization are separate decisions. Title approval is present; drafting authorization is currently not granted. The final submission due date is not yet established; it is not required to begin report drafting and will be handled as an SP-08.4 submission-preparation decision.

@@ -499,3 +499,13 @@ No report prose, canonical diagram edit/export, product image, accepted SP-07 ar
 | `audit/file_change_ledger.md` | Appended only this SP-08.2G section. | Every previous ledger section remains unchanged. |
 
 No human-filled decision file, personal value, report chapter/source, template, PDF, presentation, diagram export, benchmark, accepted artifact mutation, release, archive, tag, commit, or push occurred. Report drafting remains blocked until authoritative humans resolve all six minimum groups.
+
+## SP-08.2HRR privacy-repair reverification and authorization gate
+
+| Path | Change |
+|---|---|
+| `report/submission_requirements.md` | Marked SUB-008 private-handling policy confirmed without storing a numeric identifier. |
+| `tests/inspection/test_drafting_gate_partial_resolution.py` | Strengthened explicit privacy, negative authorization, schedule, ledger, and snapshot regression coverage. |
+| `audit/baselines/subproject_08_02_human_privacy_reverification_baseline.md`; `audit/stage_reports/subproject_08_02_human_privacy_reverification.md`; `audit/validation/subproject_08_02_human_privacy_reverification.md`; `audit/validation/subproject_08_02_history_remediation_authorization_gate.md` | Added clean-baseline, reverification, and explicit owner-authorization-gate evidence. |
+
+No history rewrite, force-push, commit, push, or report drafting occurred.

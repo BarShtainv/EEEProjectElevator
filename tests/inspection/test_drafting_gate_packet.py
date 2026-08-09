@@ -55,7 +55,7 @@ PASTE_BACK_FIELDS = (
     "Product-image decision", "Physical-component expectation",
 )
 PROTECTED_HASHES = {
-    "report/submission_requirements.md": "698de2a26919d3acb9184d13cbc3fe7ff6681b49dd1af42ef5aedbcd81c19e1c",
+    "report/submission_requirements.md": "0e49e8fbc9d73ddd63bc881adfeca86c40fd9aa1811c4100f6d3c4dddadeb874",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
     "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/report_asset_register.csv": "72f8b90a37bc47df3cc235e0807a847e8e3e68f9ec23310fb0c4b29aea4a4285",
