@@ -6,7 +6,7 @@ The authoritative human response is recorded in `report/human_input_response.md`
 
 ## Resolved minimum gates
 
-Identity, language, template, and citation gates are resolved. The title gate is partially resolved and the schedule gate is unresolved.
+All six drafting gates are resolved.
 
 ## Authorized report title
 
@@ -34,11 +34,11 @@ The final submission due date is not yet established. It is an SP-08.4 administr
 
 ## Decisions still pending
 
-Supervisor drafting authorization is the remaining drafting blocker. The submission due date remains a later SP-08.4 administrative item, along with other later-stage submission and presentation decisions.
+The final submission due date remains an SP-08.4 administrative item, along with unresolved presentation/submission administration and public Git-history privacy remediation. None blocks report drafting.
 
 ## Drafting scope authorized
 
-No report drafting scope is authorized.
+Template-neutral Markdown final-report source may be created using the accepted 15-section architecture, accepted SP-07 tables and figures, IEEE citations, the approved title and ordinary identity metadata, and all claim limitations and software-only scope.
 
 ## Scope not authorized
 
@@ -46,4 +46,4 @@ No report chapter, final PDF, presentation, release, or submission is approved.
 
 ## Readiness
 
-REPORT DRAFTING NOT AUTHORIZED — supervisor drafting authorization remains unresolved
+REPORT DRAFTING AUTHORIZED

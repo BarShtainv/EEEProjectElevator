@@ -13,7 +13,7 @@ RESOLUTION = ROOT / "report/drafting_gate_resolution.csv"
 AUTHORIZATION = ROOT / "report/drafting_authorization.md"
 SNAPSHOT = ROOT / "report/drafting_gate_snapshot.csv"
 SUBMISSION = ROOT / "report/submission_requirements.md"
-FINAL = "REPORT DRAFTING NOT AUTHORIZED — supervisor drafting authorization remains unresolved"
+FINAL = "REPORT DRAFTING AUTHORIZED"
 LEDGER_COLUMNS = ("gate_group", "requirement_ids", "resolution_status", "authoritative_decision", "authority", "evidence", "privacy_handling", "drafting_effect", "remaining_issue", "notes")
 
 def text(path: Path) -> str:
@@ -35,9 +35,9 @@ def test_six_gate_ledger_and_frozen_snapshot():
         reader = csv.DictReader(handle); rows = list(reader)
     assert tuple(reader.fieldnames or ()) == LEDGER_COLUMNS
     assert [r["gate_group"] for r in rows] == ["GATE-TITLE", "GATE-IDENTITY", "GATE-LANGUAGE", "GATE-TEMPLATE", "GATE-CITATION", "GATE-SCHEDULE"]
-    assert [r["resolution_status"] for r in rows] == ["partially_resolved", "resolved", "resolved", "resolved", "resolved", "resolved"]
-    assert all(r["evidence"] == "report/human_input_response.md" for r in rows)
-    assert rows[0]["drafting_effect"] == "Report drafting blocked"
+    assert [r["resolution_status"] for r in rows] == ["resolved"] * 6
+    assert rows[0]["evidence"] == "report/human_input_response.md;report/authoritative_inputs/supervisor_drafting_authorization.md"
+    assert rows[0]["drafting_effect"] == "No report-drafting blocker"
     assert rows[-1]["drafting_effect"] == "No report-drafting blocker"
     assert rows[-1]["remaining_issue"] == "Final submission due date remains pending for SP-08.4"
     assert not any(re.search(r"\b\d{9}\b", ",".join(row.values())) for row in rows)
@@ -47,12 +47,12 @@ def test_submission_authorization_and_negative_fixtures():
     submission = text(SUBMISSION)
     sub008 = next(line for line in submission.splitlines() if line.startswith("| SUB-008"))
     assert "| confirmed |" in sub008 and "Private-handling policy confirmed" in sub008
-    assert "pending_human" in next(line for line in submission.splitlines() if line.startswith("| SUB-011"))
+    assert "| confirmed |" in next(line for line in submission.splitlines() if line.startswith("| SUB-011"))
     sub022 = next(line for line in submission.splitlines() if line.startswith("| SUB-022"))
     assert "| pending_human | SP-08.4 |" in sub022
     assert not re.search(r"\b\d{9}\b", submission)
     identifier_fixture = text(RESPONSE) + "\n" + "1" * 9 + "\n"
-    authorization_fixture = text(AUTHORIZATION).replace("NOT AUTHORIZED", "AUTHORIZED")
+    authorization_fixture = text(AUTHORIZATION).replace("REPORT DRAFTING AUTHORIZED", "REPORT DRAFTING NOT AUTHORIZED")
     deadline_fixture = text(RESPONSE).replace("not yet established", "established")
     assert re.search(r"\b\d{9}\b", identifier_fixture)
     assert not authorization_fixture.rstrip().endswith(FINAL)

@@ -14,7 +14,7 @@ This file is an internal project gate, not a university specification. Missing v
 | SUB-008 | Student identification numbers | Not stored in the repository; handle through an approved private process if later required | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Students | Private-handling policy confirmed; no numeric identifier is stored. If later authoritative report rules require the field, values must be handled outside the repository through an approved private process. |
 | SUB-009 | Supervisor name | Gadi Golan | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Students and supervisor | Human-supplied supervisor identity. |
 | SUB-010 | Supervisor title | Professor | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Supervisor or department | Human-supplied supervisor title. |
-| SUB-011 | Supervisor approval | Pending supervisor authorization; current decision is no | Supervisor decision recorded by Bar Shtainvortzel | `report/human_input_response.md` | pending_human | SP-08.2 | Supervisor | The supervisor has not authorized report drafting to begin. |
+| SUB-011 | Supervisor approval | Supervisor authorizes report drafting to begin | Supervisor | `report/human_input_response.md`; `report/authoritative_inputs/supervisor_drafting_authorization.md` | confirmed | SP-08.2 | Supervisor | Authorizes report drafting only; it does not approve the final report, submission, release, or presentation. |
 | SUB-012 | Report language | English | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Supervisor or department | English report drafting arrangement selected. |
 | SUB-013 | Approved report template | Explicitly authorized template-neutral Markdown drafting | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Students or department | No template path is applicable. |
 | SUB-014 | Required submission file format | DOCX | Bar Shtainvortzel | `report/human_input_response.md` | confirmed | SP-08.2 | Students or department | Required final submission format. |
@@ -44,7 +44,7 @@ This file is an internal project gate, not a university specification. Missing v
 
 ## Blocking inputs for SP-08.2
 
-Report drafting is blocked only because the supervisor has not explicitly authorized it. The title, identity, language, template-neutral Markdown basis, output format, citation style, and cover fields have been supplied. The submission due date remains pending as an SP-08.4 administrative requirement before final submission/release preparation; it does not block report drafting. Product imagery remains prohibited unless its source and reproduction permission are preserved. Codex cannot approve report drafting or final submission.
+No unresolved human decision blocks report drafting. The submission due date remains pending as an SP-08.4 administrative requirement before final submission/release preparation; it does not block report drafting. Product imagery remains prohibited unless its source and reproduction permission are preserved. Codex cannot approve the final report or submission; those remain human responsibilities.
 
 ## Non-blocking inputs for early drafting
 
