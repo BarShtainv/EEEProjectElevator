@@ -40,7 +40,7 @@ EXPECTED_REPAIR_ASSET_ROWS = (
     ("AST-020", "diagram", "docs/figures/watchdog_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Simulated watchdog and heartbeat sequence", "Uses simulated monotonic time; does not establish MCU-watchdog equivalence or real-time behavior or reliability or physical safety.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
 )
 PROTECTED_REPORT_HASHES = {
-    "report/submission_requirements.md": "a0c37ea21e2b09787309893c63839d869a342e73ad7b10b263db30137fa7eb8d",
+    "report/submission_requirements.md": "698de2a26919d3acb9184d13cbc3fe7ff6681b49dd1af42ef5aedbcd81c19e1c",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
     "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
@@ -132,7 +132,7 @@ def test_submission_identity_title_and_human_blockers_are_not_conflated():
         assert rows[key]["status"] == "pending_human"
     text = SUBMISSION.read_text(encoding="utf-8")
     assert all(heading in text for heading in ("## Blocking inputs for SP-08.2", "## Non-blocking inputs for early drafting", "## Human review checklist"))
-    for value in ("report language", "template", "working title", "student and supervisor identity", "citation style", "submission deadline"):
+    for value in ("supervisor authorization", "deadline", "interim schedule"):
         assert value in text.lower()
     assert "Codex cannot approve" in text
 

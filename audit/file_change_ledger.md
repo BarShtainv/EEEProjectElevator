@@ -142,6 +142,13 @@ No Wiegand, credential loading/repository, authorization, event logger, output, 
 
 No production or test file changed because real pytest exposed no defect. No Wiegand or later-stage implementation was added. The isolated environment exists only at `/home/bar/.venvs/eeeproject-elevator`, outside the repository.
 
+## SP-08.2HR human-decision privacy, provenance, and partial-gate repair
+
+| Path group | Change | Boundary preserved |
+|---|---|---|
+| Human decision and gate records | Replaced raw sensitive input with a sanitized response, restored the historical snapshot, and added a separate current-resolution ledger and authorization record. | Report drafting remains unauthorized. |
+| Inspection and audit records | Restored historical snapshot validation and added partial-resolution coverage and remediation records. | No report, release, history rewrite, commit, or push occurred. |
+
 ## SP-06.2 PROJECT_WIEGAND_26 codec
 
 | Path | Pre-existing or new | Change made | Reason | Protected-content check | Validation performed |
