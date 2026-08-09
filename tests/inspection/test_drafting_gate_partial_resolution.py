@@ -23,10 +23,10 @@ def test_partial_resolution_records_are_sanitized_and_honest():
     assert text(RESPONSE).startswith("# Authoritative Human Drafting Decisions\n")
     assert not re.search(r"\b\d{9}\b", text(RESPONSE) + text(SUBMISSION) + text(RESOLUTION) + text(AUTHORIZATION))
     assert "title approval is present" in text(RESPONSE).lower()
-    assert "drafting authorization is currently not granted" in text(RESPONSE).lower()
+    assert "supervisor report-drafting authorization is granted" in text(RESPONSE).lower()
     response = text(RESPONSE).lower()
     assert "final submission due date is not yet established" in response
-    assert "not required to begin report drafting" in response
+    assert "does not block drafting" in response
     assert "student identification number: not stored in the repository" in response
     assert text(AUTHORIZATION).rstrip().endswith(FINAL)
 
