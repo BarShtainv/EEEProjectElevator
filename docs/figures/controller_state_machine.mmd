@@ -1,9 +1,5 @@
 stateDiagram-v2
-    direction LR
-    note right of IDLE
-      PROPOSED PROJECT STATE MACHINE
-      all outputs inactive in IDLE
-    end note
+    direction TB
 
     [*] --> RESETTING: startup / clear outputs and transient state
     RESETTING --> INITIALIZING: startup reset complete
@@ -18,7 +14,7 @@ stateDiagram-v2
     AUTHORIZING --> IDLE: invalid or unauthorized floor / log outcome
     AUTHORIZING --> OUTPUT_ACTIVE: grant event appended / activate one output
     AUTHORIZING --> IDLE: grant event append failure / logging_error
-    OUTPUT_ACTIVE --> OUTPUT_ACTIVE: new request / controller_busy; preserve expiry
+    OUTPUT_ACTIVE --> OUTPUT_ACTIVE: new request / controller_busy, preserve expiry
     OUTPUT_ACTIVE --> IDLE: timeout / clear output
     RESETTING --> RESETTING: manual or watchdog reset
     INITIALIZING --> RESETTING: manual or watchdog reset
@@ -27,3 +23,5 @@ stateDiagram-v2
     LOOKUP --> RESETTING: manual or watchdog reset
     AUTHORIZING --> RESETTING: manual or watchdog reset
     OUTPUT_ACTIVE --> RESETTING: manual or watchdog reset
+
+    note right of IDLE: All outputs are inactive in IDLE

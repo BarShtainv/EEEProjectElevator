@@ -1,20 +1,24 @@
 flowchart LR
-    %% Working title: Literature-Based Engineering Analysis and Software Simulation of a 16-Floor Dual-Frequency RFID Elevator Access-Control Controller
-    %% Project-owner approved working title; supervisor approval pending.
 
     subgraph PB["PROJECT BOUNDARY — deterministic software model only"]
-        direction LR
+        direction TB
 
-        LF["Simulated LF reader source<br/>(logical category only)"]
-        HF["Simulated HF reader source<br/>(logical category only)"]
-        MSG["Credential-message input<br/>PROJECT_WIEGAND_26"]
-        FLOOR["Simulated floor-request source<br/>floor 1–16"]
-        HARNESS["Test and experiment harness<br/>simulated time + fault injection"]
+        subgraph INPUTS["LOGICAL INPUTS"]
+            direction LR
+            LF["LF source label"]
+            HF["HF source label"]
+            FLOOR["Floor request<br/>1–16"]
+            HARNESS["Test harness<br/>time + fault injection"]
+        end
 
-        CTRL["Controller simulator<br/>validation · lookup · authorization<br/>timed output · reset · watchdog"]
-        DB[("Logical credential database<br/>composite key + 16-bit floor mask")]
-        OUT["Abstract 16-floor permission outputs<br/>no physical control"]
-        LOG[("Structured event log")]
+        subgraph MODEL["REFERENCE MODEL"]
+            direction LR
+            MSG["Complete credential frame<br/>PROJECT_WIEGAND_26"]
+            DB[("Credential repository<br/>composite key + 16-bit mask")]
+            CTRL["Controller<br/>validate · look up · authorize<br/>time · log · reset · watchdog"]
+            OUT["16 Boolean<br/>permission outputs"]
+            LOG[("Structured<br/>event log")]
+        end
 
         LF --> MSG
         HF --> MSG
@@ -31,10 +35,10 @@ flowchart LR
 
     subgraph EX["OUTSIDE PROJECT BOUNDARY"]
         direction TB
-        COMM["Commercial controller<br/>behavior and equivalence unknown"]
-        RFID["Physical RFID readers, tags,<br/>RF propagation and electronics"]
-        ELEV["Physical elevator controller<br/>and elevator wiring"]
-        SAFETY["Motors · brakes · doors<br/>movement · passenger-safety systems"]
+        COMM["Commercial controller<br/>internals and equivalence"]
+        RFID["RFID readers, tags,<br/>RF propagation and electronics"]
+        ELEV["Elevator controller<br/>and electrical wiring"]
+        SAFETY["Motion · doors · brakes<br/>passenger-safety systems"]
     end
 
     COMM -. "not modeled; no equivalence claimed" .- CTRL

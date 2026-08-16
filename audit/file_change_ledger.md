@@ -540,3 +540,15 @@ No protected input, accepted SP-07 artifact, production source, existing test, d
 | `audit/file_change_ledger.md` | Appended only this SP-08.3H section. | All earlier ledger sections retained. |
 
 The authoritative response file `report/authoritative_inputs/final_report_human_review.md` was not created. No report or traceability revision, DOCX, PDF, PPTX, Mermaid render, product image, archive, release, history rewrite, commit, or push occurred.
+
+## Final report grading-readiness and document-production pass
+
+| Path group | Change and validation | Protected result |
+|---|---|---|
+| `report/final_report.md`; `report/defense_preparation.md` | Reworked the academic narrative, inserted numbered figures/tables, strengthened contribution/results/limitations/conclusion wording, and added private defense preparation. | Accepted quantitative values, product unknowns, and the software/safety boundary remain unchanged. |
+| `docs/figures/*.mmd`; generated architecture SVG/PNG files; accepted timing PNG copies | Repaired rendering syntax/layout, rendered all seven architecture sources, selected five, and produced Word-compatible high-resolution assets. | Original timing SVG values remain unchanged; firmware/reset diagrams were rendered but omitted as redundant. |
+| `scripts/build_grading_report.py`; `scripts/update_docx_indexes.py`; `report/final_report_grading_draft.docx`; `report/final_report_grading_draft.pdf` | Added reproducible Word/PDF production, generated a styled DOCX, refreshed the TOC for PDF export, and completed page-by-page inspection. | No final approval or submission is claimed; pre-existing `report/final_report_draft.docx` was not modified. |
+| `report/report_asset_register.csv`; `report/report_draft_traceability.csv`; `report/report_claim_source_matrix.csv` | Reconciled rendered-asset state, revised chapter title/figure status, and recorded the confirmed IEEE citation decision. | Evidence classifications and claim limitations remain intact. |
+| `audit/stage_reports/final_report_grading_readiness.md`; `audit/file_change_ledger.md` | Recorded baseline, commands, results, visual defects and repairs, unresolved inputs, and readiness. | Historical stage records and tests remain unchanged. |
+
+Relevant software validation passed 1,118 tests. The repository-wide suite passed 1,197 of 1,210; 13 historical inspection failures enforce the intentionally superseded no-export/exact-draft/register freeze and were retained as evidence rather than weakened.

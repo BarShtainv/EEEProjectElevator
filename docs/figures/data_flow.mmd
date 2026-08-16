@@ -1,5 +1,5 @@
-flowchart LR
-    NOTE["PROPOSED PROJECT DATA FLOW<br/>software-only; no physical elevator command"]
+flowchart TB
+    NOTE["REFERENCE-MODEL DATA FLOW<br/>software-only; no physical elevator command"]
     REQ["Source + complete frame + floor"]
     BUSY{"Output active?"}
     VAL["Validate source / frame / parity<br/>and decode"]
@@ -33,4 +33,3 @@ flowchart LR
     DENY --> OBS
     LOGERR --> OBS
     NOTE --- END
-

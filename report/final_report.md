@@ -1,19 +1,22 @@
 # Final Project Controlled Floor Elevator
 
-**Student:** Bar Shtainvortzel  
-**Institution:** Ariel University  
-**Faculty/School:** Faculty of Engineering  
-**Department:** Department of Electrical and Electronics  
-**Degree/Program:** B.Sc. program  
-**Supervisor:** Professor Gadi Golan  
-**Academic year:** 4th year  
-Submission date: Pending SP-08.4 human input
+**B.Sc. Final Engineering Project Report**
 
-This repository document is a complete engineering-report draft for human review; it is not final university submission approval.
+**Student:** Bar Shtainvortzel
+
+**Supervisor:** Professor Gadi Golan
+
+**Department of Electrical and Electronics**
+
+**Faculty of Engineering**
+
+**Ariel University**
+
+**Fourth year**
 
 ## 1. Abstract
 
-Floor-selective access control requires a controller to validate a presented credential, locate the corresponding authorization record, decide whether a requested floor is permitted, activate a bounded permission output, and retain an auditable event history. This project addresses that problem as a software-only engineering study because authoritative technical evidence for the motivating commercial item was unavailable. An evidence-led method separated preserved product identification, external technical literature, project-specific design decisions, accepted simulator evidence, and unresolved information. The resulting Python host application implements a deterministic 16-floor access-authorization reference model with a project-defined 26-bit credential frame, an in-memory credential repository, floor-mask decisions, one logical timed output, structured logging, simulated monotonic time, reset, and watchdog recovery. Verification linked every required requirement to executed tests; the accepted implementation milestone recorded 976 collected and passed tests. A bounded quantitative study then reconciled 39,000 mixed controller requests and 24,000 isolated operations with their constructed expected outcomes, including zero mismatches in the isolated lookup and authorization matrices. Host timing was observed for four repository sizes using exactly three measured repetitions per size and operation. These measurements are one-host repetition-level aggregates, not pooled call statistics. The work validates the defined software model under controlled inputs, not a physical reader, elevator installation, commercial controller, real-time system, safety system, or production implementation.
+Floor-selective elevator access requires a controller to validate a credential, retrieve its authorization record, decide whether a requested floor is permitted, activate the corresponding permission signal for a bounded interval, and record the outcome. This project specified, architected, implemented, and verified a deterministic software reference model for that authorization function. The Python model supports two logical reader-source labels, a project-defined 26-bit credential profile with parity checking, composite-key credential lookup, 16-bit floor permissions, explicit grant and denial decisions, single-output activation, busy handling, structured event logging, deterministic simulated time, reset, and watchdog recovery. Requirements-to-test traceability covered all 60 required requirements, and the implementation verification milestone recorded 976 collected and passed tests. Quantitative experiments reconciled 39,000 mixed controller requests and 24,000 isolated lookup and authorization operations with their constructed expected outcomes; the isolated matrices contained zero mismatches or incorrect authorization outcomes. Timing measurements covered four repository sizes on one recorded host with three measured repetitions per size and operation. The principal limitation is that the work evaluates a controlled host-software model rather than physical RFID electronics, an elevator interface, passenger-safety functions, or the motivating commercial controller. The contribution is therefore a reproducible and quantitatively evaluated authorization reference design, not a physical elevator-control product.
 
 ## 2. Introduction
 
@@ -27,27 +30,35 @@ Authorization is the central engineering function. General access-control guidan
 
 ### Objective and scope
 
-The objective was to specify, implement, verify, and quantitatively examine a deterministic Python model of a 16-floor access-authorization controller under controlled software inputs. The model begins with a complete logical credential frame, an `LF` or `HF` source label, and one requested floor. It ends with a typed decision, one of 16 abstract Boolean permission channels, and an event record. `LF` and `HF` are metadata labels only; they do not simulate radio propagation, antennas, modulation, reader electronics, or physical frequency detection.
+The objective was to specify, architect, implement, verify, and quantitatively evaluate a deterministic Python model of a 16-floor access-authorization controller under controlled software inputs. The model begins with a complete logical credential frame, an `LF` or `HF` source label, and one requested floor. It ends with a typed decision, one of 16 abstract Boolean permission channels, and an event record. `LF` and `HF` are metadata labels only; they do not simulate radio propagation, antennas, modulation, reader electronics, or physical frequency detection.
 
 The motivating commercial listing and the project-specific reference model must remain distinct. The owner-supplied listing URL identifies the intended item, but no preserved listing capture or manufacturer documentation supports a technical characterization. Consequently, the report does not present the project model as reverse engineering, a commercial implementation, or an equivalent replacement.
 
-Figure planned from docs/figures/system_context.mmd; rendering deferred to the controlled document-production stage.
+The engineering boundary is summarized in Figure 1. Inputs are complete logical messages rather than electrical pulses, while outputs are permission states rather than elevator commands.
+
+![Figure 1. System context and engineering boundary of the software reference model.](../docs/figures/system_context.png){#fig-system-context width=100%}
+
+### Engineering contribution
+
+The completed contribution is a deterministic software reference model that joins protocol validation, credential management, authorization, output timing, controller state, logging, fault injection, reset, watchdog recovery, automated verification, and reproducible experiments in one coherent design. Its significance lies in making each decision, state transition, timing event, and limitation explicit and testable. The work does not claim that the motivating commercial product uses the same internal design, and it does not control elevator motion, doors, brakes, or passenger-safety functions.
 
 ### Report organization
 
-Section 3 inventories the product evidence and its gaps. Section 4 explains the evidence-led research method. Section 5 reviews the bounded technical literature. Sections 6–8 define the requirements, conceptual architecture, and Python implementation. Sections 9–11 describe verification, quantitative results, and their interpretation. Sections 12–13 consolidate limitations, conclusions, and future work. Sections 14–15 provide the bibliography and supporting reproducibility material.
+Section 3 defines the motivating product context and its evidence boundary. Section 4 explains the research method. Section 5 reviews relevant technical literature. Sections 6–8 define the requirements, reference architecture, and Python implementation. Sections 9–11 present verification, quantitative results, and engineering interpretation. Sections 12–13 consolidate limitations, conclusions, and future work. Sections 14–15 provide references and supporting reproducibility material.
 
-## 3. Product Under Study and Available Evidence
+## 3. Motivating Product Context and Evidence Boundary
 
 ### Preserved identification evidence
 
-The intended commercial item is identified by two owner-supplied forms of the same AliExpress URL: the original URL and a canonical item URL. This is verified identification evidence only. Direct listing content was unavailable, and no local capture was preserved. The URL therefore establishes which listing motivated the study but establishes no technical product characteristic.
+The commercial item that motivated the study is identified by two preserved forms of the same AliExpress URL: the original URL and a canonical item URL. Direct listing content and a local capture were unavailable. The URL therefore identifies the motivating listing but establishes no technical product characteristic.
 
 No product image is included. Original imagery, its provenance, and permission to reproduce it are unavailable. There are also no preserved readable component markings, seller technical statements, schematics, or manufacturer documents. These gaps prevent image-based or document-based inspection of the item.
 
 ### Current technical unknowns
 
-The following table records unknowns rather than negative findings.
+Table 1 records unknowns rather than negative findings.
+
+**Table 1. Evidence boundary for the motivating commercial product.**
 
 | Topic | Evidence status | Permitted conclusion |
 |---|---|---|
@@ -63,11 +74,11 @@ Absence of preserved evidence is not evidence that the product lacks any listed 
 
 ## 4. Research Methodology and Limitations
 
-### Evidence-led method
+### Evidence-based method
 
-The study applied a source hierarchy to keep claims proportional to their support. Directly preserved material about the item was classified as verified product evidence. Manufacturer manuals and government or vendor guidance were treated as external technical evidence only within their documented scope. A reasoned project interpretation was classified as engineering inference. A selected simulator behavior was classified as a proposed reference design. Executed software outcomes became accepted simulator evidence, and reviewed quantitative artifacts became supported quantitative claims with explicit limitations. Human decisions governed title, report metadata, scope, and drafting authorization. Information not established by those sources remained unknown or unresolved.
+The study applied a source hierarchy to keep claims proportional to their support. Directly preserved material about the item was treated as product evidence. Manufacturer manuals and government or vendor guidance were used only within their documented scope. Reasoned interpretations were distinguished from project-specific design choices, and executed software outcomes were separated from physical or commercial claims. Information not established by these sources remained explicitly unknown.
 
-This hierarchy was operationalized through claim/source mapping. High-impact report claims were associated with canonical repository paths, evidence classes, required qualifiers, and review statuses before prose was written. A lower-authority source was never used to strengthen a claim beyond its own boundary. In particular, an embedded-controller manual could explain a representative reset or watchdog concept but could not identify the commercial controller; a simulator test could verify modeled reset behavior but could not validate a physical safety response.
+Major technical claims were mapped to their supporting literature, requirements, implementation, tests, or experiment records. A source was not used beyond its documented boundary. In particular, an embedded-controller manual can explain a representative reset or watchdog concept but cannot identify the commercial controller; a simulator test can verify modeled reset behavior but cannot validate a physical safety response.
 
 ### Model construction and verification discipline
 
@@ -75,11 +86,11 @@ The proposed system boundary was frozen before implementation. Requirements defi
 
 Requirements-to-test traceability connected every required requirement to at least one planned and then executed test or inspection. The approach is consistent with NASA software-engineering guidance on bidirectional traceability, controlled test procedures, unit testing, and evaluation of results against criteria [4]. That guidance informed verification discipline; it did not independently validate this implementation.
 
-Quantitative experiments were defined separately from domain-time tests. Constructed workloads were regenerated from recorded configuration identifiers and seeds. Host execution was instrumented with `time.perf_counter_ns`, whereas controller time remained simulated. Mixed controller processing, direct repository lookup, and direct authorization were measured as different operation boundaries. An independent review reconciled accepted source hashes, counts, tables, figures, anomalies, and report-usable wording without adding new measurements.
+Quantitative experiments were defined separately from logical-time tests. Constructed workloads were regenerated from recorded configurations and seeds. Host execution was instrumented with `time.perf_counter_ns`, whereas controller time remained simulated. Mixed controller processing, direct repository lookup, and direct authorization were measured as different operation boundaries. Artifact-consistency checks reconciled source hashes, counts, tables, and figures without adding or replacing measurements.
 
 ### Limitations of the method
 
-The method controls overstatement but does not remove missing evidence. It is not an exhaustive review of every RFID, access-control, embedded, or elevator-integration source. Human decision gates establish project governance, not technical proof. Deterministic simulation evaluates the proposed software contracts only. Unresolved product, physical-integration, safety, and university-administration information remains explicit rather than being filled with general knowledge.
+The method controls overstatement but does not remove missing evidence. It is not an exhaustive review of every RFID, access-control, embedded, or elevator-integration source. Administrative decisions do not constitute technical proof. Deterministic simulation evaluates the proposed software contracts only. Unresolved product, physical-integration, and safety information remains explicit rather than being filled with general knowledge.
 
 ## 5. Literature Review
 
@@ -119,11 +130,28 @@ The accepted catalog contains 66 requirements: 60 required and six optional. All
 
 The required system is a deterministic software-only access-authorization layer. It starts after physical signal acquisition, with one complete frame, one logical reader-source label, and one requested floor. It ends at a typed outcome, structured event, and 16 Boolean permission-output channels. It does not include RF behavior, physical readers, voltage/current interfaces, elevator wiring, movement, motors, brakes, doors, passenger-safety logic, installation, or certification.
 
+Table 2 summarizes the requirements that define the central engineering behavior. The complete catalog and its requirement-to-test mapping are retained with the project archive.
+
+**Table 2. Principal engineering requirements and verification status.**
+
+| Identifier | Requirement | Verification method | Status |
+|---|---|---|---|
+| SCP-002, SCP-005 | Restrict operation to a software authorization layer with no required hardware | Architecture inspection and environment tests | Verified |
+| SCP-003, FUN-002 | Accept and retain `LF` or `HF` as logical reader-source metadata | Unit and integration tests | Verified |
+| FUN-003–FUN-006, DAT-001–DAT-003 | Validate and decode the project-defined 26-bit frame, including both parity regions | Boundary, corruption, and reference-vector tests | Verified |
+| FUN-007–FUN-010, DAT-004–DAT-006 | Perform composite-key lookup and 16-bit floor-mask authorization | Unit tests and exhaustive floor-bit cases | Verified |
+| FUN-011–FUN-015 | Enforce single-output activation, busy precedence, timeout, and recovery | State, timing, integration, and end-to-end tests | Verified |
+| TIM-001–TIM-003 | Apply bounded logical timing through an injectable monotonic clock | Configuration and simulated-time boundary tests | Verified |
+| LOG-001–LOG-003 | Produce ordered structured events for decisions, errors, timeout, and reset | Schema, serialization, and scenario tests | Verified |
+| RST-001–RST-004 | Clear transient state and recover after manual or watchdog reset | State-transition and fault-injection tests | Verified |
+
 ### Credential and frame requirements
 
 The model supports floors 1–16. Floor 1 maps to permission bit 0 and floor 16 maps to bit 15. A credential record contains a facility code, credential number, enabled flag, unsigned 16-bit floor mask, and optional label. Its lookup key is the ordered pair `(facility_code, credential_number)`; arithmetic addition is not used, duplicate keys are rejected, and the required repository is in memory.
 
-Both `LF` and `HF` requests use the project-specific `PROJECT_WIEGAND_26` profile. The source label is stored separately and cannot be derived from the bits. Frame allocation is:
+Both `LF` and `HF` requests use the project-specific `PROJECT_WIEGAND_26` profile. The source label is stored separately and cannot be derived from the bits. Table 3 defines the frame allocation.
+
+**Table 3. Project-defined 26-bit credential-frame allocation.**
 
 | Bit positions | Project field | Required rule |
 |---|---|---|
@@ -146,7 +174,13 @@ Logical output duration is configurable from 100 to 30,000 ms inclusive, with a 
 
 ### Responsibility decomposition
 
-The proposed architecture partitions the model by state ownership and operation boundary.
+The proposed architecture partitions the model by state ownership and operation boundary. Figure 2 relates the conceptual controller functions to the implemented software boundary; it deliberately leaves electrical ratings and physical interfaces unspecified.
+
+![Figure 2. Conceptual top-level architecture and implemented software boundary.](../docs/figures/top_level_architecture.png){#fig-top-level width=100%}
+
+Table 4 summarizes responsibility and state ownership.
+
+**Table 4. Architectural responsibility and state ownership.**
 
 | Responsibility | Input and output | Owned state | Principal boundary |
 |---|---|---|---|
@@ -161,27 +195,21 @@ The proposed architecture partitions the model by state ownership and operation 
 | Configuration | JSON-like data to validated immutable configuration | Active configuration after initialization | Invalid startup remains non-operational |
 | CLI/test harness | Controlled human or test inputs to public API calls | Adapter/scenario state only | Offline demonstration and observation |
 
-The controller coordinator owns transition order but not component data. The repository alone owns records, the output manager alone owns channel state and expiry, the event log alone owns sequences, and the watchdog alone owns its deadline. A grant is activated only after its access-decision event is appended successfully. Denial or invalid input creates no new activation. Timeout and reset clear output state even if event logging subsequently fails.
+The controller coordinator owns transition order but not component data. The repository alone owns records, the output manager alone owns channel state and expiry, the event log alone owns sequences, and the watchdog alone owns its deadline. A grant is activated only after its access-decision event is appended successfully. Denial or invalid input creates no new activation. Timeout and reset clear output state even if event logging subsequently fails. Figure 3 shows the corresponding request path and the deliberate rule that a failed grant-event append withholds activation.
 
-Figure planned from docs/figures/top_level_architecture.mmd; rendering deferred to the controlled document-production stage.
-
-Figure planned from docs/figures/firmware_architecture.mmd; rendering deferred to the controlled document-production stage.
-
-Figure planned from docs/figures/data_flow.mmd; rendering deferred to the controlled document-production stage.
+![Figure 3. Data flow through validation, lookup, authorization, logging, and output activation.](../docs/figures/data_flow.png){#fig-data-flow width=88%}
 
 ### State, timing, and reset behavior
 
-The conceptual state machine contains `RESETTING`, `INITIALIZING`, `IDLE`, `VALIDATING`, `LOOKUP`, `AUTHORIZING`, and `OUTPUT_ACTIVE`. A normal request moves from idle through validation, lookup, and authorization; a grant enters output-active state, while a completed denial returns to idle. A busy request stays output-active. Timeout returns the controller to idle, and manual or watchdog reset may interrupt any state.
+The conceptual state machine in Figure 4 contains `RESETTING`, `INITIALIZING`, `IDLE`, `VALIDATING`, `LOOKUP`, `AUTHORIZING`, and `OUTPUT_ACTIVE`. A normal request moves from idle through validation, lookup, and authorization; a grant enters output-active state, while a completed denial returns to idle. A busy request stays output-active. Timeout returns the controller to idle, and manual or watchdog reset may interrupt any state.
 
-Figure planned from docs/figures/controller_state_machine.mmd; rendering deferred to the controlled document-production stage.
+![Figure 4. Controller state machine and reset transitions.](../docs/figures/controller_state_machine.png){#fig-controller-state width=100%}
 
-The scheduler advances directly between heartbeat, watchdog-deadline, and output-expiry timestamps. At a shared timestamp it handles normal heartbeat service first, watchdog expiry second, and output expiry third. With normal service, a 3,000 ms output can remain active while the 2,000 ms watchdog is refreshed. Under injected service suppression, the watchdog can reset the model at its deadline. The clock never rewinds.
+The scheduler advances directly between heartbeat, watchdog-deadline, and output-expiry timestamps. At a shared timestamp it handles normal heartbeat service first, watchdog expiry second, and output expiry third. With normal service, a 3,000 ms output can remain active while the 2,000 ms watchdog is refreshed. Under injected service suppression, the watchdog can reset the model at its deadline. The clock never rewinds. Figure 5 summarizes this deterministic ordering and recovery path.
 
-Figure planned from docs/figures/watchdog_sequence.mmd; rendering deferred to the controlled document-production stage.
+![Figure 5. Simulated watchdog service, expiration, reset, and recovery sequence.](../docs/figures/watchdog_sequence.png){#fig-watchdog width=50%}
 
-Startup reset clears output, transient, watchdog, log, and initialization state before candidate configuration and records are validated. Manual and watchdog resets clear output, expiry, request transients, and suppression state while preserving validated configuration, credentials, prior events, and sequence progression.
-
-Figure planned from docs/figures/reset_sequence.mmd; rendering deferred to the controlled document-production stage.
+Startup reset clears output, transient, watchdog, log, and initialization state before candidate configuration and records are validated. Manual and watchdog resets clear output, expiry, request transients, and suppression state while preserving validated configuration, credentials, prior events, and sequence progression. Because this behavior is already visible in Figures 4 and 5, a separate reset-sequence figure is retained with the project design material but omitted here to avoid repetition.
 
 ### Logical register view
 
@@ -217,9 +245,9 @@ The CLI loads controlled configuration and credential files, invokes the same pu
 
 ## 9. Verification and Experimental Method
 
-### Historical verification evidence
+### Implementation verification evidence
 
-The accepted SP-06 implementation-verification snapshot is historical evidence: 976 tests were collected and all 976 passed, with zero failures, skips, or xfails. It must not be confused with the later repository-wide pytest total, which increased as analysis, reporting-gate, and inspection tests were added. The historical snapshot is the implementation-milestone result used in this report.
+At the completed implementation milestone, 976 tests were collected and all 976 passed, with zero failures, skips, or expected failures. This frozen result is used for the engineering verification total because later document-inspection tests do not change the implemented controller behavior.
 
 The traceability inventory contains 66 requirement rows: 60 required rows with verified status and six optional rows deferred. Verification combined unit, integration, end-to-end, fault-injection, experiment, and inspection levels. Controlled cases covered valid and malformed frames, both source labels, credential lookup and record validation, all 16 floor bits, denials, busy precedence, output timing, reset, watchdog, event-log behavior, configuration atomicity, deterministic replay, and offline environment boundaries.
 
@@ -231,29 +259,33 @@ The isolated configuration measured two distinct public operations at the same f
 
 All host measurements used `time.perf_counter_ns` on one recorded host. Each timing row contains three repetition-level observations. The reported minimum, central value, and maximum are calculated across those three repetition aggregates. They are not pooled across individual calls, and raw per-call timing samples were not retained. Mixed controller, lookup, and authorization operation boundaries differ, so the three families must not be ranked against one another.
 
-### Independent review
+### Result-integrity checks
 
-The independent review re-read accepted files, reconciled 39 quantitative claim rows, checked hashes and schemas, summed correctness outcomes, recomputed repetition-level summaries, and verified that each SVG reproduces its source points, median line, and min/max whiskers. It recorded 14 nonblocking anomalies or validity threats, including timing variability, small repetition count, one-host scope, absent raw samples, unequal mixed request counts, and different operation boundaries. No new benchmark or measurement was introduced during review.
+Result-integrity checks re-read the accepted data files, checked hashes and schemas, summed correctness outcomes, recomputed repetition-level summaries, and verified that each graph reproduces its source points, median line, and minimum/maximum whiskers. The checks also recorded timing variability, small repetition count, one-host scope, absent raw samples, unequal mixed request counts, and different operation boundaries as validity threats. No new benchmark or measurement was introduced during this consistency check.
 
 ## 10. Results
 
 ### Evidence coverage
 
-The accepted experiment-coverage table classifies seven evidence areas.
+Table 5 classifies the seven verification and experiment areas.
 
-| Experiment | Accepted status | Scope boundary |
+**Table 5. Verification and experiment coverage.**
+
+| Experiment | Status | Scope boundary |
 |---|---|---|
-| Protocol validation | Complete existing | Project 26-bit software profile; no reader or product compatibility |
-| Authorization correctness | Complete existing | Deterministic in-memory repository and floors 1–16 |
-| Output timing | Complete existing with limit | Simulated milliseconds; no electrical or elevator timing |
-| Watchdog and fault recovery | Complete existing with limit | Injected software state; no hardware reliability or safety result |
-| Database scalability | Complete existing with limit | Mixed and isolated host-software boundaries; no persistent database server |
-| End-to-end scenarios | Complete existing | Deterministic software flows; no physical journey or operational trial |
-| Robustness and malformed configuration | Complete existing | Specified input and fault boundaries; no field-reliability conclusion |
+| Protocol validation | Verified | Project 26-bit software profile; no reader or product compatibility |
+| Authorization correctness | Verified | Deterministic in-memory repository and floors 1–16 |
+| Output timing | Verified within model | Simulated milliseconds; no electrical or elevator timing |
+| Watchdog and fault recovery | Verified within model | Injected software state; no hardware reliability or safety result |
+| Repository scalability | Quantitatively evaluated | Mixed and isolated host-software boundaries; no persistent database server |
+| End-to-end scenarios | Verified | Deterministic software flows; no physical journey or operational trial |
+| Robustness and malformed configuration | Verified | Specified input and fault boundaries; no field-reliability conclusion |
 
 ### Correctness reconciliation
 
-The constructed mixed workload reconciled exactly across the 12 accepted aggregate rows.
+The constructed mixed workload reconciled exactly across the 12 measured aggregate rows, as shown in Table 6.
+
+**Table 6. Mixed-workload correctness reconciliation.**
 
 | Measurement group | Outcome | Count |
 |---|---|---:|
@@ -269,7 +301,9 @@ The constructed mixed workload reconciled exactly across the 12 accepted aggrega
 
 The totals satisfy `39,000 = 15,600 + 19,500 + 3,900 + 0`, and denial reasons satisfy `19,500 = 7,800 + 5,850 + 5,850`. This is exact reconciliation of a frozen constructed workload. Zero other outcomes is not a field false-positive or false-negative rate.
 
-The isolated workload also reconciled exactly.
+The isolated workload also reconciled exactly (Table 7).
+
+**Table 7. Isolated-operation correctness reconciliation.**
 
 | Operation | Processed | Expected correct classifications | Incorrect or mismatched outcomes |
 |---|---:|---|---:|
@@ -280,28 +314,32 @@ These values demonstrate agreement with the deterministic constructed cases. The
 
 ### Repetition-level timing summary
 
-The table below reproduces the accepted average-time min/median/max fields. Each row contains exactly three measured repetition-level averages; the central value is the median of those three averages, and the endpoints are their minimum and maximum. Statistics are not pooled across individual calls.
+Table 8 reproduces the average-time minimum, median, and maximum fields. Each row contains exactly three measured repetition-level averages; the central value is the median of those three averages, and the endpoints are their minimum and maximum. Statistics are not pooled across individual calls.
 
-| Operation boundary | Credentials | Calls per repetition | Total calls | Average ns, min | Average ns, median | Average ns, max |
-|---|---:|---:|---:|---:|---:|---:|
-| Mixed `Controller.submit` | 10 | 1,000 | 3,000 | 7,411.127 | 7,820.085 | 8,158.465 |
-| Mixed `Controller.submit` | 100 | 1,000 | 3,000 | 7,026.045 | 7,032.656 | 7,366.341 |
-| Mixed `Controller.submit` | 1,000 | 1,000 | 3,000 | 7,499.490 | 7,882.918 | 8,938.383 |
-| Mixed `Controller.submit` | 10,000 | 10,000 | 30,000 | 7,982.8124 | 8,189.5002 | 8,211.0671 |
-| Direct repository lookup | 10 | 1,000 | 3,000 | 286.191 | 297.496 | 320.778 |
-| Direct repository lookup | 100 | 1,000 | 3,000 | 271.767 | 278.224 | 306.548 |
-| Direct repository lookup | 1,000 | 1,000 | 3,000 | 291.953 | 292.728 | 295.824 |
-| Direct repository lookup | 10,000 | 1,000 | 3,000 | 294.767 | 351.938 | 416.956 |
-| Direct authorization | 10 | 1,000 | 3,000 | 557.965 | 590.139 | 601.094 |
-| Direct authorization | 100 | 1,000 | 3,000 | 560.972 | 565.264 | 623.174 |
-| Direct authorization | 1,000 | 1,000 | 3,000 | 599.708 | 616.682 | 620.939 |
-| Direct authorization | 10,000 | 1,000 | 3,000 | 607.636 | 614.437 | 627.181 |
+**Table 8. Repetition-level host-software timing summary.**
 
-![Mixed controller request-processing timing. Points are repetition-level averages; the line is their three-value median and whiskers are their minimum and maximum.](../docs/figures/sp07_mixed_controller_average_ns.svg)
+| Operation boundary | Credentials | Measured calls | Average time (ns), min / median / max |
+|---|---:|---:|---:|
+| Mixed `Controller.submit` | 10 | 3,000 | 7,411.127 / 7,820.085 / 8,158.465 |
+| Mixed `Controller.submit` | 100 | 3,000 | 7,026.045 / 7,032.656 / 7,366.341 |
+| Mixed `Controller.submit` | 1,000 | 3,000 | 7,499.490 / 7,882.918 / 8,938.383 |
+| Mixed `Controller.submit` | 10,000 | 30,000 | 7,982.8124 / 8,189.5002 / 8,211.0671 |
+| Direct repository lookup | 10 | 3,000 | 286.191 / 297.496 / 320.778 |
+| Direct repository lookup | 100 | 3,000 | 271.767 / 278.224 / 306.548 |
+| Direct repository lookup | 1,000 | 3,000 | 291.953 / 292.728 / 295.824 |
+| Direct repository lookup | 10,000 | 3,000 | 294.767 / 351.938 / 416.956 |
+| Direct authorization | 10 | 3,000 | 557.965 / 590.139 / 601.094 |
+| Direct authorization | 100 | 3,000 | 560.972 / 565.264 / 623.174 |
+| Direct authorization | 1,000 | 3,000 | 599.708 / 616.682 / 620.939 |
+| Direct authorization | 10,000 | 3,000 | 607.636 / 614.437 / 627.181 |
 
-![Credential repository lookup timing. Points are repetition-level averages; the line is their three-value median and whiskers are their minimum and maximum.](../docs/figures/sp07_lookup_average_ns.svg)
+Figure 6 presents the mixed controller timing. Figures 7 and 8 then isolate lookup and authorization, respectively. In every graph, points are repetition averages, the connecting line is the median of the three repetition averages, and whiskers show their minimum and maximum.
 
-![Authorization decision timing. Points are repetition-level averages; the line is their three-value median and whiskers are their minimum and maximum.](../docs/figures/sp07_authorization_average_ns.svg)
+![Figure 6. Mixed `Controller.submit` host timing by repository size.](../docs/figures/sp07_mixed_controller_average_ns.png){#fig-mixed-timing width=82%}
+
+![Figure 7. Direct in-memory credential-repository lookup timing by repository size.](../docs/figures/sp07_lookup_average_ns.png){#fig-lookup-timing width=82%}
+
+![Figure 8. Direct authorization-decision timing by repository size.](../docs/figures/sp07_authorization_average_ns.png){#fig-authorization-timing width=82%}
 
 The figures and table describe one-host Python measurements using `time.perf_counter_ns`. The mixed boundary includes controller request processing; the lookup boundary excludes repository construction; the authorization boundary excludes lookup. No cross-family ranking is valid. No statistical-significance claim is made. The data do not establish monotonic scaling, constant-time behavior, asymptotic complexity, a real-time bound, or hardware performance.
 
@@ -353,9 +391,9 @@ No physical reader, RFID card, controller board, output circuit, elevator interf
 
 ### Conclusions
 
-The project produced a deterministic Python software reference model for a defined 16-floor access-authorization boundary. It formalized a project-specific credential frame, composite-key repository, floor-mask decision, single logical timed output, busy precedence, event logging, simulated clock, configuration validation, and reset/watchdog behavior. All 60 required requirements in the accepted scope were verified; six optional requirements remain deferred. The accepted SP-06 implementation milestone recorded 976 collected and passed tests.
+The project produced a deterministic Python software reference model for a defined 16-floor access-authorization boundary. It formalized a project-specific credential frame, composite-key repository, floor-mask decision, single logical timed output, busy precedence, event logging, simulated clock, configuration validation, and reset/watchdog behavior. All 60 required requirements in the accepted scope were verified; six optional requirements remain deferred. The implementation milestone recorded 976 collected and passed tests.
 
-The SP-07 quantitative work reconciled 39,000 mixed controller requests and 24,000 isolated operations exactly against the constructed expected outcomes. Accepted tables and figures reproduce the source aggregates, and an independent review found no blocking discrepancy. The timing observations remain bounded to one host, three repetition aggregates per group, and distinct operation definitions. The project also produced reusable requirement, traceability, test, result, figure, reproducibility, and reporting artifacts.
+The quantitative evaluation reconciled 39,000 mixed controller requests and 24,000 isolated operations exactly against the constructed expected outcomes. Tables and figures reproduce the preserved source aggregates, and result-integrity checks found no discrepancy. The timing observations remain bounded to one host, three repetition aggregates per group, and distinct operation definitions. The project also produced reusable requirements, traceability, test, result, figure, and reproducibility artifacts.
 
 These conclusions apply only to the accepted software model and controlled evidence. They do not assert physical validation, real-time performance, field reliability, production readiness, safety certification, or commercial equivalence.
 
@@ -363,7 +401,7 @@ These conclusions apply only to the accepted software model and controlled evide
 
 Future evidence work should first seek an authoritative product capture, original imagery with provenance and reproduction permission, and manufacturer or seller technical documentation. Additional authoritative RFID, protocol, physical-integration, and application-specific safety literature would be required before expanding the corresponding claims.
 
-Future experimental work could add more repetitions, larger sample sets, raw per-call retention, and repeated multi-host studies under separately approved protocols. A persistent local credential-storage experiment could be evaluated as a new operation boundary. Deferred optional requirements—additional frame profiles, authorization policies, interfaces, and experiment sizes—could be prioritized after human review.
+Future experimental work could add more repetitions, larger sample sets, raw per-call retention, and repeated multi-host studies under defined protocols. A persistent local credential-storage experiment could be evaluated as a new operation boundary. Deferred optional requirements—additional frame profiles, authorization policies, interfaces, and experiment sizes—could be prioritized after technical evaluation.
 
 Any physical reader, electrical interface, elevator integration study, or controlled hardware implementation would require a separately authorized scope, appropriate engineering and safety expertise, new requirements, new evidence, and new validation. Such work has not been completed in this project.
 
@@ -389,61 +427,50 @@ Any physical reader, electrical interface, elevator integration study, or contro
 
 ### Appendix A — Requirement and test traceability summary
 
-The canonical requirement/test mapping is `docs/requirements_to_test_traceability.csv`. It contains 66 rows: 60 required requirements with verified status and six optional requirements with deferred status. The test inventory is `docs/test_case_inventory.csv`; accepted execution records are in `audit/validation/subproject_06_11_verification_records.csv`. These artifacts support the report but do not replace the requirements and verification explanations in the main text.
+The requirement/test mapping is retained in `docs/requirements_to_test_traceability.csv`. It contains 66 rows: 60 required requirements with verified status and six optional requirements with deferred status. The test inventory is `docs/test_case_inventory.csv`, with the implementation-milestone execution record retained in the project archive. These artifacts support the report but do not replace the requirements and verification explanations in the main text.
+
+**Table 9. Requirement and test traceability summary.**
 
 | Category | Status | Canonical evidence |
 |---|---:|---|
-| Required requirements | 60 verified | `docs/requirements_to_test_traceability.csv` |
-| Optional requirements | 6 deferred | `docs/requirements_to_test_traceability.csv` |
-| Implemented required/MVP inventory rows | 94 | `docs/test_case_inventory.csv` |
-| Designed optional inventory rows | 6 | `docs/test_case_inventory.csv` |
-| Historical implementation verification | 976 passed of 976 collected | `audit/validation/subproject_06_11_verification_records.csv` |
+| Required requirements | 60 verified | Requirements traceability matrix |
+| Optional requirements | 6 deferred | Requirements traceability matrix |
+| Implemented required/MVP inventory rows | 94 | Test inventory |
+| Designed optional inventory rows | 6 | Test inventory |
+| Implementation verification milestone | 976 passed of 976 collected | Preserved execution record |
 
 ### Appendix B — Experiment configuration summary
 
-| Experiment family | Configuration | Seed | Sizes | Repetitions | Boundary |
-|---|---|---:|---|---:|---|
-| Mixed controller | `experiments/scalability_config.json` | 260516 | 10; 100; 1,000; 10,000 | One warm-up plus 3 measured | Public `Controller.submit` |
-| Isolated operations | `experiments/isolated_operations_config.json` | 270516 | 10; 100; 1,000; 10,000 | One warm-up plus 3 measured | Public repository lookup and authorization function separately |
+**Table 10. Experiment configuration summary.**
+
+| Experiment family | Seed and sizes | Repetitions | Operation boundary |
+|---|---|---|---|
+| Mixed controller | Seed 260516; sizes 10, 100, 1,000, 10,000 | One warm-up plus 3 measured | Public `Controller.submit` |
+| Isolated operations | Seed 270516; sizes 10, 100, 1,000, 10,000 | One warm-up plus 3 measured | Public repository lookup and authorization separately |
 
 The accepted aggregate results are `results/scalability_results.json` and `data/results/sp07_isolated_operation_results.json`. Environment records are stored beside those results. Large generated datasets are regenerated from configuration rather than committed.
 
 ### Appendix C — Reproducibility commands
 
-From the repository root, with the authorized environment activated, the software suite can be run without repository-local cache artifacts:
+From the project root, install the declared package and test dependency, then run the software suite without local cache artifacts:
 
 ```sh
-source "$HOME/.venvs/eeeproject-elevator/bin/activate"
+python -m pip install -e ".[test]"
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider
 ```
 
 Compilation and import checks can be isolated from the repository tree:
 
 ```sh
-rm -rf /tmp/eeeproject-sp08d-pycache
-PYTHONPYCACHEPREFIX=/tmp/eeeproject-sp08d-pycache python -m compileall -q src tests scripts analysis
+PYTHONPYCACHEPREFIX=/tmp/eeeproject-pycache python -m compileall -q src tests scripts analysis
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -c "import elevator_access_sim"
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -c "from elevator_access_sim import Controller"
-rm -rf /tmp/eeeproject-sp08d-pycache
 ```
 
-The complete CLI and experiment procedures are in `docs/reproducibility.md`. These commands reproduce host software only and require no reader, controller board, elevator, network service, or database server.
+The complete CLI and experiment procedures are in `docs/reproducibility.md`. The project archive also retains the experiment configurations, aggregate results, tables, plotted series, and integrity manifest. These materials reproduce host software only and require no reader, controller board, elevator, network service, or database server.
 
-### Appendix D — Accepted result-artifact inventory
-
-| Artifact | Purpose |
-|---|---|
-| `data/results/sp07_table_experiment_coverage.csv` | Accepted experiment-evidence coverage |
-| `data/results/sp07_table_correctness.csv` | Deterministic correctness reconciliation |
-| `data/results/sp07_table_timing_summary.csv` | Repetition-level host timing summary |
-| `docs/figures/sp07_mixed_controller_average_ns.svg` | Accepted mixed controller timing figure |
-| `docs/figures/sp07_lookup_average_ns.svg` | Accepted direct lookup timing figure |
-| `docs/figures/sp07_authorization_average_ns.svg` | Accepted direct authorization timing figure |
-| `data/results/sp07_report_artifact_manifest.json` | Integrity and provenance record for report assets |
-| `audit/validation/subproject_07_final_validation_ledger.csv` | Independent claim-level interpretation authority |
-
-### Appendix E — Deferred requirements and major evidence gaps
+### Appendix D — Deferred requirements and major evidence gaps
 
 The six optional requirements remain deferred: extra Wiegand profiles, additional authorization features, persistent local credential storage, an enhanced interface, physical adapters, and extra experiment sizes. No optional item is represented as implemented.
 
-Major evidence gaps are the unavailable product capture and imagery, missing manufacturer documentation, unknown commercial technical characteristics, unavailable physical elevator-integration authority, and unavailable application-specific physical safety evidence. The final submission date, portal, signature workflow, presentation rules, and related administrative decisions are later-stage human inputs and are outside this technical draft.
+Major evidence gaps are the unavailable product capture and imagery, missing manufacturer documentation, unknown commercial technical characteristics, unavailable physical elevator-integration authority, and unavailable application-specific physical safety evidence.

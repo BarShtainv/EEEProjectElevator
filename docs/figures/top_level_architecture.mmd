@@ -1,5 +1,5 @@
-flowchart LR
-    NOTE["PROPOSED PROJECT ARCHITECTURE<br/>conceptual controller class; not commercial hardware"]
+flowchart TB
+    NOTE["CONCEPTUAL REFERENCE ARCHITECTURE<br/>not commercial hardware"]
 
     subgraph CONCEPT["Conceptual hardware reference — not implemented electrically"]
         PWR["Power input / regulation / protection<br/>no ratings assigned"]
@@ -15,7 +15,7 @@ flowchart LR
         DRV["Output driver / isolation<br/>concept only"]
     end
 
-    subgraph SIM["Implemented project boundary — later Python simulator"]
+    subgraph SIM["Implemented software boundary"]
         FRAME["Complete frame + LF/HF metadata"]
         MODEL["Validation · lookup · authorization<br/>timing · logging · reset"]
         ABSTRACT["16 logical Boolean outputs"]
@@ -32,4 +32,3 @@ flowchart LR
     SVC --> CORE
     CORE --> CH --> DRV -. "no modeled electrical command" .-> OUTSIDE
     NOTE --- MODEL
-

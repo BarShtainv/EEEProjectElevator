@@ -1,5 +1,5 @@
 flowchart TD
-    NOTE["PROPOSED PROJECT WATCHDOG<br/>simulated monotonic time; no MCU equivalence"]
+    NOTE["REFERENCE-MODEL WATCHDOG<br/>simulated monotonic time; no MCU equivalence"]
     INIT["Enable with default 2000 ms<br/>heartbeat = max(1, timeout // 2)<br/>set next heartbeat + expiry deadline"]
     ADV["advance_to jumps to next due timestamp<br/>no millisecond loop or real waiting"]
     HB{"Heartbeat due?<br/>priority 1"}
