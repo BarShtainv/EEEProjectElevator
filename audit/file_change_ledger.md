@@ -562,3 +562,11 @@ Relevant software validation passed 1,118 tests. The repository-wide suite passe
 | `audit/stage_reports/final_report_narrow_repair.md`; `audit/file_change_ledger.md` | Recorded the clean baseline, all 13 resolutions, commands, results, hashes, visual inspection, and remaining human decisions. | No final supervisor approval, submission date, signature decision, release, commit, or push is claimed. |
 
 The substantive suite passed 1,118 tests. Both the canonical repository-wide command and ordinary `python -m pytest -q` passed all 1,210 current tests.
+
+## Final figure visual-design pass
+
+| Path group | Change and validation | Protected result |
+|---|---|---|
+| Five selected Mermaid sources and their SVG/PNG renders | Added one reusable navy/teal/green/amber/red/gray semantic visual system and regenerated all report-use architecture figures. | Engineering topology, states, transitions, boundaries, labels, and report prose remain unchanged. |
+| Three `sp07_*_average_ns.png` report copies; `scripts/style_report_figures.py` | Restyled protected timing SVGs in memory and generated high-resolution report PNGs with clearer axes, grids, markers, and typography. | All three accepted SVGs remain byte-identical; numerical/text/geometry contracts are asserted unchanged. |
+| Grading DOCX/PDF; `audit/stage_reports/final_figure_visual_design.md`; ledger | Rebuilt the two grading documents, inspected figures at native/page/grayscale scale, and recorded palette, hashes, scope, and validation. | Eight figures, ten tables, references, accepted results, report content, approval boundaries, and 26-page A4 structure remain intact. |

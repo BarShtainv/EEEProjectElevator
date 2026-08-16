@@ -1,3 +1,4 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"16px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","clusterBkg":"#F8FAFC","clusterBorder":"#8A9BA8"},"flowchart":{"curve":"linear","nodeSpacing":34,"rankSpacing":46,"htmlLabels":true}}}%%
 flowchart TB
     NOTE["CONCEPTUAL REFERENCE ARCHITECTURE<br/>not commercial hardware"]
 
@@ -32,3 +33,21 @@ flowchart TB
     SVC --> CORE
     CORE --> CH --> DRV -. "no modeled electrical command" .-> OUTSIDE
     NOTE --- MODEL
+
+    classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef data fill:#D9F0EE,stroke:#2F7F7B,color:#183A3A,stroke-width:1.5px;
+    classDef success fill:#DDECDD,stroke:#4E7D57,color:#203D27,stroke-width:1.5px;
+    classDef outOfScope fill:#F1F3F5,stroke:#7A828A,color:#3E4850,stroke-width:1.5px,stroke-dasharray:6 4;
+    classDef note fill:#F8FAFC,stroke:#8A9BA8,color:#3E4850,stroke-width:1px,stroke-dasharray:3 3;
+
+    class PWR,RDR,ISO,ACQ,CORE,MEM,TMW,ELOG,SVC,CH,DRV external;
+    class FRAME data;
+    class MODEL controller;
+    class ABSTRACT success;
+    class OUTSIDE outOfScope;
+    class NOTE note;
+
+    style CONCEPT fill:#FAFAFA,stroke:#7A828A,stroke-width:1.5px,stroke-dasharray:6 4
+    style SIM fill:#F7FAFC,stroke:#274C77,stroke-width:2px
+    linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42

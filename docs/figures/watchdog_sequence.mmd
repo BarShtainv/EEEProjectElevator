@@ -1,3 +1,4 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"16px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","clusterBkg":"#F8FAFC","clusterBorder":"#8A9BA8"},"flowchart":{"curve":"linear","nodeSpacing":34,"rankSpacing":42,"htmlLabels":true}}}%%
 flowchart TD
     NOTE["REFERENCE-MODEL WATCHDOG<br/>simulated monotonic time; no MCU equivalence"]
     INIT["Enable with default 2000 ms<br/>heartbeat = max(1, timeout // 2)<br/>set next heartbeat + expiry deadline"]
@@ -27,3 +28,20 @@ flowchart TD
     OUT -- no --> ADV
     LOG -. failure .-> LOGFAIL --> REINIT
     REINIT --> ADV
+
+    classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef success fill:#DDECDD,stroke:#4E7D57,color:#203D27,stroke-width:1.5px;
+    classDef decision fill:#F5E8C8,stroke:#B7791F,color:#4B3512,stroke-width:1.5px;
+    classDef fault fill:#F4DEDE,stroke:#A44A4A,color:#572727,stroke-width:1.5px;
+    classDef note fill:#F8FAFC,stroke:#8A9BA8,color:#3E4850,stroke-width:1px,stroke-dasharray:3 3;
+
+    class ADV external;
+    class INIT controller;
+    class HB,SUP,EXP,OUT decision;
+    class SERVICE,REINIT success;
+    class SKIP,REQ,OFF,CLEAR,LOG,LOGFAIL fault;
+    class TIMEOUT external;
+    class NOTE note;
+
+    linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42
