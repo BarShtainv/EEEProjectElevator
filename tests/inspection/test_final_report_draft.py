@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import re
+import subprocess
 import xml.etree.ElementTree as ET
 import zipfile
 from copy import deepcopy
@@ -22,11 +23,17 @@ REFERENCES = ROOT / "report/references.bib"
 GRADING_DOCX = ROOT / "report/final_report_grading_draft.docx"
 GRADING_PDF = ROOT / "report/final_report_grading_draft.pdf"
 
+READER_FACING_FORBIDDEN = re.compile(
+    r"\baliexpress\b|\bali express\b|\bonline listing\b|\blisting\b|\bseller\b|"
+    r"\bcommercial\b|\bproduct\b|\breverse[- ]engineering\b",
+    re.IGNORECASE,
+)
+
 TITLE = "Final Project Controlled Floor Elevator"
 SECTIONS = (
     "Abstract",
     "Introduction",
-    "Motivating Product Context and Evidence Boundary",
+    "Engineering Context and System Boundary",
     "Research Methodology and Limitations",
     "Literature Review",
     "Requirements and System Boundary",
@@ -140,20 +147,25 @@ def validate_report_text(text: str) -> None:
     lower = text.lower()
     for phrase in (
         "software-only",
-        "commercial processor architecture and specific mcu remain unknown",
-        "commercial frequencies, credential technologies, and smart-card protocols remain unknown",
-        "commercial wiegand support",
+        "engineering context and system boundary",
+        "the model therefore begins after signal acquisition and ends before electrical actuation",
+        "complete 26-bit frame, `lf` or `hf` metadata label, and floor request 1–16",
+        "exactly one of 16 boolean permission channels for a bounded interval",
         "armv7-a/r is therefore not cortex-m documentation",
-        "stm32 material does not establish the commercial controller's mcu",
-        "physical rfid electronics, an elevator interface, passenger-safety functions, or the motivating commercial controller",
-        "absence of preserved evidence is not evidence",
+        "the stm32 manual provides embedded-peripheral examples",
+        "physical rfid electronics, an electrical elevator interface, or passenger-safety functions",
+        "physical integration and safety behavior require different evidence and validation",
     ):
         assert phrase in lower
+
+    assert not READER_FACING_FORBIDDEN.search(text)
 
     affirmative_forbidden = (
         r"^(?:the )?commercial (?:product|item|card|controller).{0,80}(?:uses|contains|implements|supports|provides).{0,80}stm32",
         r"^(?:the )?commercial (?:product|item|card|controller).{0,80}(?:uses|supports|operates at).{0,80}(?:125\s*k?hz|13\.56\s*mhz|nfc|mifare)",
         r"^(?:the )?commercial (?:product|item|card|controller).{0,80}(?:uses|supports|provides|implements).{0,80}(?:wiegand|relay|open collector)",
+        r"implementation (?:runs|executes) on (?:an? )?stm32 hardware",
+        r"implementation provides (?:a )?tested electrical output",
         r"(?:physically validated|physical validation (?:of|for)) (?:the )?elevator",
         r"(?:achieved|has|holds|received) safety certification",
         r"(?:is|was|demonstrates?|proved?) statistically significant",
@@ -295,7 +307,27 @@ def test_accepted_assets_are_unchanged_and_current_figures_are_rendered() -> Non
         stem = ROOT / Path(path).with_suffix("")
         assert stem.with_suffix(".svg").is_file()
         assert stem.with_suffix(".png").is_file()
-    assert not (ROOT / "evidence/images/product_capture").exists()
+
+
+def test_reader_facing_sources_and_generated_documents_exclude_obsolete_origin_narrative() -> None:
+    source_paths = [REPORT, ROOT / "report/defense_preparation.md"] + [ROOT / path for path in MERMAID_PATHS]
+    for path in source_paths:
+        assert not READER_FACING_FORBIDDEN.search(path.read_text(encoding="utf-8")), path
+
+    with zipfile.ZipFile(GRADING_DOCX) as archive:
+        docx_text = " ".join(
+            re.sub(r"<[^>]+>", " ", archive.read(name).decode("utf-8", errors="ignore"))
+            for name in archive.namelist()
+            if name.endswith(".xml")
+        )
+    pdf_text = subprocess.run(
+        ["pdftotext", str(GRADING_PDF), "-"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    assert not READER_FACING_FORBIDDEN.search(docx_text)
+    assert not READER_FACING_FORBIDDEN.search(pdf_text)
 
 
 def test_grading_outputs_are_present_updateable_and_release_outputs_are_absent() -> None:
@@ -327,15 +359,15 @@ def test_grading_outputs_are_present_updateable_and_release_outputs_are_absent()
         ("reordered_section", lambda value: value.replace("## 10. Results", "## SWAP. Results", 1).replace("## 11. Discussion", "## 10. Results", 1).replace("## SWAP. Results", "## 11. Discussion", 1)),
         ("student_identifier", lambda value: value + "\nStudent identifier: " + "1" * 9 + "\n"),
         ("invented_submission_date", lambda value: value + "\nSubmission date: 2026-09-01\n"),
-        ("commercial_stm32", lambda value: value + "\nThe commercial product uses an STM32 processor.\n"),
-        ("commercial_frequency", lambda value: value + "\nThe commercial controller supports 125 kHz RFID.\n"),
+        ("obsolete_origin_narrative", lambda value: value + "\nAn online listing motivated this design.\n"),
+        ("unsupported_embedded_target", lambda value: value + "\nThe implementation runs on STM32 hardware.\n"),
         ("physical_elevator_validation", lambda value: value + "\nThe work physically validated the elevator.\n"),
         ("safety_certification", lambda value: value + "\nThe project achieved safety certification.\n"),
         ("constant_time", lambda value: value + "\nThe implementation is constant-time.\n"),
         ("statistical_significance", lambda value: value + "\nThe timing result is statistically significant.\n"),
         ("citation_without_reference", lambda value: value.replace("## 14. References", "Unsupported claim [9].\n\n## 14. References")),
         ("fabricated_reference", lambda value: value.replace("## 15. Appendices", "[9] Fabricated Author, *Fabricated Source*, 2026.\n\n## 15. Appendices")),
-        ("unknown_only_rpt_promoted", lambda value: value + "\nThe commercial card implements Wiegand output.\n"),
+        ("unsupported_physical_output", lambda value: value + "\nThe implementation provides a tested electrical output.\n"),
     ),
 )
 def test_negative_report_fixtures_are_rejected(tmp_path: Path, case: str, mutate) -> None:

@@ -36,13 +36,11 @@ flowchart LR
 
     subgraph EX["OUTSIDE PROJECT BOUNDARY"]
         direction TB
-        COMM["Commercial controller<br/>internals and equivalence"]
         RFID["RFID readers, tags,<br/>RF propagation and electronics"]
         ELEV["Elevator controller<br/>and electrical wiring"]
         SAFETY["Motion · doors · brakes<br/>passenger-safety systems"]
     end
 
-    COMM -. "not modeled; no equivalence claimed" .- CTRL
     RFID -. "logical source labels only" .- LF
     RFID -. "logical source labels only" .- HF
     ELEV -. "no electrical or physical interface" .- OUT
@@ -58,7 +56,7 @@ flowchart LR
     class CTRL controller;
     class MSG,DB,LOG data;
     class OUT success;
-    class COMM,RFID,ELEV,SAFETY outOfScope;
+    class RFID,ELEV,SAFETY outOfScope;
 
     style PB fill:#F7FAFC,stroke:#274C77,stroke-width:2px
     style INPUTS fill:#FBFCFD,stroke:#9AAAB6,stroke-width:1px

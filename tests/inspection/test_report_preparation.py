@@ -185,7 +185,8 @@ def test_timing_and_high_impact_claim_rules_are_enforced():
     for claim_id in ("RPT-016", "RPT-018", "RPT-020"):
         qualifiers = rows[claim_id]["required_qualifiers"].lower()
         assert all(value in qualifiers for value in ("one recorded host", "exactly three measured repetitions", "operation boundary", "no pooled statistic"))
-    assert rows["RPT-002"]["report_status"] == rows["RPT-026"]["report_status"] == "unknown_only"
+    assert rows["RPT-002"]["report_status"] == rows["RPT-026"]["report_status"] == "usable_with_limit"
+    assert rows["RPT-002"]["evidence_class"] == rows["RPT-026"]["evidence_class"] == "proposed_reference_design"
     assert rows["RPT-024"]["report_status"] == "not_for_report"
     assert "access-authorization layer" in rows["RPT-025"]["claim_or_topic"] and "safety" in rows["RPT-025"]["required_qualifiers"]
     for row in rows.values():
@@ -227,8 +228,8 @@ def test_canonical_mermaid_sources_reconcile_with_architecture_and_outline():
     outline = OUTLINE.read_text(encoding="utf-8")
     assert all(value in outline for value in ("firmware architecture", "data flow", "state machine", "watchdog/reset sequences"))
     limits = {row["path"]: row["interpretation_limit"].lower() for row in rows}
-    assert all(value in limits[CANONICAL_MERMAID_PATHS[0]] for value in ("logical labels", "abstract permission signals", "physical reader", "elevator interface", "safety behavior", "commercial equivalence"))
-    assert all(value in limits[CANONICAL_MERMAID_PATHS[2]] for value in ("project module responsibilities", "commercial firmware", "mcu selection", "hardware execution"))
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[0]] for value in ("logical labels", "abstract permission signals", "physical reader", "elevator interface", "safety behavior"))
+    assert all(value in limits[CANONICAL_MERMAID_PATHS[2]] for value in ("project module responsibilities", "embedded firmware", "mcu selection", "hardware execution"))
     assert all(value in limits[CANONICAL_MERMAID_PATHS[5]] for value in ("startup", "manual-reset", "watchdog-reset", "simulated software behavior", "physical fail-safe", "safety-certification"))
     assert all(value in limits[CANONICAL_MERMAID_PATHS[6]] for value in ("simulated monotonic time", "mcu-watchdog equivalence", "real-time behavior", "reliability", "physical safety"))
 
@@ -264,10 +265,11 @@ def test_sp07_asset_hashes_match_manifest_and_timing_captions_keep_limits():
         assert all(value in limit for value in ("points are repetition averages", "median of three repetition averages", "whiskers are repetition-average minima and maxima", "forbid cross-family ranking"))
 
 
-def test_product_image_is_neither_available_nor_report_ready():
-    row = next(row for row in csv_rows(ASSETS, ASSET_COLUMNS) if row["asset_type"] == "external_product_image")
-    assert row["readiness_status"] == "missing" and not (ROOT / row["path"]).exists()
-    assert "permission" in row["interpretation_limit"].lower() and "permission" in row["required_action"].lower()
+def test_repurposed_asset_is_a_resolved_verification_inventory():
+    row = next(row for row in csv_rows(ASSETS, ASSET_COLUMNS) if row["asset_id"] == "AST-016")
+    assert row["asset_type"] == "appendix_artifact"
+    assert row["readiness_status"] == "appendix_only" and (ROOT / row["path"]).is_file()
+    assert row["path"] == "docs/test_case_inventory.csv"
 
 
 def test_bibliography_schema_source_index_coverage_and_statuses():

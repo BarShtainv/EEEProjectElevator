@@ -21,7 +21,7 @@ RESPONSE_PATH = "report/authoritative_inputs/final_report_human_review.md"
 SECTIONS = (
     "Abstract",
     "Introduction",
-    "Motivating Product Context and Evidence Boundary",
+    "Engineering Context and System Boundary",
     "Research Methodology and Limitations",
     "Literature Review",
     "Requirements and System Boundary",

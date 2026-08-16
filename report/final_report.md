@@ -16,7 +16,7 @@
 
 ## 1. Abstract
 
-Floor-selective elevator access requires a controller to validate a credential, retrieve its authorization record, decide whether a requested floor is permitted, activate the corresponding permission signal for a bounded interval, and record the outcome. This project specified, architected, implemented, and verified a deterministic software reference model for that authorization function. The Python model supports two logical reader-source labels, a project-defined 26-bit credential profile with parity checking, composite-key credential lookup, 16-bit floor permissions, explicit grant and denial decisions, single-output activation, busy handling, structured event logging, deterministic simulated time, reset, and watchdog recovery. Requirements-to-test traceability covered all 60 required requirements, and the implementation verification milestone recorded 976 collected and passed tests. Quantitative experiments reconciled 39,000 mixed controller requests and 24,000 isolated lookup and authorization operations with their constructed expected outcomes; the isolated matrices contained zero mismatches or incorrect authorization outcomes. Timing measurements covered four repository sizes on one recorded host with three measured repetitions per size and operation. The principal limitation is that the work evaluates a controlled host-software model rather than physical RFID electronics, an elevator interface, passenger-safety functions, or the motivating commercial controller. The contribution is therefore a reproducible and quantitatively evaluated authorization reference design, not a physical elevator-control product.
+Floor-selective elevator access requires an authorization layer to validate a credential, retrieve its authorization record, decide whether a requested floor is permitted, activate the corresponding permission signal for a bounded interval, and record the outcome. This project specified, architected, implemented, and verified a deterministic software reference model for that function. The Python model supports two logical reader-source labels, a project-defined 26-bit credential profile with parity checking, composite-key credential lookup, 16-bit floor permissions, explicit grant and denial decisions, single-output activation, busy handling, structured event logging, deterministic simulated time, reset, and watchdog recovery. Requirements-to-test traceability covered all 60 required requirements, and the implementation verification milestone recorded 976 collected and passed tests. Quantitative experiments reconciled 39,000 mixed controller requests and 24,000 isolated lookup and authorization operations with their constructed expected outcomes; the isolated matrices contained zero mismatches or incorrect authorization outcomes. Timing measurements covered four repository sizes on one recorded host with three measured repetitions per size and operation. The principal limitation is that the work evaluates a controlled host-software model rather than physical RFID electronics, an electrical elevator interface, or passenger-safety functions. The contribution is therefore a reproducible and quantitatively evaluated authorization reference design, not a physical elevator-control system.
 
 ## 2. Introduction
 
@@ -24,15 +24,13 @@ Floor-selective elevator access requires a controller to validate a credential, 
 
 An elevator access layer can be modeled as a selective authorization problem: a credential identifies a record, the record carries permissions, and a floor request is granted only when the corresponding permission is present. Separating this decision from motion control is useful because it yields an explicit and testable boundary. The model can answer whether an abstract floor-permission signal should be active without attempting to command doors, motors, brakes, or any passenger-safety function.
 
-RFID concepts are relevant because many access systems organize information around tags or credentials, readers, and downstream processing. NIST describes RFID systems in terms of tags, readers, and enterprise subsystems, while also distinguishing operating-frequency classes from identifier formats [1]. Reader-to-controller signaling is a separate layer. BALTECH's Wiegand documentation illustrates a bounded implementation in which D0 and D1 pulses encode bits and frame formats may include parity [2]. These sources motivate the conceptual input boundary; neither establishes a property of the commercial item that prompted this project.
+RFID concepts are relevant because many access systems organize information around tags or credentials, readers, and downstream processing. NIST describes RFID systems in terms of tags, readers, and enterprise subsystems, while also distinguishing operating-frequency classes from identifier formats [1]. Reader-to-controller signaling is a separate layer. BALTECH's Wiegand documentation illustrates a bounded implementation in which D0 and D1 pulses encode bits and frame formats may include parity [2]. These sources establish useful terminology for the conceptual input boundary without defining the project-specific frame allocation.
 
-Authorization is the central engineering function. General access-control guidance calls for managed authorization credentials or access lists, verification before access is granted, and audit records of physical-access events [3]. The project translates those broad concepts into a deterministic software reference model: a composite credential key, a 16-bit permission mask, an explicit grant/deny decision, a timed logical output, and a structured event record. Those are project choices, not recovered commercial behavior.
+Authorization is the central engineering function. General access-control guidance calls for managed authorization credentials or access lists, verification before access is granted, and audit records of physical-access events [3]. The project translates those broad concepts into a deterministic software reference model: a composite credential key, a 16-bit permission mask, an explicit grant/deny decision, a timed logical output, and a structured event record. These are explicit design choices whose behavior can be traced to requirements and tests.
 
 ### Objective and scope
 
 The objective was to specify, architect, implement, verify, and quantitatively evaluate a deterministic Python model of a 16-floor access-authorization controller under controlled software inputs. The model begins with a complete logical credential frame, an `LF` or `HF` source label, and one requested floor. It ends with a typed decision, one of 16 abstract Boolean permission channels, and an event record. `LF` and `HF` are metadata labels only; they do not simulate radio propagation, antennas, modulation, reader electronics, or physical frequency detection.
-
-The motivating commercial listing and the project-specific reference model must remain distinct. The owner-supplied listing URL identifies the intended item, but no preserved listing capture or manufacturer documentation supports a technical characterization. Consequently, the report does not present the project model as reverse engineering, a commercial implementation, or an equivalent replacement.
 
 The engineering boundary is summarized in Figure 1. Inputs are complete logical messages rather than electrical pulses, while outputs are permission states rather than elevator commands.
 
@@ -40,45 +38,44 @@ The engineering boundary is summarized in Figure 1. Inputs are complete logical 
 
 ### Engineering contribution
 
-The completed contribution is a deterministic software reference model that joins protocol validation, credential management, authorization, output timing, controller state, logging, fault injection, reset, watchdog recovery, automated verification, and reproducible experiments in one coherent design. Its significance lies in making each decision, state transition, timing event, and limitation explicit and testable. The work does not claim that the motivating commercial product uses the same internal design, and it does not control elevator motion, doors, brakes, or passenger-safety functions.
+The completed contribution is a deterministic software reference model that joins protocol validation, credential management, authorization, output timing, controller state, logging, fault injection, reset, watchdog recovery, automated verification, and reproducible experiments in one coherent design. Its significance lies in making each decision, state transition, timing event, and limitation explicit and testable. The work does not control elevator motion, doors, brakes, or passenger-safety functions.
 
 ### Report organization
 
-Section 3 defines the motivating product context and its evidence boundary. Section 4 explains the research method. Section 5 reviews relevant technical literature. Sections 6–8 define the requirements, reference architecture, and Python implementation. Sections 9–11 present verification, quantitative results, and engineering interpretation. Sections 12–13 consolidate limitations, conclusions, and future work. Sections 14–15 provide references and supporting reproducibility material.
+Section 3 defines the engineering context and system boundary. Section 4 explains the research method. Section 5 reviews relevant technical literature. Sections 6–8 define the requirements, reference architecture, and Python implementation. Sections 9–11 present verification, quantitative results, and engineering interpretation. Sections 12–13 consolidate limitations, conclusions, and future work. Sections 14–15 provide references and supporting reproducibility material.
 
-## 3. Motivating Product Context and Evidence Boundary
+## 3. Engineering Context and System Boundary
 
-### Preserved identification evidence
+### Engineering context
 
-The commercial item that motivated the study is identified by two preserved forms of the same AliExpress URL: the original URL and a canonical item URL. Direct listing content and a local capture were unavailable. The URL therefore identifies the motivating listing but establishes no technical product characteristic.
+The project addresses a bounded access-control problem: given a complete logical credential frame, a logical reader-source label, and a requested floor, determine whether one floor-permission signal may be activated and record the decision. This boundary makes authorization behavior observable without requiring a physical reader, an electrical interface, or an elevator installation.
 
-No product image is included. Original imagery, its provenance, and permission to reproduce it are unavailable. There are also no preserved readable component markings, seller technical statements, schematics, or manufacturer documents. These gaps prevent image-based or document-based inspection of the item.
+The reference model is deliberately deterministic. Configuration, credential data, input requests, initial state, simulated time, and injected faults are controlled so that the same scenario produces the same logical decisions and normalized events. This supports repeatable boundary testing, recovery testing, and quantitative evaluation.
 
-### Current technical unknowns
+### System boundary
 
-Table 1 records unknowns rather than negative findings.
+Table 1 defines where responsibility enters and leaves the model. Physical acquisition and actuation remain outside the implemented boundary.
 
-**Table 1. Evidence boundary for the motivating commercial product.**
+**Table 1. Reference-model system boundary.**
 
-| Topic | Evidence status | Permitted conclusion |
+| Boundary element | Included responsibility | Explicit exclusion |
 |---|---|---|
-| Processor or controller architecture | No marking, schematic, or manufacturer manual is available | The commercial processor architecture and specific MCU remain unknown |
-| RFID technology | No product-specific technical source is available | Commercial frequencies, credential technologies, and smart-card protocols remain unknown |
-| Reader/controller signaling | No supported interface description is available | Commercial Wiegand support, frame formats, and direction remain unknown |
-| Electrical output | No datasheet or circuit evidence is available | Output topology, isolation, voltage, and current characteristics remain unknown |
-| Elevator interface | No wiring or installation document is available | Physical connection and behavior at an elevator interface remain unknown |
-| Firmware | No firmware image, source, or architecture document is available | Commercial firmware architecture and behavior remain unknown |
-| Compliance and safety | No authoritative certificate or safety assessment is available | Certification and safety behavior remain unknown |
+| Logical input | Complete 26-bit frame, `LF` or `HF` metadata label, and floor request 1–16 | RF propagation, modulation, antenna behavior, and electrical pulse acquisition |
+| Credential processing | Strict frame validation, parity checking, decoding, and composite-key lookup | Reader hardware and persistent identity infrastructure |
+| Authorization | Enabled-state check and 16-bit floor-mask decision | Elevator dispatch, motion, doors, brakes, and passenger-safety logic |
+| Logical output | Exactly one of 16 Boolean permission channels for a bounded interval | Voltage, current, isolation, wiring, and actuator characteristics |
+| Observability | Typed outcomes, structured events, snapshots, and reproducible experiment records | Field monitoring and installation certification |
+| Recovery | Simulated clock, reset, heartbeat suppression, and watchdog recovery | Physical fail-safe behavior and real-time hardware guarantees |
 
-Absence of preserved evidence is not evidence that the product lacks any listed technology or property. It only prevents an affirmative technical attribution. Representative ARM, STM32, and Marvell literature used elsewhere in this report is not substituted for missing product evidence. Likewise, the project-defined RFID labels, 26-bit frame, credential store, outputs, watchdog, and event log describe the proposed reference model and must not be read as observations of the commercial item.
+The model therefore begins after signal acquisition and ends before electrical actuation. Its outputs express authorization only; any physical integration would require separate electrical, real-time, safety, and installation requirements and validation.
 
 ## 4. Research Methodology and Limitations
 
 ### Evidence-based method
 
-The study applied a source hierarchy to keep claims proportional to their support. Directly preserved material about the item was treated as product evidence. Manufacturer manuals and government or vendor guidance were used only within their documented scope. Reasoned interpretations were distinguished from project-specific design choices, and executed software outcomes were separated from physical or commercial claims. Information not established by these sources remained explicitly unknown.
+The study applied an evidence hierarchy to keep claims proportional to their support. External technical literature was used only within its documented scope. Project requirements defined intended behavior; architecture and decision records documented design choices; implementation paths demonstrated construction; automated tests supplied verification evidence; and experiment artifacts supplied quantitative evidence. Software observations were kept distinct from physical-system conclusions.
 
-Major technical claims were mapped to their supporting literature, requirements, implementation, tests, or experiment records. A source was not used beyond its documented boundary. In particular, an embedded-controller manual can explain a representative reset or watchdog concept but cannot identify the commercial controller; a simulator test can verify modeled reset behavior but cannot validate a physical safety response.
+Major technical claims were mapped to their supporting literature, requirements, implementation, tests, or experiment records. A source was not used beyond its documented boundary. In particular, an embedded-controller manual can explain representative reset or watchdog concepts, while a simulator test can verify modeled reset behavior but cannot validate a physical safety response.
 
 ### Model construction and verification discipline
 
@@ -90,7 +87,7 @@ Quantitative experiments were defined separately from logical-time tests. Constr
 
 ### Limitations of the method
 
-The method controls overstatement but does not remove missing evidence. It is not an exhaustive review of every RFID, access-control, embedded, or elevator-integration source. Administrative decisions do not constitute technical proof. Deterministic simulation evaluates the proposed software contracts only. Unresolved product, physical-integration, and safety information remains explicit rather than being filled with general knowledge.
+The method controls overstatement but does not eliminate model limitations. It is not an exhaustive review of every RFID, access-control, embedded, or elevator-integration source. Administrative decisions do not constitute technical proof. Deterministic simulation evaluates the specified software contracts only; physical integration and safety behavior require different evidence and validation.
 
 ## 5. Literature Review
 
@@ -98,11 +95,11 @@ The method controls overstatement but does not remove missing evidence. It is no
 
 NIST SP 800-98 describes general RFID systems as combinations of tags, readers, and processing subsystems, and discusses passive and active tags, operating ranges, data characteristics, and security risks [1]. For this report, the important systems insight is that carrier-frequency class, credential or identifier format, and downstream reader output are different characteristics. An LF or HF category cannot be inferred from a controller-side 26-bit credential value, and a frequency class does not itself determine a Wiegand frame.
 
-The project therefore represents `LF` and `HF` only as externally supplied logical metadata. General literature can explain low- and high-frequency classes, but it cannot assign either class, a credential technology, or a smart-card protocol to the commercial item. Detailed protocol coverage was not needed to verify the selected abstract authorization boundary and remains a potential literature extension.
+The project therefore represents `LF` and `HF` only as externally supplied logical metadata. Their values are not inferred from credential bits, and the model does not implement radio-frequency detection. Detailed radio-protocol coverage was not needed to verify the selected abstract authorization boundary and remains a potential extension.
 
 ### Wiegand signaling and frame concepts
 
-BALTECH documents its reader behavior using D0 and D1 data wires, low pulses for binary symbols, variable message sizes, and frame formats that may include leading even and trailing odd parity [2]. This is useful evidence for the existence of those bounded signaling and framing concepts. It is not a universal electrical Wiegand standard, does not define all implementations, and does not demonstrate that the commercial product supports Wiegand.
+BALTECH documents its reader behavior using D0 and D1 data wires, low pulses for binary symbols, variable message sizes, and frame formats that may include leading even and trailing odd parity [2]. This supplies a bounded example of those signaling and framing concepts. It is not a universal electrical Wiegand standard and does not define the project allocation.
 
 The exact `PROJECT_WIEGAND_26` allocation used here is consequently a project-specific profile. External literature supports the general ideas of serial bit representation, frame length, and parity; the field positions and parity coverage used by the simulator are controlled design decisions.
 
@@ -114,7 +111,7 @@ NIST SP 800-53 Rev. 5 addresses authorization credentials, approved access lists
 
 The STMicroelectronics RM0008 reference manual describes memory organization, reset and clock control, GPIO, interrupts, timers, watchdogs, and communication peripherals for specified STM32F10xxx devices [5]. The ARM Developer Suite guide supplies historical context for initialization, exception handling, ROM-oriented development, memory maps, and debugging [6]. The ARMv7-A/R Architecture Reference Manual defines A- and R-profile concepts and explicitly separates its scope from the M-profile documentation used for microcontroller architectures [7]. ARMv7-A/R is therefore not Cortex-M documentation. The Marvell ARMADA 38x specification is used only as an example of functional-specification organization, including subsystem descriptions, address-map presentation, boot flow, timers, and watchdog material [8].
 
-All four are representative literature. STM32 material does not establish the commercial controller's MCU; ARM material does not establish any commercial processor; and ARMADA is neither a selected project processor nor product evidence. Their value is in disciplined terminology and documentation structure, not attribution.
+All four are representative literature rather than implementation specifications. The STM32 manual provides embedded-peripheral examples, the ARM developer guide provides historical development context, and the ARMv7-A/R material is not Cortex-M documentation. ARMADA is used only as an example of functional-specification organization. Their value is disciplined terminology and documentation structure.
 
 ### Verification literature and remaining gaps
 
@@ -160,7 +157,7 @@ Both `LF` and `HF` requests use the project-specific `PROJECT_WIEGAND_26` profil
 | 10–25 | Credential number | Unsigned 16-bit value, 0–65535 |
 | 26 | Trailing parity | Select so bits 14–26 contain an odd number of ones |
 
-Thus leading parity covers data bits 2–13, while trailing parity covers data bits 14–25. A request with the wrong length, nonbinary values, or either parity error is rejected without a new activation. This allocation is a simulator contract, not a compatibility statement about the motivating product.
+Thus leading parity covers data bits 2–13, while trailing parity covers data bits 14–25. A request with the wrong length, nonbinary values, or either parity error is rejected without a new activation. This allocation is a project-defined simulator contract.
 
 ### Authorization, output, and recovery requirements
 
@@ -185,7 +182,7 @@ Table 4 summarizes responsibility and state ownership.
 | Responsibility | Input and output | Owned state | Principal boundary |
 |---|---|---|---|
 | Frame handling | Source and complete frame to decoded credential or validation error | None across requests | Project 26-bit profile; no pulse acquisition |
-| Credential repository | Composite key to record or not-found | Validated in-memory records | No persistent-database or product-storage claim |
+| Credential repository | Composite key to record or not-found | Validated in-memory records | No persistent-database behavior |
 | Authorization | Record and floor to typed decision | None | Pure 16-bit mask decision |
 | Controller orchestration | Request/component outcomes to state and response | Controller state and request transients | Busy precedence and atomic sequencing |
 | Output manager | Committed grant and time to output snapshot | 16 channels, active floor, expiry | Abstract Boolean permission state only |
@@ -213,13 +210,13 @@ Startup reset clears output, transient, watchdog, log, and initialization state 
 
 ### Logical register view
 
-The documented registers are abstract observation and control state for the software model. They describe capability, control commands, state flags, timing configuration, request fields, decoded fields, floor mask, output state, expiry, watchdog service time, and latest event values. They have project-defined logical offsets only. They are not MCU registers and imply no physical address, memory capacity, bus, peripheral, voltage, connector, or commercial architecture.
+The documented registers are abstract observation and control state for the software model. They describe capability, control commands, state flags, timing configuration, request fields, decoded fields, floor mask, output state, expiry, watchdog service time, and latest event values. They have project-defined logical offsets only. They are not MCU registers and imply no physical address, memory capacity, bus, peripheral, voltage, connector, or selected hardware architecture.
 
 ## 8. Software-Model Design and Implementation
 
 ### Python host-software structure
 
-The implementation is Python host software in `src/elevator_access_sim`; it is not commercial firmware and does not execute on an MCU. Modules separate shared immutable models, strict configuration loading, simulated time, Wiegand processing, credentials, authorization, outputs, watchdog, event logging, controller coordination, and a thin command-line adapter.
+The implementation is Python host software in `src/elevator_access_sim`; it is not embedded firmware and does not execute on an MCU. Modules separate shared immutable models, strict configuration loading, simulated time, Wiegand processing, credentials, authorization, outputs, watchdog, event logging, controller coordination, and a thin command-line adapter.
 
 Immutable dataclasses and enumerations carry requests, decoded credentials, records, decisions, events, snapshots, and responses. Mutable manager classes expose immutable snapshots and own only their assigned state. Expected access outcomes are typed results rather than exception-driven branches. Exceptions are reserved for invalid startup data, injected infrastructure failure, clock misuse, and internal invariant violations.
 
@@ -273,7 +270,7 @@ Table 5 classifies the seven verification and experiment areas.
 
 | Experiment | Status | Scope boundary |
 |---|---|---|
-| Protocol validation | Verified | Project 26-bit software profile; no reader or product compatibility |
+| Protocol validation | Verified | Project 26-bit software profile; no physical-reader compatibility claim |
 | Authorization correctness | Verified | Deterministic in-memory repository and floors 1–16 |
 | Output timing | Verified within model | Simulated milliseconds; no electrical or elevator timing |
 | Watchdog and fault recovery | Verified within model | Injected software state; no hardware reliability or safety result |
@@ -349,7 +346,7 @@ The figures and table describe one-host Python measurements using `time.perf_cou
 
 The strongest result is complete reconciliation within the specified deterministic workloads. Every mixed request is accounted for by grant, denial, or invalid-frame outcome, and every denial is accounted for by its three configured reasons. The isolated lookup matrix contains the expected equal split of hits and misses with no mismatch. The isolated authorization matrix contains the expected grants, denials, and invalid-floor errors with no incorrect grant, incorrect denial, or other mismatch.
 
-Together with the historical 976-test verification snapshot and complete required-requirement traceability, these results support the conclusion that the implemented Python model conforms to its accepted behavioral contracts for the tested inputs. They do not show that unobserved field populations have zero error, nor do they validate a reader, card, commercial controller, elevator, or safety installation.
+Together with the historical 976-test verification snapshot and complete required-requirement traceability, these results support the conclusion that the implemented Python model conforms to its accepted behavioral contracts for the tested inputs. They do not show that unobserved field populations have zero error, nor do they validate a physical reader, RFID electronics, elevator interface, or safety installation.
 
 ### Timing observations
 
@@ -361,15 +358,15 @@ The operation boundaries also answer different questions. Mixed `Controller.subm
 
 ### Engineering implication
 
-The experiments demonstrate that bounded host-software observations can be reproduced and reconciled for the selected model and constructed cases. Their value lies in transparency: workload sizes, repetition count, timer, call boundary, outcome counts, and limits are all explicit. They provide no performance threshold and cannot support statistical significance, complexity classification, hardware timing, real-time performance, field reliability, production readiness, safety certification, or commercial equivalence.
+The experiments demonstrate that bounded host-software observations can be reproduced and reconciled for the selected model and constructed cases. Their value lies in transparency: workload sizes, repetition count, timer, call boundary, outcome counts, and limits are all explicit. They provide no performance threshold and cannot support statistical significance, complexity classification, embedded-hardware timing, real-time performance, field reliability, deployment readiness, or safety certification.
 
 ## 12. Limitations and Validity Threats
 
-### Product and literature validity
+### Technical and literature validity
 
-The product record is limited to owner-supplied URL identification. Listing content, original capture, product imagery, markings, schematics, manufacturer documentation, and reproduction permission are unavailable. The commercial processor architecture, specific MCU, RFID frequencies and protocols, Wiegand behavior, electrical outputs, elevator interface, firmware architecture, and compliance status are therefore unknown. Absence of evidence is not evidence of a negative product property.
+The technical literature establishes background concepts, not unmodeled implementation behavior. STM32F10xxx documentation applies to the devices it names; ARMv7-A/R documentation does not describe Cortex-M; the ARM developer guide is historical; and ARMADA 38x material is an organizational example. BALTECH documentation describes its own reader behavior rather than a universal electrical standard. NIST RFID material distinguishes general technology layers, while the project treats `LF` and `HF` as supplied metadata. No authoritative physical elevator-integration source was used.
 
-The embedded literature is representative rather than product-specific. STM32F10xxx documentation applies to the devices it names; ARMv7-A/R documentation does not describe Cortex-M; the ARM developer guide is historical; and ARMADA 38x material is an organizational example. BALTECH documentation describes its own behavior rather than a universal electrical standard. NIST RFID material distinguishes general technology layers but cannot attribute LF, HF, or a protocol to the item. No authoritative physical elevator-integration source was available.
+These scope limits do not prevent verification of the reference model, but they constrain interpretation. The report supports claims about the defined frame, repository, authorization, output-state, timing, event, and recovery contracts. It does not extend those claims to RF acquisition, electrical interfaces, embedded execution, or installation behavior.
 
 ### Construct and internal validity
 
@@ -385,7 +382,7 @@ The mixed, lookup, and authorization boundaries differ. Repository construction 
 
 ### External and deployment validity
 
-No physical reader, RFID card, controller board, output circuit, elevator interface, or installation was tested. There was no field testing, physical fault study, real-time validation, or multi-host performance campaign. The model contains no evidence for physical fail-safe or fail-secure behavior, safety certification, reliability in service, production readiness, or equivalence to a commercial product. The abstract all-inactive reset state is a software invariant only; it is not a physical safety conclusion.
+No physical reader, RFID electronics, embedded controller, output circuit, elevator interface, or installation was tested. There was no field testing, physical fault study, real-time validation, or multi-host performance campaign. The model contains no evidence for physical fail-safe or fail-secure behavior, safety certification, reliability in service, or deployment readiness. The abstract all-inactive reset state is a software invariant only; it is not a physical safety conclusion.
 
 ## 13. Conclusions and Future Work
 
@@ -395,13 +392,13 @@ The project produced a deterministic Python software reference model for a defin
 
 The quantitative evaluation reconciled 39,000 mixed controller requests and 24,000 isolated operations exactly against the constructed expected outcomes. Tables and figures reproduce the preserved source aggregates, and result-integrity checks found no discrepancy. The timing observations remain bounded to one host, three repetition aggregates per group, and distinct operation definitions. The project also produced reusable requirements, traceability, test, result, figure, and reproducibility artifacts.
 
-These conclusions apply only to the accepted software model and controlled evidence. They do not assert physical validation, real-time performance, field reliability, production readiness, safety certification, or commercial equivalence.
+These conclusions apply only to the accepted software model and controlled evidence. They do not assert physical validation, real-time performance, field reliability, deployment readiness, or safety certification.
 
 ### Future work
 
-Future evidence work should first seek an authoritative product capture, original imagery with provenance and reproduction permission, and manufacturer or seller technical documentation. Additional authoritative RFID, protocol, physical-integration, and application-specific safety literature would be required before expanding the corresponding claims.
-
 Future experimental work could add more repetitions, larger sample sets, raw per-call retention, and repeated multi-host studies under defined protocols. A persistent local credential-storage experiment could be evaluated as a new operation boundary. Deferred optional requirements—additional frame profiles, authorization policies, interfaces, and experiment sizes—could be prioritized after technical evaluation.
+
+A subsequent embedded stage could select a controller and reader interface, implement persistent storage, define protected and isolated electrical outputs, and measure timing on target hardware. Hardware-in-the-loop testing could then exercise signal acquisition, output interfaces, resets, and faults under controlled laboratory conditions. Any elevator integration would require separately defined electrical and safety requirements, specialist supervision, and independent validation.
 
 Any physical reader, electrical interface, elevator integration study, or controlled hardware implementation would require a separately authorized scope, appropriate engineering and safety expertise, new requirements, new evidence, and new validation. Such work has not been completed in this project.
 
@@ -473,4 +470,4 @@ The complete CLI and experiment procedures are in `docs/reproducibility.md`. The
 
 The six optional requirements remain deferred: extra Wiegand profiles, additional authorization features, persistent local credential storage, an enhanced interface, physical adapters, and extra experiment sizes. No optional item is represented as implemented.
 
-Major evidence gaps are the unavailable product capture and imagery, missing manufacturer documentation, unknown commercial technical characteristics, unavailable physical elevator-integration authority, and unavailable application-specific physical safety evidence.
+Major remaining evidence gaps concern physical reader acquisition, electrical output behavior, embedded-target timing, elevator-interface requirements, and application-specific physical safety evidence.
