@@ -118,6 +118,16 @@ def _configure_reference_doc(path: Path) -> None:
         style.paragraph_format.keep_with_next = True
         style.paragraph_format.keep_together = True
 
+    toc_heading = styles["TOC Heading"]
+    toc_heading.font.name = "Aptos Display"
+    toc_heading.font.size = Pt(17)
+    toc_heading.font.bold = True
+    toc_heading.font.color.rgb = RGBColor(31, 78, 121)
+    toc_heading.paragraph_format.space_before = Pt(16)
+    toc_heading.paragraph_format.space_after = Pt(8)
+    toc_heading.paragraph_format.keep_with_next = True
+    toc_heading.paragraph_format.keep_together = True
+
     caption = styles["Caption"]
     caption.font.name = "Aptos"
     caption.font.size = Pt(9)
@@ -242,7 +252,10 @@ def _postprocess_docx(path: Path) -> None:
                 run.font.size = Pt(12)
         if text == "1. Abstract":
             cover_complete = True
-        if re.match(r"^(Table of Contents|List of Figures|List of Tables)$", text):
+        if text == "Table of Contents":
+            paragraph.style = doc.styles["TOC Heading"]
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        elif re.match(r"^(List of Figures|List of Tables)$", text):
             paragraph.style = doc.styles["Heading 1"]
             paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
         if re.match(r"^Table \d+\.", text):

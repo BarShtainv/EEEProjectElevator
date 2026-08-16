@@ -552,3 +552,13 @@ The authoritative response file `report/authoritative_inputs/final_report_human_
 | `audit/stage_reports/final_report_grading_readiness.md`; `audit/file_change_ledger.md` | Recorded baseline, commands, results, visual defects and repairs, unresolved inputs, and readiness. | Historical stage records and tests remain unchanged. |
 
 Relevant software validation passed 1,118 tests. The repository-wide suite passed 1,197 of 1,210; 13 historical inspection failures enforce the intentionally superseded no-export/exact-draft/register freeze and were retained as evidence rather than weakened.
+
+## Final report narrow repair pass
+
+| Path group | Change and validation | Protected result |
+|---|---|---|
+| `report/final_report.md`; `scripts/build_grading_report.py`; grading DOCX/PDF | Clarified the frozen 976-test milestone, excluded the `TOC Heading` paragraph from the updateable TOC, rebuilt both documents, and inspected all 26 PDF pages. | Title, accepted results, figures, citations, scope, and limitations remain unchanged. |
+| `pyproject.toml`; four report-stage inspection modules | Added the src-layout pytest path and replaced 13 obsolete pre-finalization freezes with current structural, integrity, privacy, asset, output, and title-authority checks. | All substantive tests and accepted SP-07 hashes remain enforced; archived audit baselines remain unchanged. |
+| `audit/stage_reports/final_report_narrow_repair.md`; `audit/file_change_ledger.md` | Recorded the clean baseline, all 13 resolutions, commands, results, hashes, visual inspection, and remaining human decisions. | No final supervisor approval, submission date, signature decision, release, commit, or push is claimed. |
+
+The substantive suite passed 1,118 tests. Both the canonical repository-wide command and ordinary `python -m pytest -q` passed all 1,210 current tests.

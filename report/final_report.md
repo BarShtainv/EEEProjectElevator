@@ -247,7 +247,7 @@ The CLI loads controlled configuration and credential files, invokes the same pu
 
 ### Implementation verification evidence
 
-At the completed implementation milestone, 976 tests were collected and all 976 passed, with zero failures, skips, or expected failures. This frozen result is used for the engineering verification total because later document-inspection tests do not change the implemented controller behavior.
+At the completed implementation milestone, 976 tests were collected and all 976 passed, with zero failures, skips, or expected failures. The 976-test result represents the frozen implementation-verification milestone. Subsequent project stages added report, artifact, and inspection validation, increasing the repository-wide test count without changing the accepted implementation result.
 
 The traceability inventory contains 66 requirement rows: 60 required rows with verified status and six optional rows deferred. Verification combined unit, integration, end-to-end, fault-injection, experiment, and inspection levels. Controlled cases covered valid and malformed frames, both source labels, credential lookup and record validation, all 16 floor bits, denials, busy precedence, output timing, reset, watchdog, event-log behavior, configuration atomicity, deterministic replay, and offline environment boundaries.
 

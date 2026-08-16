@@ -15,15 +15,13 @@ TRACE = ROOT / "report/report_draft_traceability.csv"
 REQUEST = ROOT / "report/human_review_request.md"
 RESPONSE = ROOT / "report/authoritative_inputs/final_report_human_review.md"
 
-REPORT_HASH = "db43c6f7f218d8d37f339d0d93420e2b819e022883ddc5cb357f07b9064ab170"
-TRACE_HASH = "957cac4b505154fc745d8a9b09dd96bb7fde6de4b26feb9f1b8f9f6e39489902"
 TITLE = "Final Project Controlled Floor Elevator"
 STARTING_COMMIT = "e47e8ce537322a4ca20a921a11f2d8dd5c669bbc"
 RESPONSE_PATH = "report/authoritative_inputs/final_report_human_review.md"
 SECTIONS = (
     "Abstract",
     "Introduction",
-    "Product Under Study and Available Evidence",
+    "Motivating Product Context and Evidence Boundary",
     "Research Methodology and Limitations",
     "Literature Review",
     "Requirements and System Boundary",
@@ -164,11 +162,16 @@ def validate_packet(text: str) -> None:
         assert forbidden not in lower
 
 
-def test_accepted_report_and_traceability_are_byte_identical() -> None:
-    assert REPORT.is_file() and sha256(REPORT) == REPORT_HASH
-    assert TRACE.is_file() and sha256(TRACE) == TRACE_HASH
+def test_current_report_traceability_and_authoritative_title_are_consistent() -> None:
+    assert REPORT.is_file() and TRACE.is_file()
     report_sections = re.findall(r"^## (\d+)\. (.+)$", REPORT.read_text(encoding="utf-8"), re.MULTILINE)
     assert report_sections == [(str(index), name) for index, name in enumerate(SECTIONS, 1)]
+    assert "The approved report title is Final Project Controlled Floor Elevator." in (
+        ROOT / "report/human_input_response.md"
+    ).read_text(encoding="utf-8")
+    assert "Final Project Controlled Floor Elevator is approved for report use." in (
+        ROOT / "report/drafting_authorization.md"
+    ).read_text(encoding="utf-8")
 
 
 def test_traceability_still_resolves_all_sections_sources_keys_assets_and_claims() -> None:
@@ -204,12 +207,13 @@ def test_review_request_is_complete_and_does_not_fabricate_response() -> None:
     assert not RESPONSE.exists()
 
 
-def test_accepted_sp07_assets_and_deferred_mermaid_state_are_unchanged() -> None:
+def test_accepted_sp07_assets_and_current_mermaid_exports_are_present() -> None:
     for path, digest in SP07_HASHES.items():
         assert sha256(ROOT / path) == digest
     for path in MERMAID_PATHS:
         stem = ROOT / Path(path).with_suffix("")
-        assert not any(stem.with_suffix(suffix).exists() for suffix in (".svg", ".png", ".pdf"))
+        assert stem.with_suffix(".svg").is_file()
+        assert stem.with_suffix(".png").is_file()
 
 
 @pytest.mark.parametrize(
@@ -231,12 +235,12 @@ def test_negative_packet_fixtures_are_rejected(tmp_path: Path, case: str, mutate
         validate_packet(fixture.read_text(encoding="utf-8"))
 
 
-def test_authorization_privacy_and_forbidden_outputs_remain_bounded() -> None:
+def test_authorization_privacy_and_current_outputs_remain_bounded() -> None:
     assert (ROOT / "report/drafting_authorization.md").read_text(encoding="utf-8").rstrip().endswith(
         "REPORT DRAFTING AUTHORIZED"
     )
     assert not re.search(r"\b\d{9}\b", REQUEST.read_text(encoding="utf-8"))
-    assert not list((ROOT / "report").glob("*.docx"))
-    assert not list((ROOT / "report").glob("*.pdf"))
+    assert (ROOT / "report/final_report_grading_draft.docx").is_file()
+    assert (ROOT / "report/final_report_grading_draft.pdf").is_file()
     assert not list(ROOT.glob("*.pptx"))
     assert not list(ROOT.glob("release/**/*"))

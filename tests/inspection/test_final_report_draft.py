@@ -5,6 +5,8 @@ import csv
 import hashlib
 import json
 import re
+import xml.etree.ElementTree as ET
+import zipfile
 from copy import deepcopy
 from pathlib import Path
 
@@ -17,13 +19,14 @@ TRACE = ROOT / "report/report_draft_traceability.csv"
 CLAIMS = ROOT / "report/report_claim_source_matrix.csv"
 ASSETS = ROOT / "report/report_asset_register.csv"
 REFERENCES = ROOT / "report/references.bib"
+GRADING_DOCX = ROOT / "report/final_report_grading_draft.docx"
+GRADING_PDF = ROOT / "report/final_report_grading_draft.pdf"
 
 TITLE = "Final Project Controlled Floor Elevator"
-PENDING_DATE = "Submission date: Pending SP-08.4 human input"
 SECTIONS = (
     "Abstract",
     "Introduction",
-    "Product Under Study and Available Evidence",
+    "Motivating Product Context and Evidence Boundary",
     "Research Methodology and Limitations",
     "Literature Review",
     "Requirements and System Boundary",
@@ -121,16 +124,15 @@ def assert_number_present(text: str, value: int) -> None:
 def validate_report_text(text: str) -> None:
     assert text.startswith(f"# {TITLE}\n")
     assert section_pairs(text) == [(str(index), name) for index, name in enumerate(SECTIONS, 1)]
-    assert text.count(PENDING_DATE) == 1
-    assert len(re.findall(r"^Submission date:", text, re.MULTILINE)) == 1
+    assert not re.search(r"^Submission date:", text, re.MULTILINE)
     for metadata in (
         "Bar Shtainvortzel",
         "Ariel University",
         "Faculty of Engineering",
         "Department of Electrical and Electronics",
-        "B.Sc. program",
+        "B.Sc. Final Engineering Project Report",
         "Professor Gadi Golan",
-        "Academic year:** 4th year",
+        "Fourth year",
     ):
         assert metadata in text
     assert not re.search(r"\b\d{9}\b", text)
@@ -143,7 +145,7 @@ def validate_report_text(text: str) -> None:
         "commercial wiegand support",
         "armv7-a/r is therefore not cortex-m documentation",
         "stm32 material does not establish the commercial controller's mcu",
-        "physical reader, elevator installation, commercial controller, real-time system, safety system",
+        "physical rfid electronics, an elevator interface, passenger-safety functions, or the motivating commercial controller",
         "absence of preserved evidence is not evidence",
     ):
         assert phrase in lower
@@ -168,6 +170,8 @@ def validate_report_text(text: str) -> None:
     assert set(references) == set(EXPECTED_REFERENCE_SNIPPETS)
     for number, snippet in EXPECTED_REFERENCE_SNIPPETS.items():
         assert snippet in references[number]
+    assert "The 976-test result represents the frozen implementation-verification milestone." in text
+    assert "Subsequent project stages added report, artifact, and inspection validation" in text
 
 
 def validate_trace_rows(rows: list[dict[str, str]]) -> None:
@@ -272,27 +276,44 @@ def test_traceability_schema_resolution_and_complete_rpt_coverage() -> None:
     validate_trace_rows(rows)
 
 
-def test_accepted_assets_are_unchanged_and_planned_diagrams_are_deferred() -> None:
+def test_accepted_assets_are_unchanged_and_current_figures_are_rendered() -> None:
     text = REPORT.read_text(encoding="utf-8")
     for path, expected in ACCEPTED_ASSET_HASHES.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     linked_images = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text)
     assert linked_images == [
-        "../docs/figures/sp07_mixed_controller_average_ns.svg",
-        "../docs/figures/sp07_lookup_average_ns.svg",
-        "../docs/figures/sp07_authorization_average_ns.svg",
+        "../docs/figures/system_context.png",
+        "../docs/figures/top_level_architecture.png",
+        "../docs/figures/data_flow.png",
+        "../docs/figures/controller_state_machine.png",
+        "../docs/figures/watchdog_sequence.png",
+        "../docs/figures/sp07_mixed_controller_average_ns.png",
+        "../docs/figures/sp07_lookup_average_ns.png",
+        "../docs/figures/sp07_authorization_average_ns.png",
     ]
     for path in MERMAID_PATHS:
-        marker = f"Figure planned from {path}; rendering deferred to the controlled document-production stage."
-        assert marker in text
         stem = ROOT / Path(path).with_suffix("")
-        assert not any(stem.with_suffix(suffix).exists() for suffix in (".svg", ".png", ".pdf"))
+        assert stem.with_suffix(".svg").is_file()
+        assert stem.with_suffix(".png").is_file()
     assert not (ROOT / "evidence/images/product_capture").exists()
 
 
-def test_forbidden_final_outputs_are_absent() -> None:
-    assert not list((ROOT / "report").glob("*.docx"))
-    assert not list((ROOT / "report").glob("*.pdf"))
+def test_grading_outputs_are_present_updateable_and_release_outputs_are_absent() -> None:
+    assert zipfile.is_zipfile(GRADING_DOCX)
+    with zipfile.ZipFile(GRADING_DOCX) as archive:
+        document_xml = archive.read("word/document.xml")
+    root = ET.fromstring(document_xml)
+    namespace = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+    toc_paragraph = next(
+        paragraph
+        for paragraph in root.findall(".//w:p", namespace)
+        if "".join(node.text or "" for node in paragraph.findall(".//w:t", namespace)) == "Table of Contents"
+    )
+    style = toc_paragraph.find("./w:pPr/w:pStyle", namespace)
+    assert style is not None and style.get(f"{{{namespace['w']}}}val") == "TOCHeading"
+    instructions = "".join(node.text or "" for node in root.findall(".//w:instrText", namespace))
+    assert 'TOC \\o "1-2"' in instructions
+    assert GRADING_PDF.read_bytes().startswith(b"%PDF-")
     assert not list(ROOT.glob("*.pptx"))
     assert not list(ROOT.glob("presentation/**/*"))
     assert not list(ROOT.glob("release/**/*"))
@@ -305,7 +326,7 @@ def test_forbidden_final_outputs_are_absent() -> None:
         ("missing_section", lambda value: re.sub(r"^## 11\. Discussion\n", "", value, count=1, flags=re.MULTILINE)),
         ("reordered_section", lambda value: value.replace("## 10. Results", "## SWAP. Results", 1).replace("## 11. Discussion", "## 10. Results", 1).replace("## SWAP. Results", "## 11. Discussion", 1)),
         ("student_identifier", lambda value: value + "\nStudent identifier: " + "1" * 9 + "\n"),
-        ("invented_submission_date", lambda value: value.replace(PENDING_DATE, "Submission date: 2026-09-01")),
+        ("invented_submission_date", lambda value: value + "\nSubmission date: 2026-09-01\n"),
         ("commercial_stm32", lambda value: value + "\nThe commercial product uses an STM32 processor.\n"),
         ("commercial_frequency", lambda value: value + "\nThe commercial controller supports 125 kHz RFID.\n"),
         ("physical_elevator_validation", lambda value: value + "\nThe work physically validated the elevator.\n"),

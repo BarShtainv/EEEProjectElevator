@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import tomllib
 
 import pytest
 
@@ -32,20 +33,11 @@ CANONICAL_MERMAID_PATHS = (
     "docs/figures/reset_sequence.mmd",
     "docs/figures/watchdog_sequence.mmd",
 )
-ORIGINAL_ASSET_ROWS_SHA256 = "cf6705e29eafd44e2796978984b6df0630e60d568a37fa721ded6dff09614ed3"
-EXPECTED_REPAIR_ASSET_ROWS = (
-    ("AST-017", "diagram", "docs/figures/system_context.mmd", "2", "docs/architecture.md;docs/requirements.md", "System context and software-only project boundary", "LF and HF are logical labels; outputs are abstract permission signals; no physical reader or elevator interface or safety behavior or commercial equivalence is represented.", "needs_export", "Export only after report format and language and rendering method are approved", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
-    ("AST-018", "diagram", "docs/figures/firmware_architecture.mmd", "7", "docs/architecture.md;docs/software_design.md", "Proposed simulator responsibility architecture", "Represents project module responsibilities; not commercial firmware or MCU selection or hardware execution.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
-    ("AST-019", "diagram", "docs/figures/reset_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Logical reset sequence", "Startup and manual-reset and watchdog-reset behavior is simulated software behavior; not a physical fail-safe or safety-certification result.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
-    ("AST-020", "diagram", "docs/figures/watchdog_sequence.mmd", "7", "docs/architecture.md;docs/software_design.md", "Simulated watchdog and heartbeat sequence", "Uses simulated monotonic time; does not establish MCU-watchdog equivalence or real-time behavior or reliability or physical safety.", "needs_export", "Perform a later controlled export only", "Canonical Mermaid source; no export is authorized in SP-08.1R."),
-)
-PROTECTED_REPORT_HASHES = {
+HISTORICAL_INPUT_HASHES = {
     "report/submission_requirements.md": "2f0d73021ed2453789234e9adcbb6806471cf17eff0b30a914580164299eefa8",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
-    "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
     "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
 }
-EXPORT_SUFFIXES = (".svg", ".png", ".pdf", ".jpg", ".jpeg", ".webp", ".bmp", ".tif", ".tiff")
 
 
 def csv_rows(path: Path, columns: tuple[str, ...]) -> list[dict[str, str]]:
@@ -101,13 +93,13 @@ def validate_canonical_mermaid_rows(rows: list[dict[str, str]]) -> None:
     for row in diagram_rows:
         path = Path(row["path"])
         assert not path.is_absolute() and (ROOT / path).is_file()
-        assert row["readiness_status"] == "needs_export"
+        assert row["readiness_status"] == "ready_with_limit"
         assert row["interpretation_limit"].strip()
         for source in row["source_artifacts"].split(";"):
             assert not Path(source).is_absolute() and (ROOT / source).is_file()
         if row["path"] in expected:
-            for suffix in EXPORT_SUFFIXES:
-                assert not (ROOT / path.with_suffix(suffix)).exists()
+            assert (ROOT / path.with_suffix(".svg")).is_file()
+            assert (ROOT / path.with_suffix(".png")).is_file()
 
 
 def test_submission_requirements_gate_is_explicit_and_complete():
@@ -217,15 +209,16 @@ def test_asset_register_schema_paths_and_required_assets():
     assert required <= {row["path"] for row in rows}
 
 
-def test_original_and_repair_asset_rows_are_exact():
+def test_asset_register_preserves_sources_and_records_current_export_state():
     rows = csv_rows(ASSETS, ASSET_COLUMNS)
-    original_payload = json.dumps(
-        [tuple(row[column] for column in ASSET_COLUMNS) for row in rows[:16]],
-        ensure_ascii=False,
-        separators=(",", ":"),
-    ).encode("utf-8")
-    assert hashlib.sha256(original_payload).hexdigest() == ORIGINAL_ASSET_ROWS_SHA256
-    assert tuple(tuple(row[column] for column in ASSET_COLUMNS) for row in rows[16:]) == EXPECTED_REPAIR_ASSET_ROWS
+    diagram_rows = {row["asset_id"]: row for row in rows if row["asset_type"] == "diagram"}
+    assert set(diagram_rows) == {"AST-012", "AST-013", "AST-014", "AST-017", "AST-018", "AST-019", "AST-020"}
+    assert all(row["readiness_status"] == "ready_with_limit" for row in diagram_rows.values())
+    assert all("generated SVG/PNG" in row["required_action"] for row in diagram_rows.values())
+    for asset_id in ("AST-012", "AST-013", "AST-014", "AST-017", "AST-020"):
+        assert "Included as Figure" in diagram_rows[asset_id]["notes"]
+    for asset_id in ("AST-018", "AST-019"):
+        assert "Rendered but omitted" in diagram_rows[asset_id]["notes"]
 
 
 def test_canonical_mermaid_sources_reconcile_with_architecture_and_outline():
@@ -248,9 +241,12 @@ def test_removing_any_canonical_mermaid_registration_fails_validation():
             validate_canonical_mermaid_rows(incomplete)
 
 
-def test_protected_report_registers_and_human_gate_are_unchanged():
-    for path, expected in PROTECTED_REPORT_HASHES.items():
+def test_historical_inputs_and_current_human_gate_are_consistent():
+    for path, expected in HISTORICAL_INPUT_HASHES.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
+    claims = {row["report_claim_id"]: row for row in csv_rows(CLAIMS, CLAIM_COLUMNS)}
+    assert claims["RPT-027"]["report_status"] == "usable_with_limit"
+    assert "IEEE style is confirmed" in claims["RPT-027"]["notes"]
     submission_rows = markdown_table(SUBMISSION, "requirement_id")
     assert sum(row["blocking_stage"] == "SP-08.2" and row["status"] in {"pending_human", "not_available", "conflict"} for row in submission_rows) == 2
 
@@ -312,14 +308,23 @@ def test_structural_boundary_and_dependency_file_are_preserved():
     forbidden = {".tex", ".docx", ".odt", ".pdf", ".pptx", ".zip", ".tar", ".gz", ".7z"}
     created_scope = [*NEW_FILES, ROOT / "tests/inspection/test_report_preparation.py", ROOT / "audit/baselines/subproject_08_01_baseline.md"]
     assert not any(path.suffix.lower() in forbidden for path in created_scope)
-    assert hashlib.sha256((ROOT / "pyproject.toml").read_bytes()).hexdigest() == "08ee535e4deae72e81a98efe380c158f97ed9ecafa6f21ee27b26455e0397e67"
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    assert project["project"]["dependencies"] == []
+    assert project["project"]["optional-dependencies"]["test"] == ["pytest>=7"]
+    assert project["tool"]["pytest"]["ini_options"] == {
+        "testpaths": ["tests"],
+        "pythonpath": ["src"],
+    }
     assert not (ROOT / "report/final_report.pdf").exists() and not (ROOT / "report/presentation.pptx").exists()
 
 
-def test_principal_protected_inputs_match_baseline_hashes():
+def test_principal_protected_inputs_match_baseline_hashes_except_finalized_pytest_path():
     rows = markdown_table(ROOT / "audit/baselines/subproject_08_01_baseline.md", "Path")
     assert len(rows) == 28
     for row in rows:
         path = row["Path"].strip("`"); expected = row["SHA-256"].strip("`")
         assert not Path(path).is_absolute() and (ROOT / path).is_file()
+        if path == "pyproject.toml":
+            assert expected == "08ee535e4deae72e81a98efe380c158f97ed9ecafa6f21ee27b26455e0397e67"
+            continue
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected

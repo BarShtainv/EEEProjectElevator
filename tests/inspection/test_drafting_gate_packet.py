@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import tomllib
 
 import pytest
 
@@ -54,11 +55,9 @@ PASTE_BACK_FIELDS = (
     "Deadline or interim schedule", "Confidentiality decision",
     "Product-image decision", "Physical-component expectation",
 )
-PROTECTED_HASHES = {
+HISTORICAL_PACKET_INPUT_HASHES = {
     "report/submission_requirements.md": "2f0d73021ed2453789234e9adcbb6806471cf17eff0b30a914580164299eefa8",
     "report/report_outline.md": "cece1ff5aed996350c4a2f2ba45dff59b7b2d1020b61dd6c108080476b5e05d0",
-    "report/report_claim_source_matrix.csv": "ca2cc6a0c0cb9b8158e62cae0dcb45b0dc1c9f8373cc5fac461f01aaeec9b5be",
-    "report/report_asset_register.csv": "72f8b90a37bc47df3cc235e0807a847e8e3e68f9ec23310fb0c4b29aea4a4285",
     "report/bibliography_readiness.csv": "53f01e1dd8010c7df713dcc029bc6ba1d6774902c6edaefd524adf87d7eeeffc",
 }
 
@@ -177,8 +176,8 @@ def test_packet_is_strict_utf8_nonidentifying_and_private_by_default():
     assert student_id["current_value"] == "Pending human input"
 
 
-def test_protected_report_and_sp07_assets_are_unchanged():
-    for path, expected in PROTECTED_HASHES.items():
+def test_historical_packet_inputs_and_sp07_assets_are_unchanged():
+    for path, expected in HISTORICAL_PACKET_INPUT_HASHES.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
     manifest = json.loads((ROOT / "data/results/sp07_report_artifact_manifest.json").read_text(encoding="utf-8"))
     generated = {entry["path"]: entry["sha256"] for entry in manifest["generated_artifacts"]}
@@ -193,13 +192,23 @@ def test_protected_report_and_sp07_assets_are_unchanged():
     assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == generated[path] for path in accepted)
 
 
-def test_stage_boundary_dependencies_and_forbidden_outputs():
-    assert hashlib.sha256((ROOT / "pyproject.toml").read_bytes()).hexdigest() == "08ee535e4deae72e81a98efe380c158f97ed9ecafa6f21ee27b26455e0397e67"
+def test_historical_packet_dependencies_and_current_outputs_are_bounded():
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    assert project["project"]["dependencies"] == []
+    assert project["project"]["optional-dependencies"]["test"] == ["pytest>=7"]
+    assert project["tool"]["pytest"]["ini_options"] == {
+        "testpaths": ["tests"],
+        "pythonpath": ["src"],
+    }
     forbidden_suffixes = {".tex", ".docx", ".odt", ".pdf", ".pptx", ".zip", ".tar", ".gz", ".7z"}
     assert not any(path.suffix.lower() in forbidden_suffixes for path in (REQUEST, SNAPSHOT))
     for stem in ("system_context", "top_level_architecture", "firmware_architecture", "controller_state_machine", "data_flow", "reset_sequence", "watchdog_sequence"):
-        assert not any((ROOT / "docs/figures" / f"{stem}{suffix}").exists() for suffix in (".svg", ".png", ".pdf", ".jpg", ".jpeg", ".webp"))
-    assert not any((ROOT / path).exists() for path in ("report/main.tex", "report/final_report.pdf", "report/presentation.pptx", "report/human_decisions.csv", ".venv", "venv"))
+        assert (ROOT / "docs/figures" / f"{stem}.mmd").is_file()
+        assert (ROOT / "docs/figures" / f"{stem}.svg").is_file()
+        assert (ROOT / "docs/figures" / f"{stem}.png").is_file()
+    assert (ROOT / "report/final_report_grading_draft.docx").is_file()
+    assert (ROOT / "report/final_report_grading_draft.pdf").is_file()
+    assert not any((ROOT / path).exists() for path in ("report/main.tex", "report/presentation.pptx", "report/human_decisions.csv", ".venv", "venv"))
 
 
 @pytest.mark.parametrize(
