@@ -1,0 +1,50 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"16px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","clusterBkg":"#F8FAFC","clusterBorder":"#8A9BA8"},"flowchart":{"curve":"linear","nodeSpacing":32,"rankSpacing":42,"htmlLabels":true}}}%%
+flowchart LR
+    subgraph SUPPORT["SHARED SUPPORT"]
+        direction TB
+        MODELS["Models<br/>immutable types + enums"]
+        CFG["Configuration<br/>strict JSON validation"]
+        CLOCK["Logical clock<br/>monotonic time"]
+        CLI["CLI / demonstration<br/>thin adapter"]
+    end
+
+    subgraph DECISION["REQUEST DECISION PATH"]
+        direction LR
+        WIE["Frame handling<br/>validate + decode"]
+        REPO[("Credential repository<br/>composite-key lookup")]
+        AUTH["Authorization<br/>pure floor-mask decision"]
+    end
+
+    CTRL["Controller<br/>orchestration + precedence"]
+
+    subgraph OWNERS["OWNED RUNTIME STATE"]
+        direction TB
+        OUT["Output manager<br/>16 channels + expiry"]
+        WDG["Watchdog<br/>heartbeat + deadline"]
+        ELOG[("Event log<br/>sequence + records")]
+    end
+
+    WIE --> REPO --> AUTH --> CTRL
+    CFG --> CTRL
+    CLOCK --> CTRL
+    MODELS -. "shared contracts" .-> CTRL
+    WDG <--> CTRL
+    CTRL --> OUT
+    CTRL --> ELOG
+    CLI --> CTRL
+
+    classDef foundation fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef data fill:#D9F0EE,stroke:#2F7F7B,color:#183A3A,stroke-width:1.5px;
+    classDef decision fill:#F5E8C8,stroke:#B7791F,color:#4B3512,stroke-width:1.5px;
+    classDef success fill:#DDECDD,stroke:#4E7D57,color:#203D27,stroke-width:1.5px;
+
+    class MODELS,CFG,CLOCK,CLI foundation;
+    class CTRL controller;
+    class WIE,REPO,ELOG data;
+    class AUTH,WDG decision;
+    class OUT success;
+    style SUPPORT fill:#F8FAFC,stroke:#8A9BA8,stroke-width:1.5px
+    style DECISION fill:#F4F8FB,stroke:#2F7F7B,stroke-width:1.5px
+    style OWNERS fill:#F7FAFC,stroke:#4E7D57,stroke-width:1.5px
+    linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42

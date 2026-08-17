@@ -1,0 +1,36 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"18px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","noteBkgColor":"#F7F9FB","noteTextColor":"#1F2933","noteBorderColor":"#8A9BA8"}}}%%
+stateDiagram-v2
+    direction TB
+    [*] --> RESETTING: startup / clear outputs and transient state
+    RESETTING --> INITIALIZING: startup reset complete
+    RESETTING --> IDLE: runtime reset complete / preserved state valid
+    INITIALIZING --> IDLE: config and repository valid
+    INITIALIZING --> INITIALIZING: initialization invalid / all inactive
+    IDLE --> VALIDATING: request / snapshot and service watchdog
+    VALIDATING --> IDLE: invalid / log error
+    VALIDATING --> LOOKUP: valid frame / retain decoded key
+    LOOKUP --> IDLE: unknown or disabled / log denial
+    LOOKUP --> AUTHORIZING: known enabled credential
+    AUTHORIZING --> IDLE: invalid or unauthorized floor / log outcome
+    AUTHORIZING --> OUTPUT_ACTIVE: grant event appended / activate one output
+    AUTHORIZING --> IDLE: grant event append failure / logging_error
+    OUTPUT_ACTIVE --> OUTPUT_ACTIVE: new request / controller_busy, preserve expiry
+    OUTPUT_ACTIVE --> IDLE: timeout / clear output
+    RESETTING --> RESETTING: manual or watchdog reset
+    INITIALIZING --> RESETTING: manual or watchdog reset
+    IDLE --> RESETTING: manual or watchdog reset
+    VALIDATING --> RESETTING: manual or watchdog reset
+    LOOKUP --> RESETTING: manual or watchdog reset
+    AUTHORIZING --> RESETTING: manual or watchdog reset
+    OUTPUT_ACTIVE --> RESETTING: manual or watchdog reset
+    note right of IDLE: All outputs are inactive in IDLE
+    classDef fault fill:#F4DEDE,stroke:#A44A4A,color:#572727,stroke-width:2px;
+    classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef data fill:#D9F0EE,stroke:#2F7F7B,color:#183A3A,stroke-width:1.5px;
+    classDef decision fill:#F5E8C8,stroke:#B7791F,color:#4B3512,stroke-width:2px;
+    class RESETTING fault
+    class INITIALIZING external
+    class IDLE controller
+    class VALIDATING,LOOKUP,AUTHORIZING data
+    class OUTPUT_ACTIVE decision

@@ -1,0 +1,59 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"16px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","clusterBkg":"#F8FAFC","clusterBorder":"#8A9BA8"},"flowchart":{"curve":"linear","nodeSpacing":34,"rankSpacing":46,"htmlLabels":true}}}%%
+flowchart LR
+    subgraph PB["PROJECT BOUNDARY — deterministic software model only"]
+        direction TB
+        subgraph INPUTS["LOGICAL INPUTS"]
+            direction LR
+            LF["LF source label"]
+            HF["HF source label"]
+            FLOOR["Floor request<br/>1–16"]
+            HARNESS["Planned test harness<br/>time + fault injection"]
+        end
+        subgraph MODEL["PROPOSED REFERENCE MODEL"]
+            direction LR
+            MSG["Complete credential frame<br/>PROJECT_WIEGAND_26"]
+            DB[("Credential repository<br/>composite key + 16-bit mask")]
+            CTRL["Planned controller<br/>validate · look up · authorize<br/>time · log · reset · watchdog"]
+            OUT["16 Boolean<br/>permission outputs"]
+            LOG[("Structured<br/>event log")]
+        end
+        LF --> MSG
+        HF --> MSG
+        MSG --> CTRL
+        FLOOR --> CTRL
+        HARNESS --> CTRL
+        HARNESS --> DB
+        CTRL <--> DB
+        CTRL --> OUT
+        CTRL --> LOG
+        OUT --> HARNESS
+        LOG --> HARNESS
+    end
+
+    subgraph EX["OUTSIDE PROJECT BOUNDARY"]
+        direction TB
+        RFID["RFID readers, tags,<br/>RF propagation and electronics"]
+        ELEV["Elevator controller<br/>and electrical wiring"]
+        SAFETY["Motion · doors · brakes<br/>passenger-safety systems"]
+    end
+
+    RFID -. "logical source labels only" .- LF
+    RFID -. "logical source labels only" .- HF
+    ELEV -. "no electrical or physical interface" .- OUT
+    SAFETY -. "no control, installation, or certification claim" .- OUT
+
+    classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef data fill:#D9F0EE,stroke:#2F7F7B,color:#183A3A,stroke-width:1.5px;
+    classDef success fill:#DDECDD,stroke:#4E7D57,color:#203D27,stroke-width:1.5px;
+    classDef outOfScope fill:#F1F3F5,stroke:#7A828A,color:#3E4850,stroke-width:1.5px,stroke-dasharray:6 4;
+    class LF,HF,FLOOR,HARNESS external;
+    class CTRL controller;
+    class MSG,DB,LOG data;
+    class OUT success;
+    class RFID,ELEV,SAFETY outOfScope;
+    style PB fill:#F7FAFC,stroke:#274C77,stroke-width:2px
+    style INPUTS fill:#FBFCFD,stroke:#9AAAB6,stroke-width:1px
+    style MODEL fill:#F4F8FB,stroke:#6D8CA4,stroke-width:1.5px
+    style EX fill:#FAFAFA,stroke:#7A828A,stroke-width:1.5px,stroke-dasharray:6 4
+    linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42
