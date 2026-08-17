@@ -28,7 +28,7 @@ The boundary also remained unchanged: the model does not command elevator motion
 
 ## 2. Implementation Progress
 
-The production package was implemented in Python using standard-library components and explicit immutable data records. Shared models define requests, decoded credentials, stored credentials, decisions, events, configuration, output snapshots, and controller snapshots. Expected access outcomes are represented by typed status-and-reason values; exceptions are reserved for invalid startup data, controlled infrastructure faults, clock misuse, and internal invariant violations.
+The software reference-model package was implemented in Python using standard-library components and explicit immutable data records. Shared models define requests, decoded credentials, stored credentials, decisions, events, configuration, output snapshots, and controller snapshots. Expected access outcomes are represented by typed status-and-reason values; exceptions are reserved for invalid startup data, controlled infrastructure faults, clock misuse, and internal invariant violations.
 
 Strict configuration loading validates UTF-8 JSON structure, schema version, required fields, unknown fields, types, and ranges before publishing any configuration. An injectable monotonic clock provides deterministic time without wall-clock waiting. The credential-frame component implements the project-defined 26-bit profile, including exact length and binary-value validation, leading and trailing parity checks, and field decoding. This is a bounded project profile rather than a claim that every Wiegand installation uses the same allocation; published Wiegand documentation shows that frame lengths and parity arrangements may vary [2].
 
@@ -52,7 +52,7 @@ Manual reset and watchdog reset clear transient controller and output state whil
 
 ## 3. Controller Operation
 
-Figure 1 shows the implemented request path. A request first encounters the busy rule. If no output is active, source and frame validation, parity checking, and decoding precede repository lookup and authorization. Unknown, disabled, unauthorized-floor, invalid-frame, and invalid-floor results cannot create an output activation. A grant candidate is also prevented from activating if its event cannot be appended. This ordering provides a simple safety property inside the model: every activated permission has a preceding recorded grant.
+Figure 1 shows the implemented request path. A request first encounters the busy rule. If no output is active, source and frame validation, parity checking, and decoding precede repository lookup and authorization. Unknown, disabled, unauthorized-floor, invalid-frame, and invalid-floor results cannot create an output activation. A grant candidate is also prevented from activating if its event cannot be appended. This ordering provides a directly testable software invariant: every activated permission has a preceding recorded grant.
 
 ![Figure 1. Implemented controller request, decision, logging, and recovery flow.](figures/advancement_report_2_controller_flow.png){#fig-controller-flow width=94%}
 
@@ -115,6 +115,8 @@ These totals provide additional evidence that the implemented categories were mu
 ## 6. Timing Observations
 
 Timing observations were collected on one host using `time.perf_counter_ns`. Mixed controller processing, repository lookup, and isolated authorization were bounded and timed as separate operations. Each repository size had three repetition aggregates. Figures 2–4 display the accepted median of the repetition-average series for sizes 10, 100, 1,000, and 10,000.
+
+The mixed-controller timing conditions did not use identical call counts at every repository size: the 10-, 100-, and 1,000-record conditions used 1,000 calls per repetition, while the 10,000-record condition used 10,000 calls per repetition. The reported values are repetition-average timings, but this workload difference should still be considered when interpreting cross-size observations.
 
 ![Figure 2. Mixed controller timing observations by credential-record count.](figures/advancement_report_2_mixed_timing.png){#fig-mixed-timing width=80%}
 

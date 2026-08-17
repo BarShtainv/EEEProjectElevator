@@ -6,11 +6,13 @@ flowchart TB
     VAL["Validate source / frame / parity<br/>and decode"]
     LOOK["Composite credential lookup"]
     AUTH["Enabled + floor + mask decision"]
-    PRELOG["Append canonical result event"]
+    GRANT_LOG["Append grant event"]
+    RESULT_LOG["Append non-grant result event"]
     ACT["Activate one output + expiry"]
     DENY["Denial / validation result<br/>no new activation"]
     LOGERR["Explicit logging_error<br/>grant withheld"]
     TIME["Simulated time<br/>timeout / reset / watchdog"]
+    RECOVERY["Expire output / clear transient state"]
     END["Typed response + observable state"]
 
     REQ --> BUSY
@@ -21,12 +23,11 @@ flowchart TB
     LOOK -- unknown/disabled --> DENY
     LOOK -- record --> AUTH
     AUTH -- deny/error --> DENY
-    AUTH -- grant candidate --> PRELOG
-    DENY --> PRELOG
-    PRELOG -- append succeeds --> ACT --> END
-    PRELOG -- append fails --> LOGERR --> END
-    TIME --> ACT
-    TIME --> END
+    AUTH -- grant candidate --> GRANT_LOG
+    GRANT_LOG -- append succeeds --> ACT --> END
+    GRANT_LOG -- append fails --> LOGERR --> END
+    DENY --> RESULT_LOG --> END
+    TIME --> RECOVERY --> END
     NOTE --- END
 
     classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
@@ -37,9 +38,9 @@ flowchart TB
     classDef fault fill:#F4DEDE,stroke:#A44A4A,color:#572727,stroke-width:1.5px;
     classDef note fill:#F8FAFC,stroke:#8A9BA8,color:#3E4850,stroke-width:1px,stroke-dasharray:3 3;
     class REQ,TIME external;
-    class VAL,LOOK,PRELOG data;
+    class VAL,LOOK,GRANT_LOG,RESULT_LOG data;
     class AUTH,BUSY decision;
-    class ACT,END success;
+    class ACT,RECOVERY,END success;
     class DENY,LOGERR fault;
     class NOTE note;
     linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42
