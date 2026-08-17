@@ -1,0 +1,45 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","fontSize":"16px","primaryTextColor":"#1F2933","lineColor":"#526574","edgeLabelBackground":"#FFFFFF","clusterBkg":"#F8FAFC","clusterBorder":"#8A9BA8"},"flowchart":{"curve":"linear","nodeSpacing":36,"rankSpacing":44,"htmlLabels":true}}}%%
+flowchart TB
+    NOTE["IMPLEMENTED REFERENCE-MODEL DATA FLOW<br/>software-only; no physical elevator command"]
+    REQ["Source label + complete frame + floor"]
+    BUSY{"Output active?"}
+    VAL["Validate source / frame / parity<br/>and decode"]
+    LOOK["Composite credential lookup"]
+    AUTH["Enabled + floor + mask decision"]
+    PRELOG["Append canonical result event"]
+    ACT["Activate one output + expiry"]
+    DENY["Denial / validation result<br/>no new activation"]
+    LOGERR["Explicit logging_error<br/>grant withheld"]
+    TIME["Simulated time<br/>timeout / reset / watchdog"]
+    END["Typed response + observable state"]
+
+    REQ --> BUSY
+    BUSY -- yes --> DENY
+    BUSY -- no --> VAL
+    VAL -- invalid --> DENY
+    VAL -- valid --> LOOK
+    LOOK -- unknown/disabled --> DENY
+    LOOK -- record --> AUTH
+    AUTH -- deny/error --> DENY
+    AUTH -- grant candidate --> PRELOG
+    DENY --> PRELOG
+    PRELOG -- append succeeds --> ACT --> END
+    PRELOG -- append fails --> LOGERR --> END
+    TIME --> ACT
+    TIME --> END
+    NOTE --- END
+
+    classDef external fill:#E8EEF3,stroke:#607D8B,color:#1F2933,stroke-width:1.5px;
+    classDef controller fill:#274C77,stroke:#16324F,color:#FFFFFF,stroke-width:2px,font-weight:600;
+    classDef data fill:#D9F0EE,stroke:#2F7F7B,color:#183A3A,stroke-width:1.5px;
+    classDef success fill:#DDECDD,stroke:#4E7D57,color:#203D27,stroke-width:1.5px;
+    classDef decision fill:#F5E8C8,stroke:#B7791F,color:#4B3512,stroke-width:1.5px;
+    classDef fault fill:#F4DEDE,stroke:#A44A4A,color:#572727,stroke-width:1.5px;
+    classDef note fill:#F8FAFC,stroke:#8A9BA8,color:#3E4850,stroke-width:1px,stroke-dasharray:3 3;
+    class REQ,TIME external;
+    class VAL,LOOK,PRELOG data;
+    class AUTH,BUSY decision;
+    class ACT,END success;
+    class DENY,LOGERR fault;
+    class NOTE note;
+    linkStyle default stroke:#526574,stroke-width:1.5px,color:#2B3A42
